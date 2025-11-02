@@ -1,5 +1,5 @@
 import { getEventDetails, getEventFormFields } from '@/lib/server/queries/events';
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { RegisterForEventForm } from './_components/register-event-form';
 import { EventDetailsCard } from './_components/event-details-card';
@@ -19,7 +19,7 @@ export default async function RegisterForEventPage({ params, searchParams }: Reg
     const { data: formFields } = await getEventFormFields(eventId);
     
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
     
     // Handle payment cancellation - mark unpaid tickets as cancelled

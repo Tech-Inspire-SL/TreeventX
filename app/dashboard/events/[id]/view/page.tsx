@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { getEventDetails } from "@/lib/server/queries/events";
-import { supabaseAdmin } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, MapPin, Users, Ticket, DollarSign, Globe, Lock } from "lucide-react";
@@ -17,7 +17,7 @@ import { cookies } from 'next/headers';
 
 async function getTicketId(eventId: number, userId: string) {
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
         .from('tickets')
         .select('id')
         .eq('event_id', eventId)

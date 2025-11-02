@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 
 // Monime sends POST to cancelUrl (not GET redirect)
 export async function POST(req: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createServiceRoleClient(cookieStore);
     
     // Extract parameters from URL
     const { searchParams } = new URL(req.url);

@@ -1,6 +1,6 @@
 'use server';
 
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 export async function GET(request, { params }) {
   try {
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
 
     // Get the followers with pagination
     const url = new URL(request.url);
@@ -52,7 +52,7 @@ export async function GET(request, { params }) {
 export async function POST(request, { params }) {
   try {
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
     
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {

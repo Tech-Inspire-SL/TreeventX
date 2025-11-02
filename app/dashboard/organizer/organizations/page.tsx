@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -8,7 +8,7 @@ import { PlusCircle, Calendar } from 'lucide-react';
 
 export default async function OrganizationsPage() {
   const cookieStore = await cookies();
-  const supabase = supabaseAdmin;
+  const supabase = await createClient(cookieStore);
   
   const { data: { user } } = await supabase.auth.getUser();
   

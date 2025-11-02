@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 
 // This is the endpoint that will be called by a cron job scheduler
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   }
 
   const cookieStore = await cookies();
-  const supabaseAdmin = supabaseAdmin;
+  const supabaseAdmin = createServiceRoleClient(cookieStore);
 
   try {
     // 2. Calculate the cutoff date (2 days ago for events, 30 minutes for unpaid tickets)

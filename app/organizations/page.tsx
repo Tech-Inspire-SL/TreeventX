@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Building2, Search, MapPin, Users, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 
 type Organization = {
   id: string;
@@ -29,7 +29,7 @@ export default function OrganizationsPage() {
 
   useEffect(() => {
     const fetchOrganizations = async () => {
-      const supabase = supabase;
+      const supabase = createClient();
       
       const { data, error } = await supabase
         .from('organizations')

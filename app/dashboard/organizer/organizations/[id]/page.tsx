@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -17,7 +17,7 @@ interface PageProps {
 export default async function OrganizationDetailPage({ params }: PageProps) {
   const { id } = await params;
   const cookieStore = await cookies();
-  const supabase = supabaseAdmin;
+  const supabase = await createClient(cookieStore);
   
   const { data: { user } } = await supabase.auth.getUser();
   

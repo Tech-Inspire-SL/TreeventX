@@ -1,13 +1,13 @@
 'use server';
 
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {

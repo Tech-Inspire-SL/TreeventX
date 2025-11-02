@@ -1,8 +1,9 @@
+
 'use server';
 
 import React from 'react';
 import { getEventDetails } from "@/lib/server/queries/events";
-import { supabaseAdmin } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,7 @@ import { cookies } from 'next/headers';
 async function getTicketId(eventId: number, userId?: string) {
     if (!userId) return null;
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
     const { data: ticket } = await supabase
         .from('tickets')
         .select('id')
@@ -35,7 +36,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
     const { id } = await params;
     const eventId = parseInt(id, 10);
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
 
     const { data: event, error } = await getEventDetails(eventId);

@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
 import type { EventWithAttendees } from '@/lib/types';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { EventCard } from '@/components/event-card';
 import { Footer } from '@/components/footer';
 import { PublicHeader } from '@/components/public-header';
@@ -13,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
 async function getAllPublicEvents(user: { id: string } | null) {
-  const supabase = supabase;
+  const supabase = createClient();
   const { data: events, error } = await supabase
     .from('events')
     .select('*')
@@ -139,7 +140,7 @@ export default function AllEventsPage() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-        const supabase = supabase;
+        const supabase = createClient();
         const { data: { user: currentUser } } = await supabase.auth.getUser();
         setUser(currentUser);
 

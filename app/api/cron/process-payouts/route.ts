@@ -1,7 +1,7 @@
 'use server';
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/server';
-import { createMonimePayout } from '@@/lib/monime';
+import { createServiceRoleClient } from '@/lib/supabase/server';
+import { createMonimePayout } from '@/lib/monime';
 import { cookies } from 'next/headers';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
@@ -107,7 +107,7 @@ async function processEventPayout(event: Event, supabaseAdmin: SupabaseClient) {
 
 export async function GET(req: NextRequest) {
   const cookieStore = await cookies();
-  const supabaseAdmin = supabaseAdmin;
+  const supabaseAdmin = createServiceRoleClient(cookieStore);
   
   // Verify cron secret
   const authHeader = req.headers.get('authorization');

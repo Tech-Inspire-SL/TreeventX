@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '@/lib/supabase/server';
 import crypto from 'crypto';
 
 // Temporary endpoint to manually approve a ticket for testing
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
 
     const cookieStore = await cookies();
-    const supabase = supabaseAdmin;
+    const supabase = createServiceRoleClient(cookieStore);
 
     // Update ticket to approved with QR code
     const { data, error } = await supabase

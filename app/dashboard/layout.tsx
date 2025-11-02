@@ -34,7 +34,7 @@ import { logout } from '@/lib/actions/auth';
 import { Button } from '@/components/ui/button';
 import { DashboardHeader } from '@/components/dashboard-header';
 import { AppLogo } from '@/components/app-logo';
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { cookies } from 'next/headers';
 
@@ -60,7 +60,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = supabaseAdmin;
+  const supabase = createClient(cookieStore);
   const activeEventCount = user ? await getActiveEventCount(user.id) : 0;
   const isLimitReached = activeEventCount >= 3;
 
