@@ -61,7 +61,7 @@ export function DashboardSheet() {
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-bold text-foreground">
-                GatherFlow
+                TreeventX
               </span>
               <span className="text-xs text-foreground/60">
                 Event Management
@@ -207,7 +207,7 @@ export function DashboardSheet() {
           <div className="mt-4 pt-3 border-t border-border/20">
             <div className="text-center">
               <div className="text-xs text-foreground/40">
-                GatherFlow Powered by Tech Inspire SL
+                TreeventX Powered by Tech Inspire SL
               </div>
             </div>
           </div>

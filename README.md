@@ -1,7 +1,7 @@
-# GatherFlow
+# TreeventX
 
 <p align="center">
-  <img src="src/app/GatherFlow_Logo.png" alt="GatherFlow Logo" width="200"/>
+  <img src="src/app/GatherFlow_Logo.png" alt="TreeventX Logo" width="200"/>
 </p>
 
 <p align="center">
@@ -23,7 +23,7 @@
 
 ## 📖 Overview
 
-**GatherFlow** is a modern, all-in-one event management platform designed to simplify the process of organizing, promoting, and executing events of any scale.  
+**TreeventX** is a modern, all-in-one event management platform designed to simplify the process of organizing, promoting, and executing events of any scale.  
 
 It provides organizers with tools to **create events, manage attendees with QR code ticketing, and track analytics**, while offering attendees a seamless **registration and check-in experience**.
 
@@ -33,7 +33,7 @@ It provides organizers with tools to **create events, manage attendees with QR c
 
 Traditional event management is fragmented — one tool for ticketing, another for promotion, a spreadsheet for attendees, a scanner app for check-ins. This complexity wastes time and distracts from the real goal: creating memorable events.  
 
-**GatherFlow solves this by unifying everything into one intuitive platform.**
+**TreeventX solves this by unifying everything into one intuitive platform.**
 
 ---
 
@@ -72,3 +72,5 @@ Traditional event management is fragmented — one tool for ticketing, another f
    ```bash
    git clone https://github.com/infotechinspiresl-ui/gatherflow.git
    cd gatherflow
+
+```

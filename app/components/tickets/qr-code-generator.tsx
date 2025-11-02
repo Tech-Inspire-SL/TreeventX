@@ -14,7 +14,7 @@ export function QrCodeGenerator({ qrToken }: { qrToken: string | null }) {
         .then(url => {
           setDataUrl(url);
         })
-        .catch(err => {
+        .catch((err: unknown) => {
           console.error(err);
         });
     }

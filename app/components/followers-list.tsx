@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { UserAvatar } from '@/app/components/ui/avatar';
-import { Button } from '@/app/components/ui/button';
-import { Skeleton } from '@/app/components/ui/skeleton';
+import { UserAvatar } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { formatDistanceToNow } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 

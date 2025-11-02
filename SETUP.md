@@ -1,6 +1,6 @@
-# GatherFlow Local Development Setup Guide
+# TreeventX Local Development Setup Guide
 
-This guide provides step-by-step instructions to get the GatherFlow project running on your local machine.
+This guide provides step-by-step instructions to get the TreeventX project running on your local machine.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ Before you begin, ensure you have the following installed:
 
 *   **Git:** For cloning the repository.
 *   **Node.js (LTS) & npm:** For running the Next.js application.
-*   **Supabase Account & Project:** GatherFlow relies heavily on Supabase for its backend (database, authentication, storage). You'll need to set up a Supabase project.
+*   **Supabase Account & Project:** TreeventX relies heavily on Supabase for its backend (database, authentication, storage). You'll need to set up a Supabase project.
 
 ## 1. Clone the Repository
 
@@ -58,7 +58,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
 
 ### d. Apply Database Schema
 
-GatherFlow requires a specific database schema, including tables, RLS policies, and functions. You will apply this schema using the `schema.sql` file located in your project's root directory.
+TreeventX requires a specific database schema, including tables, RLS policies, and functions. You will apply this schema using the `schema.sql` file located in your project's root directory.
 
 1.  **Open your Supabase Dashboard** for your new project.
 2.  Navigate to **Database** -> **SQL Editor**.

@@ -63,7 +63,7 @@ export const TicketEmail = ({ ticket }: TicketEmailProps) => {
             <TicketView ticket={ticket as never} />
           </div>
           <div className="footer">
-            <p>This email was sent via GatherFlow. &copy; {new Date().getFullYear()}</p>
+            <p>This email was sent via TreeventX. &copy; {new Date().getFullYear()}</p>
           </div>
         </div>
       </body>

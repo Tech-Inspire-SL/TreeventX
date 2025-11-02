@@ -60,7 +60,9 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
+  const { data: { user } } = await supabase.auth.getUser();
   const activeEventCount = user ? await getActiveEventCount(user.id) : 0;
   const isLimitReached = activeEventCount >= 3;
 
@@ -107,7 +109,7 @@ export default async function DashboardLayout({
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-sidebar-foreground">
-                  GatherFlow
+                  TreeventX
                 </span>
                 <span className="text-xs text-sidebar-foreground/60">
                   Event Management
@@ -274,7 +276,7 @@ export default async function DashboardLayout({
                   <div className="mt-auto pt-12 hidden xl:block">
                     <div className="text-center text-sm text-muted-foreground/40">
                       <div className="w-full h-px bg-gradient-to-r from-transparent via-border/20 to-transparent mb-4"></div>
-                      GatherFlow Dashboard • Event Management Platform
+                      TreeventX Dashboard • Event Management Platform
                     </div>
                   </div>
                 </div>

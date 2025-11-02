@@ -17,7 +17,7 @@ export function Header({ navLinks, onMobileLinkClick }: HeaderProps) {
     <header className="px-4 lg:px-6 h-16 flex items-center bg-background fixed top-0 left-0 right-0 z-50 border-b">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
         <AppLogo />
-        <span className="ml-2 text-xl font-bold font-headline">GatherFlow</span>
+        <span className="ml-2 text-xl font-bold font-headline">TreeventX</span>
       </Link>
       <nav className="ml-auto hidden md:flex gap-4 sm:gap-6 items-center">
         {navLinks.map(link => (

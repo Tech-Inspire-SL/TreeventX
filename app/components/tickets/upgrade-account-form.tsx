@@ -9,7 +9,7 @@ import { upgradeGuestAccount } from '@/lib/actions/user';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function UpgradeAccountForm({ userId }: { userId: string }) {
-    const [state, action] = useActionState(async (prevState, formData) => {
+    const [state, action] = useActionState(async (prevState, formData: FormData) => {
         const password = formData.get('password') as string;
         const confirmPassword = formData.get('confirmPassword') as string;
 

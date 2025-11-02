@@ -4,7 +4,7 @@ export function AppLogo({ className }: { className?: string }) {
   return (
     <Image
       src="/GatherFlow_Logo.png"
-      alt="GatherFlow Logo"
+      alt="TreeventX Logo"
       width={50}
       height={50}
       className={className}

@@ -17,7 +17,7 @@ import { cookies } from 'next/headers';
 
 async function getTicketId(eventId: number, userId: string) {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient(cookieStore)
         .from('tickets')
         .select('id')
         .eq('event_id', eventId)

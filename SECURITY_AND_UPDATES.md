@@ -1,4 +1,4 @@
-# GatherFlow Security, Updates & Monetization Guide
+# TreeventX Security, Updates & Monetization Guide
 
 ## 🛡️ Fraud Prevention Measures
 

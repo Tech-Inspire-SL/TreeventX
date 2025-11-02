@@ -1,6 +1,6 @@
 # Implementation & Progress Notes
 
-This document provides a summary of the current implementation status of the GatherFlow application, including completed features and outstanding challenges.
+This document provides a summary of the current implementation status of the TreeventX application, including completed features and outstanding challenges.
 
 ## 1. Core Features (Completed)
 

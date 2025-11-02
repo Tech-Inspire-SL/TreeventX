@@ -3,9 +3,9 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
-const APP_NAME = "GatherFlow";
-const APP_DEFAULT_TITLE = "GatherFlow";
-const APP_TITLE_TEMPLATE = "%s - GatherFlow";
+const APP_NAME = "TreeventX";
+const APP_DEFAULT_TITLE = "TreeventX";
+const APP_TITLE_TEMPLATE = "%s - TreeventX";
 const APP_DESCRIPTION = "The future of event management.";
 
 export const metadata: Metadata = {

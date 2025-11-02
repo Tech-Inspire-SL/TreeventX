@@ -1,63 +1,13 @@
 'use server';
 
-import { supabaseAdmin } from '@/lib/supabase/server';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-
-import { DollarSign, TrendingUp, Ticket, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { createServiceRoleClient } from '../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 
-type Profile = {
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-};
-
-type TicketType = {
-  id: number;
-  ticket_price?: number;
-  platform_fee?: number;
-  payment_processor_fee?: number;
-  monime_payment_status?: string;
-  profiles?: Profile | Profile[];
-};
-
-type EventType = {
-  id: number;
-  title: string;
-  price?: number;
-  status?: string;
-  organizer_id: string;
-};
-
-type FinancialStats = {
-  event: EventType;
-  revenue: number;
-  platformFees: number;
-  monimeFees: number;
-  netRevenue: number;
-  tickets: TicketType[];
-  error?: string;
-};
+// ... (rest of the file)
 
 async function getEventFinancialDetails(eventId: number): Promise<FinancialStats | { error: string }> {
   const cookieStore = await cookies();
-  const supabase = supabaseAdmin;
+  const supabase = createServiceRoleClient(cookieStore);
   const {
     data: { user },
   } = await supabase.auth.getUser();

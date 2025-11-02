@@ -1,6 +1,6 @@
-# GatherFlow Troubleshooting Guide
+# TreeventX Troubleshooting Guide
 
-This document provides solutions to common issues you might encounter while setting up or running GatherFlow.
+This document provides solutions to common issues you might encounter while setting up or running TreeventX.
 
 ## 1. `Module not found: Can't resolve '@/src/components/ui/card'`
 

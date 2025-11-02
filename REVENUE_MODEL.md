@@ -1,7 +1,7 @@
-# GatherFlow Revenue Model
+# TreeventX Revenue Model
 
 ## Overview
-GatherFlow is a ticketing and event management platform focused on generating sustainable revenue through **transaction fees on ticket sales**. Simple, transparent, and scalable.
+TreeventX is a ticketing and event management platform focused on generating sustainable revenue through **transaction fees on ticket sales**. Simple, transparent, and scalable.
 
 ---
 
@@ -32,7 +32,7 @@ Simple flat-rate pricing for all events. No tiers, no complexity.
 | Total Ticket Sales | NLE 100 |
 | Total Platform Fees (10 tickets) | **NLE 33.50** |
 | Organizer Receives | NLE 66.50 |
-| GatherFlow Revenue | **NLE 33.50** |
+| TreeventX Revenue | **NLE 33.50** |
 
 ---
 
@@ -47,7 +47,7 @@ Simple flat-rate pricing for all events. No tiers, no complexity.
 | Total Ticket Sales | NLE 2,500 |
 | Total Platform Fees (50 tickets) | **NLE 237.50** |
 | Organizer Receives | NLE 2,262.50 |
-| GatherFlow Revenue | **NLE 237.50** |
+| TreeventX Revenue | **NLE 237.50** |
 
 ---
 
@@ -62,7 +62,7 @@ Simple flat-rate pricing for all events. No tiers, no complexity.
 | Total Ticket Sales | NLE 10,000 |
 | Total Platform Fees (100 tickets) | **NLE 650** |
 | Organizer Receives | NLE 9,350 |
-| GatherFlow Revenue | **NLE 650** |
+| TreeventX Revenue | **NLE 650** |
 
 ---
 
@@ -70,7 +70,7 @@ Simple flat-rate pricing for all events. No tiers, no complexity.
 
 Here's how revenue scales across different ticket prices and volumes:
 
-| Ticket Price | Tickets Sold | Total Sales | Platform Fee/Ticket | **GatherFlow Revenue** | Organizer Gets |
+| Ticket Price | Tickets Sold | Total Sales | Platform Fee/Ticket | **TreeventX Revenue** | Organizer Gets |
 |--------------|--------------|-------------|---------------------|----------------------|----------------|
 | NLE 10 | 10 | NLE 100 | NLE 3.35 | **NLE 33.50** | NLE 66.50 |
 | NLE 10 | 50 | NLE 500 | NLE 3.35 | **NLE 167.50** | NLE 332.50 |
@@ -231,7 +231,7 @@ Most organizers choose Option 2 (buyer pays) because:
 
 ## Fee Structure: Two Options
 
-GatherFlow offers organizers flexibility in how platform fees are handled:
+TreeventX offers organizers flexibility in how platform fees are handled:
 
 ### **Option 1: Organizer Absorbs Fee (Deduct from Ticket)**
 
@@ -298,7 +298,7 @@ GatherFlow offers organizers flexibility in how platform fees are handled:
 | **Simplicity** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | **Transparency** | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | **Organizer Satisfaction** | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **Buyer Satisfaction** | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Buyer Satisfaction** | ⭐⭐⭐ | ⭐⭐⭐ |
 
 ---
 
@@ -338,44 +338,6 @@ Let's simulate 1 month of events with both fee models:
 
 **Organizer receives**: 100% of advertised price
 **Buyer pays**: 4.1% more than listed price
-
----
-
-### Real-World Example: 1,000 Ticket Event
-
-**Event**: Music Festival
-**Ticket Price**: SLE 75,000
-
-#### Option 1: Organizer Absorbs
-```
-Listed Price: SLE 75,000
-Buyer Pays: SLE 75,000
-Platform Fee: (75,000 × 3.5%) + 300 = SLE 2,925
-Organizer Gets: 75,000 - 2,925 = SLE 72,075 per ticket
-
-× 1,000 tickets:
-- Total Revenue from Buyers: SLE 75,000,000
-- Total to Organizer: SLE 72,075,000
-- Total to Platform: SLE 2,925,000
-```
-
-#### Option 2: Buyer Pays
-```
-Listed Price: SLE 75,000
-Platform Fee: (75,000 × 3.5%) + 300 = SLE 2,925
-Buyer Pays: 75,000 + 2,925 = SLE 77,925
-Organizer Gets: SLE 75,000 per ticket
-
-× 1,000 tickets:
-- Total Revenue from Buyers: SLE 77,925,000
-- Total to Organizer: SLE 75,000,000
-- Total to Platform: SLE 2,925,000
-```
-
-**Impact:**
-- Organizer makes **SLE 2,925,000 MORE** with Option 2
-- Each buyer pays **SLE 2,925 MORE** with Option 2
-- Platform revenue is **THE SAME** either way
 
 ---
 
@@ -541,7 +503,7 @@ This transparency helps organizers make informed decisions!
 
 ## Competitive Advantage
 
-### **Why GatherFlow Will Win**
+### **Why TreeventX Will Win**
 
 **1. Local Payment Integration** ✅
 - Monime supports Orange Money, SLCB, Ecobank
@@ -716,6 +678,6 @@ This transparency helps organizers make informed decisions!
 
 ---
 
-**GatherFlow is not trying to be Eventbrite.** We're solving a real problem for Sierra Leone event organizers: making it easier to sell tickets, collect payments, and manage attendees. 
+**TreeventX is not trying to be Eventbrite.** We're solving a real problem for Sierra Leone event organizers: making it easier to sell tickets, collect payments, and manage attendees. 
 
 **Keep it simple. Ship fast. Iterate based on feedback.** 🚀
