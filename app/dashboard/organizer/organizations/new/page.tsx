@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { OrganizationForm } from '@/components/organization-form';
@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 export default async function NewOrganizationPage() {
   const cookieStore = await cookies();
-  const supabase = await createClient(cookieStore);
+  const supabase = supabaseAdmin;
   
   const { data: { user } } = await supabase.auth.getUser();
   

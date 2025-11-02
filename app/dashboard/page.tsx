@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, ArrowRight, Users, CalendarCheck, Activity, Calendar as CalendarIcon, TrendingUp, Clock, MapPin, Ticket, Info } from 'lucide-react';
-import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
+import { supabase } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -43,7 +44,7 @@ async function getDashboardStats(user: { id: string } | null) {
 
   try {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = supabase;
 
     const { count: totalEvents, error: totalEventsError } = await supabase
       .from('events')
@@ -72,7 +73,7 @@ async function getDashboardStats(user: { id: string } | null) {
 
     if (events && events.length > 0) {
         const eventIds = events.map(e => e.id);
-        const supabaseAdmin = createServiceRoleClient(cookieStore);
+        const supabaseAdmin = supabaseAdmin;
         const { data: countsRaw, error: ticketsCountError } = await supabaseAdmin
             .rpc('get_event_attendee_counts', { event_ids: eventIds });
 

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { EventCard } from '@/components/event-card';
 import { PlusCircle, Search } from 'lucide-react';
 import type { EventWithAttendees } from '@/lib/types';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import {
   Tabs,
   TabsContent,
@@ -21,7 +21,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
 
 async function getMyEvents(userId: string): Promise<EventWithAttendees[]> {
-  const supabase = createClient();
+  const supabase = supabase;
   const { data: events, error } = await supabase
     .from('events')
     .select('*, tickets(count)')
@@ -56,7 +56,7 @@ async function getMyEvents(userId: string): Promise<EventWithAttendees[]> {
 }
 
 async function getRegisteredEvents(userId: string): Promise<EventWithAttendees[]> {
-    const supabase = createClient();
+    const supabase = supabase;
     const { data: tickets, error } = await supabase
         .from('tickets')
         .select('events!inner(*, tickets(count)), id')
@@ -135,7 +135,7 @@ async function getRegisteredEvents(userId: string): Promise<EventWithAttendees[]
 
 
 async function getAllEvents(currentUser: { id: string } | null): Promise<EventWithAttendees[]> {
-  const supabase = createClient();
+  const supabase = supabase;
 
   const { data: events, error } = await supabase
     .from('events')
@@ -188,7 +188,7 @@ async function getAllEvents(currentUser: { id: string } | null): Promise<EventWi
 }
 
 async function getPastEvents(userId: string): Promise<EventWithAttendees[]> {
-    const supabase = createClient();
+    const supabase = supabase;
     
     // Fetch events the user attended
     const { data: attendedTickets, error: attendedError } = await supabase
@@ -286,7 +286,7 @@ export default function EventsPage() {
 
   useEffect(() => {
     async function fetchUserAndEvents() {
-      const supabase = createClient();
+      const supabase = supabase;
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       setUser(currentUser);
       

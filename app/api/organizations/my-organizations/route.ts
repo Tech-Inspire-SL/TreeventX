@@ -1,11 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const supabase = await createClient(cookieStore);
+    const supabase = supabaseAdmin;
     
     // Get current user
     const { data: { user }, error: userError } = await supabase.auth.getUser();

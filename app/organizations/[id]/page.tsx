@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 
 async function getOrganizationProfile(orgId: string) {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = supabaseAdmin;
   
   // Get organization details with owner info
   const { data: org, error: orgError } = await supabase

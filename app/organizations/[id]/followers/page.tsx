@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,7 +37,7 @@ export default function OrganizationFollowersPage({ params }: { params: { id: st
 
   useEffect(() => {
     const fetchOrganization = async () => {
-      const supabase = createClient();
+      const supabase = supabase;
       
       const { data: org, error } = await supabase
         .from('organizations')
@@ -59,7 +59,7 @@ export default function OrganizationFollowersPage({ params }: { params: { id: st
   useEffect(() => {
     const fetchFollowers = async () => {
       setLoading(true);
-      const supabase = createClient();
+      const supabase = supabase;
       
       const { data, error } = await supabase
         .from('followers')

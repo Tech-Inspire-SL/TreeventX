@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createServiceRoleClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { sendTicketEmail } from '@/lib/actions/email';
 import { getTicketDetails } from '@/lib/actions/tickets';
 import { TicketEmail } from '@/components/emails/ticket-email';
@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
   }
 
   const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
+  const supabase = supabaseAdmin;
 
   // Handle different webhook events
   switch (event.event) {

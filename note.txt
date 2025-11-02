@@ -1,284 +1,163 @@
-│ ✓  ReadFile app\dashboard\analytics\page.tsx                                              │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\dashboard\analytics\page.tsx: import { BarChart, Users, Tren... => import { … │
-│                                                                                           │
-│     4   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from         │
-│         '@/components/ui/card';                                                           │
-│     5   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from     │
-│         '@/components/ui/table';                                                          │
-│     6   import { Badge } from '@/components/ui/badge';                                    │
-│     7 - import { BarChart, Users, TrendingUp, Calendar, Ticket, CheckCircle, Percent }    │
-│       from 'lucide-react';                                                                │
-│     8 - import { ChartContainer, ChartTooltip, ChartTooltipContent } from                 │
-│       "@/components/ui/chart"                                                             │
-│     9 - import { Bar, BarChart as RechartsBarChart, CartesianGrid, XAxis, YAxis, Tooltip, │    
-│       Legend, ResponsiveContainer } from "recharts"                                       │    
-│     7 + import { Calendar, Ticket, CheckCircle, Percent } from 'lucide-react';            │    
-│     8 + import { ChartContainer } from "@/components/ui/chart"                            │    
-│     9                                                                                     │    
-│    10   import { RegistrationChart } from './_components/registration-chart';             │    
-│    11                                                                                     │    
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'm now fixing the warnings in app/dashboard/analytics/_components/registration-chart.tsx by
-  removing the unused ChartContainer and ChartTooltip imports.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile ...app\_components\registration-chart.tsx                                     │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit ...app\_components\registration-chart.tsx: import { ChartContainer, Chart... => … │
-│                                                                                           │
-│    1   'use client';                                                                      │
-│    2                                                                                      │
-│    3   import { Bar, BarChart as RechartsBarChart, CartesianGrid, XAxis, YAxis, Tooltip,  │
-│        Legend, ResponsiveContainer } from "recharts";                                     │
-│    4 - import { ChartContainer, ChartTooltip, ChartTooltipContent } from                  │
-│      "@/components/ui/chart";                                                             │
-│    4 + import { ChartTooltipContent } from "@/components/ui/chart";                       │
-│    5                                                                                      │
-│    6   export function RegistrationChart({ chartData }: { chartData: Array<{ date: string │
-│        ; registrations: number }> }) {                                                    │    
-│    7       return (                                                                       │    
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'm moving on to the next warning in
-  app/dashboard/events/[id]/manage/email/_components/email-form.tsx and will remove the unused
-  FormDescription import.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile ...app\email\_components\email-form.tsx                                       │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit ...app\email\_components\email-form.tsx:   Form,... =>   Form,...                 │
-│                                                                                           │
-│     8   import {                                                                          │
-│     9     Form,                                                                           │
-│    10     FormControl,                                                                    │
-│    11 -   FormDescription,                                                                │
-│    11     FormField,                                                                      │
-│    12     FormItem,                                                                       │
-│    13     FormLabel,                                                                      │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-✦ I'll now fix the warning in app/dashboard/events/[id]/manage/page.tsx by removing the unused
-  cookies import.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile app\events\[id]\manage\page.tsx                                               │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\events\[id]\manage\page.tsx: import { cookies } from "next/... =>             │
-│                                                                                           │
-│     4   import { getEventAttendees } from "@/lib/actions/events";                         │
-│     5   import { getEventDetails } from "@/lib/server/queries/events";                    │
-│     6   import { ManageEventView } from "./_components/manage-event-view";                │
-│     7 - import { cookies } from "next/headers";                                           │
-│     7                                                                                     │
-│     8 +                                                                                   │
-│     9   interface ManageEventPageProps {                                                  │
-│    10     params: Promise<{ id: string }>;                                                │
-│    11   }                                                                                 │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'm now fixing an unused variable warning in
-  app/dashboard/events/[id]/manage/_components/refresh-button.tsx. I'll read the file and    
-  remove the unused eventId variable.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile app\_components\refresh-button.tsx                                            │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\_components\refresh-button.tsx: export function RefreshButton(... => export … │
-│                                                                                           │
-│     5   import { useRouter } from 'next/navigation';                                      │
-│     6   import { useTransition } from 'react';                                            │
-│     7                                                                                     │
-│     8 - export function RefreshButton({ eventId }: { eventId: number }) {                 │
-│     8 + export function RefreshButton() {                                                 │
-│     9     const router = useRouter();                                                     │
-│    10     const [isPending, startTransition] = useTransition();                           │
-│    11                                                                                     │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-✦ I'm now fixing the warnings in app/dashboard/events/[id]/view/page.tsx by removing all the
-  unused imports.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile app\events\[id]\view\page.tsx                                                 │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\events\[id]\view\page.tsx: import { Card, CardContent, Ca... => import { Car… │
-│                                                                                           │
-│     4   import { getEventDetails } from "@/lib/server/queries/events";                    │
-│     5   import { createClient } from "@/lib/supabase/server";                             │
-│     6   import { Button } from "@/components/ui/button";                                  │
-│     7 - import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }  │
-│       from "@/components/ui/card";                                                        │
-│     7 + import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";  │
-│     8   import { Calendar, MapPin, Users, Ticket, ArrowLeft, Eye, DollarSign, Share2,     │
-│         Globe, Lock } from "lucide-react";                                                │
-│     9   import Image from "next/image";                                                   │
-│    10   import Link from "next/link";                                                     │    
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\events\[id]\view\page.tsx: import { Calendar, MapPin, Use... => import { Cal… │
-│                                                                                           │
-│     5   import { createClient } from "@/lib/supabase/server";                             │
-│     6   import { Button } from "@/components/ui/button";                                  │
-│     7   import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";  │
-│     8 - import { Calendar, MapPin, Users, Ticket, ArrowLeft, Eye, DollarSign, Share2,     │
-│       Globe, Lock } from "lucide-react";                                                  │
-│     8 + import { Calendar, MapPin, Users, Ticket, DollarSign, Globe, Lock } from          │
-│       "lucide-react";                                                                     │
-│     9   import Image from "next/image";                                                   │
-│    10   import Link from "next/link";                                                     │
-│    11   import { format } from 'date-fns';                                                │    
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\events\[id]\view\page.tsx: import { EventWithAttendees } ... =>               │
-│                                                                                           │
-│     9   import Image from "next/image";                                                   │
-│    10   import Link from "next/link";                                                     │
-│    11   import { format } from 'date-fns';                                                │
-│    12 - import { EventWithAttendees } from "@/lib/types";                                 │
-│    12 +                                                                                   │
-│    13   import { ShareButton } from "../../../../events/[id]/_components/share-button";   │
-│    14   import { ResendTicketForm } from "../../../../events/[id]                         │
-│         /_components/resend-ticket-form";                                                 │
-│    15   import { cookies } from 'next/headers';                                           │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'll now fix the unused import warning in app/dashboard/layout.tsx by removing the
-  TrendingDown import.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile app\dashboard\layout.tsx                                                      │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\dashboard\layout.tsx:   DollarSign,... =>   DollarSign,                       │
-│                                                                                           │
-│    15     BarChart,                                                                       │
-│    16     Calendar,                                                                       │
-│    17     DollarSign,                                                                     │
-│    18 -   TrendingDown,                                                                   │
-│    18     Briefcase,                                                                      │
-│    19     Building2,                                                                      │
-│    20   } from 'lucide-react';                                                            │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-✦ I'll now fix the unused import warning in app/dashboard/organizer/organizations/page.tsx by
-  removing the Users import.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile ...app\organizer\organizations\page.tsx                                       │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit ...app\organizer\organizations\page.tsx: import { PlusCircle, Users, Ca... => im… │
-│                                                                                           │
-│     4   import Link from 'next/link';                                                     │
-│     5   import { Button } from '@/components/ui/button';                                  │
-│     6   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from         │
-│         '@/components/ui/card';                                                           │
-│     7 - import { PlusCircle, Users, Calendar } from 'lucide-react';                       │
-│     7 + import { PlusCircle, Calendar } from 'lucide-react';                              │
-│     8                                                                                     │
-│     9   export default async function OrganizationsPage() {                               │
-│    10     const cookieStore = await cookies();                                            │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
+student@git-journey:~/Desktop/gatherflow$ npm run build
 
-ℹA potential loop was detected. This can happen due to repetitive tool calls or other model  
-  behavior. The request has been halted.
+> nextn@0.1.0 build
+> next build
 
-> continue
+   ▲ Next.js 15.5.6
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     · serverActions
 
-✦ I'll now fix the warnings in app/dashboard/organizer/page.tsx by removing the unused Users 
-  and ArrowRight imports.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile app\dashboard\organizer\page.tsx                                              │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\dashboard\organizer\page.tsx: import {... => import {...                      │
-│                                                                                           │
-│    23     DollarSign,                                                                     │
-│    24     TrendingUp,                                                                     │
-│    25     Ticket,                                                                         │
-│    26 -   Users,                                                                          │
-│    26     Eye,                                                                            │
-│    28 -   ArrowRight,                                                                     │
-│    27   } from 'lucide-react';                                                            │
-│    28   import Link from 'next/link';                                                     │
-│    29   import { cookies } from 'next/headers';                                           │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'll now fix the warnings in app/dashboard/organizer/[id]/page.tsx by removing the unused  
-  Badge and Users imports.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile ...app\dashboard\organizer\[id]\page.tsx                                      │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit ...app\dashboard\organizer\[id]\page.tsx: import { Badge } from '@/compo... =>    │
-│                                                                                           │
-│    17     TableHeader,                                                                    │
-│    18     TableRow,                                                                       │
-│    19   } from '@/components/ui/table';                                                   │
-│    20 - import { Badge } from '@/components/ui/badge';                                    │
-│    20 +                                                                                   │
-│    21   import { DollarSign, TrendingUp, Ticket, Users, ArrowLeft } from 'lucide-react';  │
-│    22   import Link from 'next/link';                                                     │
-│    23   import { Button } from '@/components/ui/button';                                  │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit ...app\dashboard\organizer\[id]\page.tsx: import { DollarSign, TrendingU... => i… │
-│                                                                                           │
-│    18     TableRow,                                                                       │
-│    19   } from '@/components/ui/table';                                                   │
-│    20                                                                                     │
-│    21 - import { DollarSign, TrendingUp, Ticket, Users, ArrowLeft } from 'lucide-react';  │
-│    21 + import { DollarSign, TrendingUp, Ticket, ArrowLeft } from 'lucide-react';         │
-│    22   import Link from 'next/link';                                                     │
-│    23   import { Button } from '@/components/ui/button';                                  │
-│    24   import { cookies } from 'next/headers';                                           │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-✦ This is a big one. The file app/dashboard/page.tsx has numerous errors and warnings. I will  
-  read the file and address each issue systematically, starting with the unused imports and any
-   types.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  ReadFile app\dashboard\page.tsx                                                        │
-╰───────────────────────────────────────────────────────────────────────────────────────────╯
-✦ I'm now working on the errors in app/dashboard/page.tsx. I will start by removing the unused
-  EventWithAttendees import.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\dashboard\page.tsx: import type { EventWithAttende... => import { PlusCircle… │
-│                                                                                           │
-│    3   import Link from 'next/link';                                                      │
-│    4   import { Button } from '@/components/ui/button';                                   │
-│    5   import { PlusCircle, ArrowRight, Users, CalendarCheck, Activity, Calendar as       │
-│        CalendarIcon, TrendingUp, Clock, MapPin, Ticket, Info } from 'lucide-react';       │
-│    6 - import type { EventWithAttendees } from '@/lib/types';                             │
-│    6   import { createClient, createServiceRoleClient } from '@/lib/supabase/server';     │
-│    7   import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }   │
-│        from '@/components/ui/card';                                                       │
-│    8   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from      │
-│        '@/components/ui/table';                                                           │    
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'm now fixing the no-explicit-any errors in app/dashboard/page.tsx. I will remove the [key: 
-  string]: any; from the Event interface, and change the type of id and ticket_id from any to  
-  number in the TicketWithEvent and UpcomingEventWithTicket interfaces.
-╭───────────────────────────────────────────────────────────────────────────────────────────╮
-│ ✓  Edit app\dashboard\page.tsx: interface Event {... => interface Event {...              │
-│                                                                                           │
-│    18     location?: string;                                                              │
-│    19     created_at: string;                                                             │
-│    20     organizer_id: string;                                                           │
-│    21 -   [key: string]: any;                                                             │
-│    21   }                                                                                 │
-│    22                                                                                     │
-│    23   interface EventWithAttendeesCount extends Event {                                 │
-│    25   }                                                                                 │
-│    26                                                                                     │
-│    27   interface TicketWithEvent {                                                       │    
-│    29 -   id: any;                                                                        │    
-│    28 +   id: number;                                                                     │    
-│    29     user_id: string;                                                                │    
-│    30     created_at: string;                                                             │    
-│    31     events: Event | Event[];                                                        │    
-│    32   }                                                                                 │    
-│    33                                                                                     │    
-│    34   interface UpcomingEventWithTicket extends Event {                                 │    
-│    36 -   ticket_id: any;                                                                 │    
-│    35 +   ticket_id: number;                                                              │    
-│    36     attendees: number;                                                              │    
-│    37   }                                                                                 │    
-│    38                                                                                     │    
-╰───────────────────────────────────────────────────────────────────────────────────────────╯    
-✦ I'm now fixing the no-explicit-any errors in app/dashboard/page.tsx. I'll define a new type
-  TicketWithEventAndAttendees and use it to replace the any types in the
-  getAttendeeDashboardStats function. This will improve type safety and resolve the linting  
-  errors.
+   Creating an optimized production build ...
+ ✓ (pwa) Compiling for server...
+ ✓ (pwa) Compiling for server...
+ ✓ (pwa) Compiling for client (static)...
+ ○ (pwa) Service worker: C:\Users\Kadijatu T Bangura\Desktop\gatherflow\public\sw.js
+ ○ (pwa)   URL: /sw.js
+ ○ (pwa)   Scope: /
+
+warn - The class `duration-[3000ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;3000ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[4000ms]` is ambiguous and matches multiple utilities. 
+warn - If this is content and not a class, replace it with `duration-&lsqb;4000ms&rsqb;` to silence this warning.
+ ⚠ Compiled with warnings in 3.9min
+
+./app/api/organizations/[id]/followers/route.ts
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/api/organizations/[id]/followers/route.ts
+
+./app/api/organizations/[id]/followers/route.ts
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/api/organizations/[id]/followers/route.ts
+
+./app/api/organizations/follow/route.ts
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/api/organizations/follow/route.ts
+
+./app/api/organizations/my-organizations/route.ts
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/api/organizations/my-organizations/route.ts
+
+./app/dashboard/events/[id]/edit/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/events/[id]/edit/page.tsx
+
+./app/dashboard/events/[id]/manage/email/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/events/[id]/manage/email/page.tsx
+
+./app/dashboard/events/[id]/view/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/events/[id]/view/page.tsx
+
+./app/dashboard/events/[id]/view/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/events/[id]/view/page.tsx
+
+./app/dashboard/layout.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/layout.tsx
+
+./app/dashboard/layout.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/layout.tsx
+
+./app/dashboard/organizer/[id]/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/organizer/[id]/page.tsx
+
+./app/dashboard/organizer/organizations/[id]/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/organizer/organizations/[id]/page.tsx
+
+./app/dashboard/organizer/organizations/new/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/organizer/organizations/new/page.tsx
+
+./app/dashboard/organizer/organizations/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/organizer/organizations/page.tsx
+
+./app/dashboard/organizer/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/dashboard/organizer/page.tsx
+
+./app/events/[id]/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/events/[id]/page.tsx
+
+./app/events/[id]/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/events/[id]/page.tsx
+
+./app/events/[id]/register/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/events/[id]/register/page.tsx
+
+./app/organizations/[id]/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/organizations/[id]/page.tsx
+
+./app/tickets/view/page.tsx
+Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+
+Import trace for requested module:
+./app/tickets/view/page.tsx
+
+   Skipping linting
+   Checking validity of types  .Failed to compile.
+
+.next/types/app/events/[id]/register/success/page.ts:34:29
+Type error: Type '{ searchParams: { ticketId?: string | undefined; }; }' does not 
+satisfy the constraint 'PageProps'.
+  Types of property 'searchParams' are incompatible.
+    Type '{ ticketId?: string | undefined; }' is missing the following properties 
+from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+
+  32 |
+  33 | // Check the prop type of the entry function
+> 34 | checkFields<Diff<PageProps, FirstArg<TEntry['default']>, 'default'>>()     
+     |                             ^
+  35 |
+  36 | // Check the arguments and return type of the generateMetadata function    
+  37 | if ('generateMetadata' in entry) {
+Next.js build worker exited with code: 1 and signal: null

@@ -1,7 +1,7 @@
 
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import {
   Card,
   CardContent,
@@ -30,7 +30,7 @@ import { cookies } from 'next/headers';
 
 async function getOrganizerStats() {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = supabaseAdmin;
   const {
     data: { user },
   } = await supabase.auth.getUser();
