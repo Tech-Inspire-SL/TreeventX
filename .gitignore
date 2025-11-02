@@ -47,3 +47,7 @@ node_modules
 .env
 error.txt
 error.txt
+
+# Service Worker files
+public/sw.js
+public/workbox-*.js
