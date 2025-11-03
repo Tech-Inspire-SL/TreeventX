@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
@@ -88,8 +88,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       if (error) throw error;
     }
 
-    revalidatePath(`/organizations/${params.id}`);
-    revalidatePath(`/organizations/${params.id}/followers`);
+    const { id } = await params;
+    revalidatePath(`/organizations/${id}`);
+    revalidatePath(`/organizations/${id}/followers`);
     
     return new Response('Success', { status: 200 });
   } catch (error) {
