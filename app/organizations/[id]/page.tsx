@@ -89,12 +89,13 @@ async function getOrganizationProfile(orgId: string) {
   };
 }
 
-export default async function OrganizationProfilePage({
-  params
-}: {
-  params: { id: string }
-}) {
-  const org = await getOrganizationProfile(params.id);
+interface OrganizationProfilePageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function OrganizationProfilePage({ params }: OrganizationProfilePageProps) {
+  const resolvedParams = await params;
+  const org = await getOrganizationProfile(resolvedParams.id);
   
   if (!org) {
     return (

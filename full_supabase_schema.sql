@@ -264,14 +264,14 @@ AS $$
 $$;
 
 CREATE OR REPLACE FUNCTION public.get_event_attendee_counts(event_ids integer[])
-RETURNS TABLE(event_id_out integer, attendee_count bigint)
+RETURNS TABLE(event_id_out integer, attendee_count integer)
 LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
     SELECT
-        e.id,
-        COUNT(t.id)
+        e.id::integer,
+        COUNT(t.id)::integer
     FROM
         public.events e
     LEFT JOIN

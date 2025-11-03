@@ -27,7 +27,14 @@ type Organization = {
   logo_url: string | null;
 };
 
-export default function OrganizationFollowersPage({ params }: { params: { id: string } }) {
+interface OrganizationFollowersPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function OrganizationFollowersPage({ params }: OrganizationFollowersPageProps) {
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
+
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [followers, setFollowers] = useState<Follower[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +49,7 @@ export default function OrganizationFollowersPage({ params }: { params: { id: st
       const { data: org, error } = await supabase
         .from('organizations')
         .select('id, name, logo_url')
-        .eq('id', params.id)
+        .eq('id', id)
         .single();
 
       if (error) {
@@ -54,7 +61,7 @@ export default function OrganizationFollowersPage({ params }: { params: { id: st
     };
 
     fetchOrganization();
-  }, [params.id]);
+  }, [id]);
 
   useEffect(() => {
     const fetchFollowers = async () => {
@@ -74,7 +81,7 @@ export default function OrganizationFollowersPage({ params }: { params: { id: st
             email
           )
         `)
-        .eq('following_organization_id', params.id)
+        .eq('following_organization_id', id)
         .order('created_at', { ascending: false })
         .range((page - 1) * perPage, page * perPage);
 
@@ -89,7 +96,7 @@ export default function OrganizationFollowersPage({ params }: { params: { id: st
     };
 
     fetchFollowers();
-  }, [params.id, page]);
+  }, [id, page]);
 
   if (!organization) {
     return (

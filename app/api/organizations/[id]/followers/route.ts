@@ -8,6 +8,7 @@ import { revalidatePath } from 'next/cache';
 
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   try {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
           email
         )
       `, { count: 'exact' })
-      .eq('following_organization_id', params.id)
+      .eq('following_organization_id', resolvedParams.id)
       .order('created_at', { ascending: false })
       .range(start, end);
 
@@ -51,6 +52,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   try {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
@@ -65,7 +67,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       .from('followers')
       .select('id')
       .eq('follower_id', user.id)
-      .eq('following_organization_id', params.id)
+      .eq('following_organization_id', resolvedParams.id)
       .maybeSingle();
 
     if (existing) {
@@ -82,13 +84,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         .from('followers')
         .insert({
           follower_id: user.id,
-          following_organization_id: params.id
+          following_organization_id: resolvedParams.id
         });
 
       if (error) throw error;
     }
 
-    const { id } = await params;
+    const { id } = resolvedParams;
     revalidatePath(`/organizations/${id}`);
     revalidatePath(`/organizations/${id}/followers`);
     

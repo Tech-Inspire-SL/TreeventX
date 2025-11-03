@@ -266,14 +266,14 @@ $$;
 
 -- Function to get attendee counts for multiple events
 CREATE OR REPLACE FUNCTION public.get_event_attendee_counts(event_ids integer[])
-RETURNS TABLE(event_id_out integer, attendee_count bigint)
+RETURNS TABLE(event_id_out integer, attendee_count integer)
 LANGUAGE plpgsql
 AS $$
 BEGIN
   RETURN QUERY
   SELECT
-    e.id,
-    count(t.id)
+    e.id::integer,
+    count(t.id)::integer
   FROM
     public.events e
   LEFT JOIN

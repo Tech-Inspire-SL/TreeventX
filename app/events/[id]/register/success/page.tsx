@@ -4,13 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 
-export default async function RegistrationSuccessPage({
-    searchParams,
-}: {
-    searchParams: { ticketId?: string };
-}) {
-    const resolvedSearchParams = await Promise.resolve(searchParams);
-    const ticketId = resolvedSearchParams.ticketId;
+interface RegistrationSuccessPageProps {
+    searchParams: Promise<{ ticketId?: string }>;
+}
+
+export default async function RegistrationSuccessPage({ searchParams }: RegistrationSuccessPageProps) {
+    const params = await searchParams;
+    const ticketId = params.ticketId;
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-secondary p-4 sm:p-6 md:p-8">

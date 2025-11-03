@@ -8,14 +8,14 @@ import { Button } from '@/components/ui/button';
 import { cookies } from 'next/headers';
 
 interface ViewTicketPageProps {
-    searchParams: {
+    searchParams: Promise<{
         ticketId?: string;
         email?: string;
-    };
+    }>;
 }
 
 export default async function ViewTicketPage({ searchParams }: ViewTicketPageProps) {
-    const resolvedSearchParams = await Promise.resolve(searchParams);
+    const resolvedSearchParams = await searchParams;
     const { ticketId, email } = resolvedSearchParams;
 
     if (!ticketId) {
