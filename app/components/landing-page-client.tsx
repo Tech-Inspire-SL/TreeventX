@@ -75,11 +75,11 @@ export function LandingPageClient({ recentEvents, featuredEvents, user }: Landin
         <section className="w-full pt-28 pb-20 md:pt-36 md:pb-32 lg:pt-35 lg:pb-40 relative">
           {/* Animated Background Gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/10"></div>
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse duration-[4000]"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse duration-[4000ms]"></div>
           
           {/* Floating Elements */}
-          <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-xl animate-bounce duration-[3000]"></div>
-          <div className="absolute bottom-20 right-10 w-32 h-32 bg-gradient-to-tl from-secondary/20 to-primary/20 rounded-full blur-xl animate-bounce duration-[4000] delay-1000"></div>
+          <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-xl animate-bounce duration-[3000ms]"></div>
+          <div className="absolute bottom-20 right-10 w-32 h-32 bg-gradient-to-tl from-secondary/20 to-primary/20 rounded-full blur-xl animate-bounce duration-[4000ms] delay-1000"></div>
           
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
@@ -93,7 +93,7 @@ export function LandingPageClient({ recentEvents, featuredEvents, user }: Landin
                     Organize Events That <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent animate-gradient">Inspire</span>
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed">
-                    GatherFlow is the all-in-one platform to manage, promote, and execute your events flawlessly. From ticketing to check-in, we provide the tools you need to create memorable experiences.
+                    TreeventX is the all-in-one platform to manage, promote, and execute your events flawlessly. From ticketing to check-in, we provide the tools you need to create memorable experiences.
                   </p>
                 </div>
                 
@@ -159,7 +159,7 @@ export function LandingPageClient({ recentEvents, featuredEvents, user }: Landin
                               style={{ animationDelay: `${300 + index * 150}ms` }}
                             >
                               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 transform scale-110"></div>
-                              <EventCard event={event} isLoggedIn={!!user} isMyEvent={user ? event.organizer_id === user.id : false} />
+                              <EventCard event={event} />
                             </div>
                         ))}
                     </div>
@@ -234,8 +234,8 @@ export function LandingPageClient({ recentEvents, featuredEvents, user }: Landin
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
           
           {/* Animated Background Elements */}
-          <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse duration-[3000]"></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-tl from-secondary/10 to-primary/10 rounded-full blur-2xl animate-pulse duration-[4000] delay-1000"></div>
+          <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-pulse duration-[3000ms]"></div>
+          <div className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-tl from-secondary/10 to-primary/10 rounded-full blur-2xl animate-pulse duration-[4000ms] delay-1000"></div>
           
           <div className="container mx-auto grid items-center justify-center gap-6 px-4 text-center md:px-6 relative z-10">
             <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-4 duration-700">
@@ -243,7 +243,7 @@ export function LandingPageClient({ recentEvents, featuredEvents, user }: Landin
                 Ready to Create <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">Amazing Events?</span>
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed leading-relaxed">
-                Join thousands of event organizers who trust GatherFlow. Sign up today and experience the difference.
+                Join thousands of event organizers who trust TreeventX. Sign up today and experience the difference.
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-700 delay-300">
