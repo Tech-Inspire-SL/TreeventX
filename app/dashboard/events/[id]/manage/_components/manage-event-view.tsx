@@ -121,7 +121,7 @@ function ApprovalsTab({
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="max-w-sm"
                 />
-                <RefreshButton eventId={event.id} />
+                <RefreshButton />
             </div>
             <CardContent>
                 {filteredAttendees.length > 0 ? (
@@ -160,24 +160,24 @@ import { Input } from "@/components/ui/input";
 
 function AttendeesTab({ event, attendees }: { event: Event, attendees: Attendee[] }) {
     const { toast } = useToast();
-    const [unregisterState, unregisterAction] = useActionState(unregisterAttendeeAction, undefined);
+    // const [unregisterState, unregisterAction] = useActionState(unregisterAttendeeAction, undefined);
     const [searchQuery, setSearchQuery] = useState('');
 
-    useEffect(() => {
-        if (unregisterState?.error) {
-            toast({
-                variant: 'destructive',
-                title: 'Unregistration Failed',
-                description: unregisterState.error,
-            });
-        }
-        if (unregisterState?.success) {
-            toast({
-                title: 'Unregistered Successfully',
-                description: "Attendee has been unregistered.",
-            });
-        }
-    }, [unregisterState, toast]);
+    // useEffect(() => {
+    //     if (unregisterState?.error) {
+    //         toast({
+    //             variant: 'destructive',
+    //             title: 'Unregistration Failed',
+    //             description: unregisterState.error,
+    //         });
+    //     }
+    //     if (unregisterState?.success) {
+    //         toast({
+    //             title: 'Unregistered Successfully',
+    //             description: "Attendee has been unregistered.",
+    //         });
+    //     }
+    // }, [unregisterState, toast]);
 
     const statusConfig = {
         approved: { text: 'Approved', className: 'bg-green-500', icon: <CheckCircle className="mr-2 h-4 w-4" /> },
@@ -207,7 +207,7 @@ function AttendeesTab({ event, attendees }: { event: Event, attendees: Attendee[
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="max-w-sm"
                 />
-                <RefreshButton eventId={event.id} />
+                <RefreshButton />
             </div>
             <CardContent>
                 {filteredAttendees.length > 0 ? (
@@ -249,13 +249,13 @@ function AttendeesTab({ event, attendees }: { event: Event, attendees: Attendee[
                                                     <Eye className="h-4 w-4" />
                                                 </Link>
                                             </Button>
-                                            <form action={unregisterAction} className="inline-block">
+                                            {/* <form action={unregisterAction} className="inline-block">
                                                 <input type="hidden" name="ticketId" value={attendee.ticket_id} />
                                                 <input type="hidden" name="eventId" value={event.id} />
                                                 <Button type="submit" variant="destructive" size="icon">
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
-                                            </form>
+                                            </form> */}
                                         </TableCell>
                                     </TableRow>
                                 );

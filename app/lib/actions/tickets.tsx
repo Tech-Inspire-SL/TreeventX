@@ -470,42 +470,46 @@ export async function unregisterForEventAction(
   return { success: true };
 }
 
-export async function unregisterAttendeeAction(formData: FormData) {
+export async function unregisterAttendeeAction(prevState: any, formData: FormData): Promise<{ success?: boolean; error?: string; }> {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
   const ticketId = formData.get('ticketId') as string;
   const eventId = formData.get('eventId') as string;
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    throw new Error('You must be logged in.');
-  }
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return { error: 'You must be logged in.' };
+    }
 
-  const { data: event, error: eventError } = await supabase
-    .from('events')
-    .select('organizer_id')
-    .eq('id', parseInt(eventId, 10))
-    .single();
-  
-  if (eventError || !event || event.organizer_id !== user.id) {
-    throw new Error('You are not authorized to perform this action.');
-  }
+    const { data: event, error: eventError } = await supabase
+      .from('events')
+      .select('organizer_id')
+      .eq('id', parseInt(eventId, 10))
+      .single();
+    
+    if (eventError || !event || event.organizer_id !== user.id) {
+      return { error: 'You are not authorized to perform this action.' };
+    }
 
-  const { error: deleteError } = await supabase
-    .from('tickets')
-    .delete()
-    .eq('id', parseInt(ticketId, 10));
-  
-  if (deleteError) {
-    console.error('Error unregistering attendee:', deleteError);
-    throw new Error('Could not unregister the attendee.');
+    const { error: deleteError } = await supabase
+      .from('tickets')
+      .delete()
+      .eq('id', parseInt(ticketId, 10));
+    
+    if (deleteError) {
+      console.error('Error unregistering attendee:', deleteError);
+      return { error: 'Could not unregister the attendee.' };
+    }
+  } catch (e: any) {
+    return { error: e.message };
   }
 
   revalidatePath(`/dashboard/events/${eventId}/manage`);
   revalidatePath(`/dashboard/analytics`);
   revalidatePath('/events');
   
-  redirect(`/dashboard/events/${eventId}/manage`);
+  return { success: true };
 }
 
 

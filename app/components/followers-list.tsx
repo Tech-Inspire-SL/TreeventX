@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDistanceToNow } from 'date-fns';
@@ -62,13 +62,10 @@ export default function FollowersList({ organizationId }: { organizationId: stri
             className="flex items-center justify-between p-4 bg-white rounded-lg shadow"
           >
             <div className="flex items-center space-x-4">
-              <Avatar
-                user={{
-                  name: `${follower.user.first_name} ${follower.user.last_name}`,
-                  image: follower.user.avatar_url
-                }}
-                className="h-10 w-10"
-              />
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={follower.user.avatar_url || undefined} alt={`${follower.user.first_name} ${follower.user.last_name}'s avatar`} />
+                <AvatarFallback>{`${follower.user.first_name?.[0] || ''}${follower.user.last_name?.[0] || ''}`}</AvatarFallback>
+              </Avatar>
               <div>
                 <h3 className="font-medium">
                   {follower.user.first_name} {follower.user.last_name}

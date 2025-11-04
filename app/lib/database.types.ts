@@ -597,6 +597,8 @@ export type Database = {
         | "checked_out"
         | "expired"
         | "unpaid"
+        | "cancelled"
+        | "unknown"
     }
     CompositeTypes: {
       [_ in never]: never
