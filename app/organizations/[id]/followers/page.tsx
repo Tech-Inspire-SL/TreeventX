@@ -18,7 +18,7 @@ type Follower = {
     last_name: string;
     avatar_url: string | null;
     email: string;
-  };
+  }[];
 };
 
 type Organization = {
@@ -110,7 +110,7 @@ export default async function OrganizationFollowersPage({ params }: Organization
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="flex items-center gap-4">
         <Link
-          href={`/organizations/${params.id}`}
+          href={`/organizations/${resolvedParams.id}`}
           className="text-muted-foreground hover:text-foreground transition-colors"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -141,8 +141,8 @@ export default async function OrganizationFollowersPage({ params }: Organization
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <Avatar>
-                      {follower.user.avatar_url ? (
-                        <AvatarImage src={follower.user.avatar_url} alt={`${follower.user.first_name} ${follower.user.last_name}`} />
+                      {follower.user[0]?.avatar_url ? (
+                        <AvatarImage src={follower.user[0].avatar_url} alt={`${follower.user[0].first_name} ${follower.user[0].last_name}`} />
                       ) : (
                         <AvatarFallback>
                           <User className="h-5 w-5" />
@@ -151,7 +151,7 @@ export default async function OrganizationFollowersPage({ params }: Organization
                     </Avatar>
                     <div>
                       <h3 className="font-semibold">
-                        {follower.user.first_name} {follower.user.last_name}
+                        {follower.user[0]?.first_name} {follower.user[0]?.last_name}
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="h-4 w-4" />
@@ -160,7 +160,7 @@ export default async function OrganizationFollowersPage({ params }: Organization
                     </div>
                   </div>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/users/${follower.user.id}`}>View Profile</Link>
+                    <Link href={`/users/${follower.user[0]?.id}`}>View Profile</Link>
                   </Button>
                 </div>
               </CardContent>

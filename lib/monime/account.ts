@@ -34,7 +34,7 @@ interface MonimeAccount {
  */
 export async function createMonimeAccount(params: CreateAccountParams): Promise<MonimeAccount> {
   try {
-    const response = await client.financialAccount.create(params.name);
+    const response = await client.financialAccount.create(params.name, "SLE");
 
     if (!response.success || !response.data) {
       throw new Error(response.error?.message || 'Failed to create payment account');

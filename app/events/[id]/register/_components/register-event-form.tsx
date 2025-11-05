@@ -28,7 +28,7 @@ export function RegisterForEventForm({ event, formFields, user }: { event: Event
   const { pending } = useFormStatus();
 
   const isFull = event.capacity ? event.attendees >= event.capacity : false;
-  const isPaid = event.is_paid && event.price > 0;
+  const isPaid = event.is_paid && (event.price !== null && event.price > 0);
 
   const handleSubmit = async (eventTarget: React.FormEvent<HTMLFormElement>) => {
     eventTarget.preventDefault();

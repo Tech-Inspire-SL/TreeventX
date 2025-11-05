@@ -307,7 +307,7 @@ export async function deleteEventAction(formData: FormData) {
     const supabase = createServiceRoleClient(cookieStore);
     const eventId = formData.get('eventId');
     const { data: { user } } = await createClient(cookieStore).auth.getUser();
-    if (!user) return { error: 'You must be logged in.' };
+    if (!user) throw new Error('You must be logged in.');
 
     const { error } = await supabase
         .from('events')
@@ -316,7 +316,7 @@ export async function deleteEventAction(formData: FormData) {
         .eq('organizer_id', user.id);
     
     if (error) {
-        return { error: 'Failed to delete event.' };
+        throw new Error('Failed to delete event.');
     }
 
     revalidatePath('/dashboard/events');

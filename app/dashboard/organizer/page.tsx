@@ -112,7 +112,7 @@ export default async function OrganizerDashboardPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(stats.totalSales)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(stats.totalSales || 0)}</div>
             <p className="text-xs text-muted-foreground">Gross revenue from all events</p>
           </CardContent>
         </Card>
@@ -122,7 +122,7 @@ export default async function OrganizerDashboardPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(stats.netRevenue)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(stats.netRevenue || 0)}</div>
             <p className="text-xs text-muted-foreground">After all fees</p>
           </CardContent>
         </Card>
@@ -132,7 +132,7 @@ export default async function OrganizerDashboardPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(stats.totalPlatformFees)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(stats.totalPlatformFees || 0)}</div>
             <p className="text-xs text-muted-foreground">Fees paid to GatherFlow</p>
           </CardContent>
         </Card>
@@ -172,7 +172,7 @@ export default async function OrganizerDashboardPage() {
                     <Badge variant={event.status === 'published' ? 'default' : 'secondary'}>{event.status}</Badge>
                   </TableCell>
                   <TableCell className="text-right">{event.ticketsSold}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(event.revenue)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(event.revenue || 0)}</TableCell>
                   <TableCell className="text-right">
                     <Button asChild variant="outline" size="sm">
                         <Link href={`/dashboard/organizer/${event.id}`}>

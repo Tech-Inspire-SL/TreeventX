@@ -389,7 +389,7 @@ function ScannerClientPage({ events, isLoggedIn }: { events: EventWithAttendees[
             >
               <EventCard 
                 event={event} 
-                isLoggedIn={isLoggedIn} 
+
                 isScannerMode 
               />
             </div>

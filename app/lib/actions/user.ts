@@ -33,7 +33,7 @@ export async function getProfile() {
   return { data: { ...profileData, email: user.email }, error: null };
 }
 
-export async function updateProfile(prevState: { error: string | undefined, success?: boolean } | undefined, formData: FormData) {
+export async function updateProfile(prevState: any, formData: FormData) {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
 

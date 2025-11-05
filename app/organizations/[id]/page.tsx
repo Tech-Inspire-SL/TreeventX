@@ -9,6 +9,16 @@ import { Building2, MapPin, Globe, Users, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 
+type OrgEvent = {
+  id: string;
+  title: string;
+  description: string | null;
+  date: string;
+  location: string | null;
+  cover_image: string | null;
+  tickets: { count: number }[];
+};
+
 async function getOrganizationProfile(orgId: string) {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
@@ -183,7 +193,7 @@ export default async function OrganizationProfilePage({ params }: OrganizationPr
         <section className="space-y-4">
           <h2 className="text-2xl font-bold">Upcoming Events</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {org.upcoming_events.map((event) => (
+            {org.upcoming_events.map((event: OrgEvent) => (
               <Link key={event.id} href={`/events/${event.id}`}>
                 <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                   {event.cover_image && (
@@ -227,7 +237,7 @@ export default async function OrganizationProfilePage({ params }: OrganizationPr
         <section className="space-y-4">
           <h2 className="text-2xl font-bold">Past Events</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {org.past_events.map((event) => (
+            {org.past_events.map((event: OrgEvent) => (
               <Link key={event.id} href={`/events/${event.id}`}>
                 <Card className="overflow-hidden hover:shadow-lg transition-shadow opacity-75 hover:opacity-100">
                   {event.cover_image && (
@@ -247,7 +257,7 @@ export default async function OrganizationProfilePage({ params }: OrganizationPr
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Users className="w-4 h-4" />
-                      <span>{event._count?.tickets || 0} attendees</span>
+                      <span>{event.tickets[0]?.count || 0} attendees</span>
                     </div>
                   </div>
                 </Card>

@@ -186,6 +186,8 @@ function AttendeesTab({ event, attendees }: { event: Event, attendees: Attendee[
         unpaid: { text: 'Pending Payment', className: 'bg-orange-500', icon: <CircleDollarSign className="mr-2 h-4 w-4" /> },
         checked_in: { text: 'Checked In', className: 'bg-blue-500', icon: <CheckCircle className="mr-2 h-4 w-4" /> },
         checked_out: { text: 'Checked Out', className: 'bg-gray-700', icon: <XCircle className="mr-2 h-4 w-4" /> },
+        expired: { text: 'Expired', className: 'bg-purple-500', icon: <Clock className="mr-2 h-4 w-4" /> },
+        cancelled: { text: 'Cancelled', className: 'bg-gray-500', icon: <Ban className="mr-2 h-4 w-4" /> },
         unknown: { text: 'Unknown', className: 'bg-gray-500', icon: <Users className="mr-2 h-4 w-4" /> }
     };
 

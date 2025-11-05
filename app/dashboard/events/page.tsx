@@ -417,7 +417,7 @@ export default function EventsPage() {
             filteredEvents.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                 {filteredEvents.map(event => (
-                  <EventCard key={event.id} event={event} isLoggedIn={!!user} isMyEvent={user ? event.organizer_id === user.id : false} />
+                  <EventCard key={event.id} event={event} isMyEvent={user ? event.organizer_id === user.id : false} />
                 ))}
               </div>
             ) : (
@@ -438,7 +438,7 @@ export default function EventsPage() {
             myEvents.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                 {myEvents.map(event => (
-                  <EventCard key={event.id} event={event} isLoggedIn={!!user} isMyEvent={true}/>
+                  <EventCard key={event.id} event={event} isMyEvent={true}/>
                 ))}
               </div>
             ) : (
@@ -464,7 +464,7 @@ export default function EventsPage() {
             registeredEvents.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                 {registeredEvents.map(event => (
-                  <EventCard key={event.id} event={event} isLoggedIn={!!user} isMyEvent={user ? event.organizer_id === user.id : false} />
+                  <EventCard key={event.id} event={event} isMyEvent={user ? event.organizer_id === user.id : false} />
                 ))}
               </div>
             ) : (

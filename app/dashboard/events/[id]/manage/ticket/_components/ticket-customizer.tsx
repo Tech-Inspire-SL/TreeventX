@@ -45,7 +45,7 @@ export function TicketCustomizer({ event }: TicketCustomizerProps) {
       if (result.logoUrl) {
         // Rely on Next.js image optimization and unique Supabase URLs.
         // Avoid client-side Date.now() for hydration consistency.
-        setPreview(prev => ({ ...prev, brandLogo: result.logoUrl }));
+        setPreview(prev => ({ ...prev, brandLogo: result.logoUrl || null }));
       }
       toast({ title: 'Success', description: 'Ticket appearance updated successfully.' });
     } else {

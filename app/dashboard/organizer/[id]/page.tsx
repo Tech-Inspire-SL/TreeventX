@@ -2,6 +2,41 @@
 
 import { createServiceRoleClient } from '../../../lib/supabase/server';
 import { cookies } from 'next/headers';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import Link from 'next/link';
+import { ArrowLeft, DollarSign, TrendingUp, Ticket } from 'lucide-react';
+
+type FinancialStats = {
+  event: {
+    id: number;
+    title: string | null;
+    price: number | null;
+    status: string | null;
+    organizer_id: string | null;
+  };
+  revenue: number;
+  platformFees: number;
+  monimeFees: number;
+  netRevenue: number;
+  tickets: {
+    id: number;
+    ticket_price: number | null;
+    platform_fee: number | null;
+    payment_processor_fee: number | null;
+    monime_payment_status: string | null;
+    profiles: {
+      first_name: string | null;
+      last_name: string | null;
+      email: string | null;
+    } | {
+      first_name: string | null;
+      last_name: string | null;
+      email: string | null;
+    }[] | null;
+  }[];
+};
 
 // ... (rest of the file)
 
