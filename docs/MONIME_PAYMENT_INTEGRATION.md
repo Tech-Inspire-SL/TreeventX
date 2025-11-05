@@ -14,7 +14,7 @@ Complete guide for integrating Monime payments in Next.js applications.
 
 ## Overview
 
-Monime is a payment provider for Sierra Leone (SLE currency) that handles mobile money payments. This guide documents the integration patterns and gotchas discovered during GatherFlow's implementation.
+Monime is a payment provider for Sierra Leone (SLE currency) that handles mobile money payments. This guide documents the integration patterns and gotchas discovered during TreeventX's implementation.
 
 **Official Docs:** https://docs.monime.io
 
@@ -540,7 +540,7 @@ Before going live:
 
 ## Example Implementation
 
-See GatherFlow's complete implementation:
+See TreeventX's complete implementation:
 - `app/api/checkout/create-session/route.ts` - Checkout creation
 - `app/api/payment/success/route.ts` - Success handler
 - `app/api/payment/cancel/route.ts` - Cancel handler
@@ -550,4 +550,4 @@ See GatherFlow's complete implementation:
 ---
 
 *Last updated: October 24, 2025*
-*Based on GatherFlow's production integration*
+*Based on TreeventX's production integration*

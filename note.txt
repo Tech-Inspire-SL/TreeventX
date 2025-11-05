@@ -1,4 +1,4 @@
-student@git-journey:~/Desktop/gatherflow$ npm run build
+student@git-journey:~/Desktop/treeventx$ npm run build
 
 > nextn@0.1.0 build
 > next build
@@ -12,7 +12,7 @@ student@git-journey:~/Desktop/gatherflow$ npm run build
  ✓ (pwa) Compiling for server...
  ✓ (pwa) Compiling for server...
  ✓ (pwa) Compiling for client (static)...
- ○ (pwa) Service worker: C:\Users\Kadijatu T Bangura\Desktop\gatherflow\public\sw.js
+ ○ (pwa) Service worker: C:\Users\Kadijatu T Bangura\Desktop\treeventx\public\sw.js
  ○ (pwa)   URL: /sw.js
  ○ (pwa)   Scope: /
 
@@ -154,10 +154,11 @@ satisfy the constraint 'PageProps'.
 from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
 
   32 |
-  33 | // Check the prop type of the entry function
+  33 |
 > 34 | checkFields<Diff<PageProps, FirstArg<TEntry['default']>, 'default'>>()     
      |                             ^
   35 |
-  36 | // Check the arguments and return type of the generateMetadata function    
-  37 | if ('generateMetadata' in entry) {
+  36 |
+  37 | // Check the arguments and return type of the generateMetadata function    
+  38 | if ('generateMetadata' in entry) {
 Next.js build worker exited with code: 1 and signal: null

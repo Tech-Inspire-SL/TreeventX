@@ -225,7 +225,7 @@ export function DashboardClientLayout({
         </Sidebar>
         
         {/* Enhanced Main Content Area */}
-        <div className="w-full flex flex-1 flex-col min-w-0 bg-background/90">
+        <div className="w-full flex flex-1 flex-col min-w-10 bg-background/90">
           
           {children}
 

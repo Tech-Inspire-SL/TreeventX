@@ -1,6 +1,6 @@
 # Monime Payment Integration - Complete Implementation Guide
 
-This guide shows you exactly how we integrated Monime payments into Gatherflow, including all the gotchas and solutions we encountered.
+This guide shows you exactly how we integrated Monime payments into TreeventX, including all the gotchas and solutions we encountered.
 
 ---
 
@@ -560,7 +560,7 @@ Go to [my.monime.io](https://my.monime.io) → Resources → Webhooks → Create
 
 | Field | Value |
 |-------|-------|
-| **Name** | Gatherflow Ticket Payment Listener |
+| **Name** | TreeventX Ticket Payment Listener |
 | **URL** | `https://yourdomain.vercel.app/api/webhooks/monime` |
 | **Verification Method** | Shared Secret (HMAC) |
 | **Secret** | (Copy the generated secret) |
@@ -596,7 +596,7 @@ After creating the webhook, **copy the webhook secret** Monime generates and:
 MONIME_ACCESS_TOKEN=mon_wiwuRUGElcO3Vd48Nyp8RlLkltN5c3Retnks4mwJEmlNAvGqixVWti00kbnOiZJW
 MONIME_SPACE_ID=spc-k6J7uzTNXfi1C1N7woU1T7BFRfY
 MONIME_WEBHOOK_SECRET=whsec_YOUR_SECRET_FROM_MONIME_DASHBOARD
-NEXT_PUBLIC_BASE_URL=https://gatherflow-mocha.vercel.app
+NEXT_PUBLIC_BASE_URL=https://treeventx.vercel.app
 ```
 
 3. Click **Save**

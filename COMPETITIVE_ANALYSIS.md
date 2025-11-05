@@ -1,4 +1,4 @@
-# Competitive Analysis: Eventbrite vs Luma vs GatherFlow
+# Competitive Analysis: Eventbrite vs Luma vs TreeventX
 
 ## 📊 Pricing Comparison
 
@@ -6,15 +6,15 @@
 |----------|---------------|------|
 | **Eventbrite** | Free to create events | **3.7% + $1.79** per ticket + **2.9%** payment processing = **~6.6% + $1.79 total** |
 | **Luma** | Free plan, Luma Plus $59/month | **5%** on free plan, **0%** on Plus plan (but $59/month) |
-| **GatherFlow** | Simple flat rate | **3.5% + NLE 3** per ticket = **~3.5% total** ✅ **CHEAPEST!** |
+| **TreeventX** | Simple flat rate | **3.5% + NLE 3** per ticket = **~3.5% total** ✅ **CHEAPEST!** |
 
-### Winner: 🏆 GatherFlow - Almost **half the cost** of Eventbrite!
+### Winner: 🏆 TreeventX - Almost **half the cost** of Eventbrite!
 
 **Cost Comparison Example (NLE 100 ticket, 100 people sold):**
 - **Eventbrite**: NLE 660 + $179 = ~NLE 2,450 in fees
 - **Luma**: NLE 500 in fees (or $59/month)
-- **GatherFlow**: NLE 650 in fees
-- **Savings**: Organizer saves **NLE 1,800** using GatherFlow vs Eventbrite!
+- **TreeventX**: NLE 650 in fees
+- **Savings**: Organizer saves **NLE 1,800** using TreeventX vs Eventbrite!
 
 ---
 
@@ -134,7 +134,7 @@
 
 ---
 
-## 🚀 GatherFlow's Strengths
+## 🚀 TreeventX's Strengths
 
 ### What We Do Better:
 
@@ -185,7 +185,7 @@
 
 ---
 
-## ❌ What GatherFlow Is Missing (Gap Analysis)
+## ❌ What TreeventX Is Missing (Gap Analysis)
 
 ### Critical Missing Features:
 
@@ -240,7 +240,7 @@
 
 ## 🎯 Key Differences Summary
 
-| Feature | Eventbrite | Luma | GatherFlow |
+| Feature | Eventbrite | Luma | TreeventX |
 |---------|------------|------|------------|
 | **Target Market** | Global, all event types | Modern communities, tech events | **Sierra Leone local events** ✅ |
 | **Best For** | Large events needing discovery | Social/recurring events, aesthetics | **Local events, affordability** ✅ |
@@ -263,7 +263,7 @@
 
 ---
 
-## 💡 Why GatherFlow Can Still Win
+## 💡 Why TreeventX Can Still Win
 
 ### Our Competitive Advantages:
 
@@ -507,7 +507,7 @@ Focus on winning where it matters most:
 
 **Eventbrite:** "The world's largest event marketplace"
 **Luma:** "Delightful events start here" (design-focused)
-**GatherFlow:** "Sell tickets, collect payments - made for Sierra Leone"
+**TreeventX:** "Sell tickets, collect payments - made for Sierra Leone"
 
 ### **Target Customers:**
 
@@ -515,13 +515,13 @@ Focus on winning where it matters most:
 |----------|----------------|
 | **Eventbrite** | Large conferences, international events, enterprise |
 | **Luma** | Tech events, communities, aesthetics-focused creators |
-| **GatherFlow** | **Local SL organizers: concerts, weddings, conferences, workshops** |
+| **TreeventX** | **Local SL organizers: concerts, weddings, conferences, workshops** |
 
 ### **Value Proposition:**
 
 **Eventbrite:** "Get discovered by millions"
 **Luma:** "Beautiful event pages, zero fees"
-**GatherFlow:** **"Local payments, lowest fees, built for Sierra Leone"**
+**TreeventX:** **"Local payments, lowest fees, built for Sierra Leone"**
 
 ---
 
@@ -561,7 +561,7 @@ Focus on winning where it matters most:
 - ✅ Strength: Beautiful design, multi-channel, 0% fees option
 - ❌ Weakness: Unknown in Africa, requires international payment, expensive monthly plan
 
-### **GatherFlow:**
+### **TreeventX:**
 - ✅ Best for: Sierra Leone local events at affordable prices
 - ✅ Strength: **Local payments (Monime), cheapest fees, simple, built for SL**
 - ❌ Weakness: No marketplace/discovery yet, fewer features (but fixable)

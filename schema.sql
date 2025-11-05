@@ -1,5 +1,5 @@
 -- =====================================================
--- GATHERFLOW - MASTER DATABASE SCHEMA
+-- TREEVENTX - MASTER DATABASE SCHEMA
 -- Version: 1.1
 -- Description: This script sets up the entire database,
 -- including tables, types, functions, and RLS policies.

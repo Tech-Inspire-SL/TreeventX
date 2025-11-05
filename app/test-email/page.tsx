@@ -7,7 +7,7 @@ export default function TestEmailPage() {
   const handleSendTestEmail = async () => {
     // Use the verified Resend 'to' address and the required 'from' address for testing
     const to = 'dumbuya366@gmail.com';
-    const subject = 'Test Email from GatherFlow';
+    const subject = 'Test Email from TreeventX';
     const html = '<h1>Hello!</h1><p>This is a test email to confirm your Resend setup is working.</p>';
     const jsxContent = <div dangerouslySetInnerHTML={{ __html: html }} />;
 

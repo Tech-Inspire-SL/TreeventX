@@ -1,10 +1,10 @@
-# GatherFlow Project Documentation
+# TreeventX Project Documentation
 
-This document provides a high-level overview of the GatherFlow project, an event management platform.
+This document provides a high-level overview of the TreeventX project, an event management platform.
 
 ## Project Overview
 
-GatherFlow is a comprehensive platform designed to streamline event creation, management, and attendee engagement. It provides organizers with tools to:
+TreeventX is a comprehensive platform designed to streamline event creation, management, and attendee engagement. It provides organizers with tools to:
 *   Create and customize events.
 *   Manage attendees, including approval workflows.
 *   Generate and customize tickets.

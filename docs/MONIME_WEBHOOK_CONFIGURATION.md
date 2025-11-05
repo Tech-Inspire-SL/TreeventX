@@ -1,6 +1,6 @@
 # Monime Webhook Configuration Guide
 
-This guide shows you how to set up webhooks in the Monime dashboard to receive payment notifications for your Gatherflow ticketing platform.
+This guide shows you how to set up webhooks in the Monime dashboard to receive payment notifications for your TreeventX.
 
 ---
 
@@ -24,8 +24,8 @@ Webhooks allow Monime to notify your application when payment events occur (e.g.
 
 | Field | Value | Description |
 |-------|-------|-------------|
-| **Name** | `Gatherflow Ticket Payment Listener` | Descriptive name for the webhook |
-| **URL** | `https://gatherflow-mocha.vercel.app/api/webhooks/monime` | Your webhook endpoint URL |
+| **Name** | `TreeventX Ticket Payment Listener` | Descriptive name for the webhook |
+| **URL** | `https://treeventx.vercel.app/api/webhooks/monime` | Your webhook endpoint URL |
 
 > 💡 **Tip**: Update the URL if you deploy to a different domain
 
@@ -106,8 +106,8 @@ This ensures your webhook receives payloads in the latest published API version 
 ┌─────────────────────────────────────────────────────────────┐
 │ Webhook Configuration                                        │
 ├─────────────────────────────────────────────────────────────┤
-│ Name:           Gatherflow Ticket Payment Listener          │
-│ URL:            https://gatherflow-mocha.vercel.app         │
+│ Name:           TreeventX Ticket Payment Listener          │
+│ URL:            https://treeventx.vercel.app         │
 │                 /api/webhooks/monime                        │
 │ Method:         Shared Secret (HMAC)                        │
 │ Secret:         whsec_test_1234567890abcdef                 │
@@ -149,7 +149,7 @@ MONIME_WEBHOOK_SECRET=whsec_YOUR_ACTUAL_SECRET_HERE
 ### Step 3: Test the Webhook
 
 #### Option 1: Real Payment Test
-1. Visit your event page: `https://gatherflow-mocha.vercel.app/events/[event-id]`
+1. Visit your event page: `https://treeventx.vercel.app/events/[event-id]`
 2. Click "Buy Ticket"
 3. Complete payment on Monime's payment page
 4. Verify:
@@ -224,20 +224,21 @@ MONIME_WEBHOOK_SECRET=whsec_YOUR_ACTUAL_SECRET_HERE
 
 **Check:**
 1. ✅ Webhook is **enabled** in Monime dashboard
-2. ✅ URL is correct: `https://gatherflow-mocha.vercel.app/api/webhooks/monime`
+2. ✅ URL is correct: `https://treeventx.vercel.app/api/webhooks/monime`
 3. ✅ Events are selected (checkout_session.completed, etc.)
 4. ✅ Application is deployed and accessible
 5. ✅ No firewall blocking Monime's IP addresses
 
 **Test:**
 ```bash
-curl -X POST https://gatherflow-mocha.vercel.app/api/webhooks/monime \
+curl -X POST https://treeventx.vercel.app/api/webhooks/monime \
   -H "Content-Type: application/json" \
   -H "monime-signature: test" \
   -d '{"event":"checkout_session.completed","data":{"id":"test_123"}}'
 ```
 
 ---
+
 
 ### Issue: Webhook returns 403 Forbidden
 
@@ -257,6 +258,7 @@ Invalid webhook signature.
 
 ---
 
+
 ### Issue: Ticket not updating after payment
 
 **Check:**
@@ -274,6 +276,7 @@ Webhook Error: Failed to update ticket status
 
 ---
 
+
 ### Issue: Email not sending
 
 **Check:**
@@ -283,7 +286,7 @@ Webhook Error: Failed to update ticket status
 4. ✅ Resend account is active and verified
 
 **Test Email:**
-Visit: `https://gatherflow-mocha.vercel.app/test-email`
+Visit: `https://treeventx.vercel.app/test-email`
 
 ---
 
@@ -409,7 +412,7 @@ When moving from test to production:
 - [ ] Update Vercel environment variables:
   - [ ] `MONIME_ACCESS_TOKEN=mon_...`
   - [ ] `MONIME_WEBHOOK_SECRET=whsec_...`
-  - [ ] `MONIME_SPACE_ID=spc-...`
+  - [ ] `MONIME_SPACE_ID=spc-...
 - [ ] Redeploy application
 - [ ] Test with small payment amount
 - [ ] Verify webhook delivery in Monime dashboard
@@ -424,7 +427,7 @@ When moving from test to production:
 - [Monime API Documentation](https://docs.monime.io)
 - [Monime Webhook Guide](https://docs.monime.io/webhooks)
 - [Vercel Environment Variables](https://vercel.com/docs/environment-variables)
-- [Gatherflow Test Mode Implementation](./MONIME_TEST_MODE_IMPLEMENTATION.md)
+- [TreeventX Test Mode Implementation](./MONIME_TEST_MODE_IMPLEMENTATION.md)
 
 ---
 

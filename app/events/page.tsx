@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
@@ -185,7 +184,7 @@ export default function AllEventsPage() {
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">All Public Events</h1>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Browse through all the exciting public events on GatherFlow.
+                  Browse through all the exciting public events on TreeventX.
                 </p>
               </div>
             </div>

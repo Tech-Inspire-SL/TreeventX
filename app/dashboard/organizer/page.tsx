@@ -1,4 +1,3 @@
-
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
@@ -133,7 +132,7 @@ export default async function OrganizerDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.totalPlatformFees || 0)}</div>
-            <p className="text-xs text-muted-foreground">Fees paid to GatherFlow</p>
+            <p className="text-xs text-muted-foreground">Fees paid to TreeventX</p>
           </CardContent>
         </Card>
         <Card>
