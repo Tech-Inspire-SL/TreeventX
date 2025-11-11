@@ -11,6 +11,9 @@ import {
   User,
   BarChart,
   Calendar,
+  Building2,
+  Briefcase,
+  DollarSign,
 } from 'lucide-react';
 import {
   Sheet,
@@ -144,6 +147,42 @@ export function DashboardSheet() {
                 Analytics
               </SidebarGroupLabel>
               <div className="space-y-1">
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    asChild 
+                    className="group relative overflow-hidden transition-all duration-300 hover:bg-accent/50"
+                  >
+                    <Link href="/dashboard/organizer/organizations">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
+                      <Building2 className="relative z-10 group-hover:text-primary transition-colors duration-200" />
+                      <span className="relative z-10 group-hover:text-primary transition-colors duration-200">Organizations</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    asChild 
+                    className="group relative overflow-hidden transition-all duration-300 hover:bg-accent/50"
+                  >
+                    <Link href="/dashboard/organizer">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
+                      <Briefcase className="relative z-10 group-hover:text-primary transition-colors duration-200" />
+                      <span className="relative z-10 group-hover:text-primary transition-colors duration-200">Finances</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    asChild 
+                    className="group relative overflow-hidden transition-all duration-300 hover:bg-accent/50"
+                  >
+                    <Link href="/dashboard/pricing">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></div>
+                      <DollarSign className="relative z-10 group-hover:text-primary transition-colors duration-200" />
+                      <span className="relative z-10 group-hover:text-primary transition-colors duration-200">Pricing</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
                 <SidebarMenuItem>
                   <SidebarMenuButton 
                     asChild 

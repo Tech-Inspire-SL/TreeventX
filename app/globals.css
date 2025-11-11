@@ -82,3 +82,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 767px) {
+  .md\:table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .md\:table-header-group {
+    display: none;
+  }
+
+  .md\:table-row {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid theme('colors.border');
+    border-radius: theme('borderRadius.lg');
+    padding: 1rem;
+  }
+
+  .md\:table-cell {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  .md\:table-cell:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 1rem;
+    font-weight: bold;
+    text-align: left;
+  }
+}

@@ -1,4 +1,3 @@
-
 'use server';
 
 import Link from 'next/link';
@@ -381,7 +380,7 @@ export default async function DashboardPage() {
               <CardContent className="relative z-10 p-0">
                 <div className="overflow-x-auto">
                   <Table>
-                    <TableHeader>
+                    <TableHeader className="hidden md:table-header-group">
                       <TableRow className="border-border/40 hover:bg-muted/30">
                         <TableHead className="font-semibold">Event</TableHead>
                         <TableHead className="font-semibold">Status</TableHead>
@@ -394,9 +393,9 @@ export default async function DashboardPage() {
                         recentEvents.map((event, index) => (
                           <TableRow 
                             key={event.id} 
-                            className="group border-border/40 hover:bg-muted/50 transition-all duration-300"
+                            className="group border-border/40 hover:bg-muted/50 transition-all duration-300 block md:table-row"
                           >
-                            <TableCell>
+                            <TableCell className="block md:table-cell" data-label="Event">
                               <Link 
                                 href={`/dashboard/events/${event.id}/manage`} 
                                 className="font-medium hover:text-primary transition-colors duration-200 group-hover:underline flex items-start gap-2"
@@ -412,7 +411,7 @@ export default async function DashboardPage() {
                                 </div>
                               </Link>
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="block md:table-cell" data-label="Status">
                               <Badge 
                                 variant={new Date(event.date) > new Date() ? 'default' : 'secondary'} 
                                 className={`transition-all duration-200 ${
@@ -425,13 +424,13 @@ export default async function DashboardPage() {
                                 {new Date(event.date) > new Date() ? 'Upcoming' : 'Past'}
                               </Badge>
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-right block md:table-cell" data-label="Attendees">
                               <div className="flex items-center justify-end gap-1">
                                 <Users className="h-3 w-3 text-muted-foreground" />
                                 <span className="font-medium">{event.attendees}</span>
                               </div>
                             </TableCell>
-                            <TableCell className="text-right text-sm text-muted-foreground">
+                            <TableCell className="text-right text-sm text-muted-foreground block md:table-cell" data-label="Date">
                               {new Date(event.date).toLocaleDateString('en-US', { 
                                 month: 'short', 
                                 day: 'numeric', 
@@ -525,8 +524,8 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent className="relative z-10 p-0">
                 <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
+                  <Table className="md:table">
+                    <TableHeader className="hidden md:table-header-group">
                       <TableRow className="border-border/40 hover:bg-muted/30">
                         <TableHead className="font-semibold">Event</TableHead>
                         <TableHead className="text-right font-semibold">Date</TableHead>
@@ -538,9 +537,9 @@ export default async function DashboardPage() {
                         upcomingEvents.map((event, index) => (
                           <TableRow 
                             key={event.id} 
-                            className="group border-border/40 hover:bg-muted/50 transition-all duration-300"
+                            className="group border-border/40 hover:bg-muted/50 transition-all duration-300 block md:table-row"
                           >
-                            <TableCell>
+                            <TableCell className="block md:table-cell" data-label="Event">
                               <div className="space-y-1">
                                 <div className="font-medium group-hover:text-primary transition-colors duration-200">
                                   {event.title}
@@ -553,7 +552,7 @@ export default async function DashboardPage() {
                                 )}
                               </div>
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-right block md:table-cell" data-label="Date">
                               <div className="flex items-center justify-end gap-1">
                                 <Clock className="h-3 w-3 text-muted-foreground" />
                                 <span className="text-sm">
@@ -565,7 +564,7 @@ export default async function DashboardPage() {
                                 </span>
                               </div>
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="text-right block md:table-cell" data-label="Action">
                               <Button asChild variant="outline" size="sm" className="group">
                                 <Link href={`/dashboard/tickets/${event.ticket_id}`}>
                                   <Ticket className="mr-1 h-3 w-3" />

@@ -1,7 +1,7 @@
 # TreeventX 🌳✨
 
 <p align="center">
-  <img src="src/app/TreeventX_Logo.png" alt="TreeventX Logo" width="200"/>
+  <img src="public/TreeventX_Logo.png" alt="TreeventX Logo" width="200"/>
 </p>
 
 <p align="center">
