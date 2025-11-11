@@ -1,7 +1,7 @@
 # TreeventX 🌳✨
 
 <p align="center">
-  <img src="src/app/TreeventX_Logo.png" alt="TreeventX Logo" width="200"/>
+  <img src="app/TreeventX_Logo.png" alt="TreeventX Logo" width="200"/>
 </p>
 
 <p align="center">
@@ -24,13 +24,13 @@
 
 ## 🏆 D3: Moonlanding Challenge Submission
 
-**Category:** FinTech  
+**Category:** Open Innovation  
 **By:** Tech Inspire SL  
 
 **Team:**
+- **Sonia Goba** – Data & Analytics
 - **Mohamed Super Dumbuya** – Lead Developer & Project Lead
 - **Ahmed I. Sankoh** – Backend & Infrastructure Support
-- **Sonia Goba** – Data & Analytics
 - **Zainab M. Kamara** – UX / Testing & Quality Assurance
 
 ---
@@ -39,7 +39,7 @@
 
 **TreeventX** is a comprehensive event management and mobile ticketing platform designed to solve the chaos of manual event operations in Sierra Leone. From fake tickets and revenue loss to lack of real-time attendance tracking, TreeventX brings **security, transparency, and efficiency** to the event industry.
 
-Built with **Next.js, Supabase, and MoniMe mobile money integration**, TreeventX empowers schools, churches, NGOs, concert promoters, and businesses to digitize their event operations — saving time, preventing fraud, and building trust through data-driven insights.
+Built with **Next.js, Supabase, and Monime mobile money integration**, TreeventX empowers schools, churches, NGOs, concert promoters, and businesses to digitize their event operations — saving time, preventing fraud, and building trust through data-driven insights.
 
 ---
 
