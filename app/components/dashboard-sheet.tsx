@@ -20,9 +20,9 @@ import {
   SheetContent,
   SheetTrigger,
   SheetTitle,
-} from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { logout } from '@/lib/actions/auth';
+} from './ui/sheet';
+import { Button } from './ui/button';
+import { logout } from '../lib/actions/auth';
 import {
   SidebarContent,
   SidebarFooter,

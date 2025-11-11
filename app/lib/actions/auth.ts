@@ -3,7 +3,7 @@
 
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../supabase/server';
 
 export async function login(prevState: { error: string | undefined } | undefined, formData: FormData) {
   const cookieStore = await cookies();

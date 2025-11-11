@@ -2,9 +2,9 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from './ui/card';
+import { Input } from './ui/input';
 
 const NewPricingSection = () => {
   const [ticketPrice, setTicketPrice] = useState(100);

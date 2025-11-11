@@ -3,15 +3,15 @@
 
 import { useActionState, useState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { registerAndCreateTicket, registerGuestForEvent } from '@/lib/actions/tickets';
-import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import type { EventWithAttendees, EventFormField } from '@/lib/types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '../../../../components/ui/button';
+import { Input } from '../../../../components/ui/input';
+import { Label } from '../../../../components/ui/label';
+import { registerAndCreateTicket, registerGuestForEvent } from '../../../../lib/actions/tickets';
+import { Checkbox } from '../../../../components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '../../../../components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
+import type { EventWithAttendees, EventFormField } from '../../../../lib/types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
 import { User } from '@supabase/supabase-js';
 
 function SubmitButton({ isFull, isPaid }: { isFull: boolean, isPaid: boolean }) {

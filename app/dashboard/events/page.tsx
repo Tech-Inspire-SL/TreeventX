@@ -1,23 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { EventCard } from '@/components/event-card';
+import { Button } from '../../components/ui/button';
+import { EventCard } from '../../components/event-card';
 import { PlusCircle, Search } from 'lucide-react';
-import type { EventWithAttendees } from '@/lib/types';
-import { createClient } from '@/lib/supabase/client';
+import type { EventWithAttendees } from '../../lib/types';
+import { createClient } from '../../lib/supabase/client';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/tabs';
-import { TimelineEventCard } from '@/components/timeline-event-card';
+} from '../../components/ui/tabs';
+import { TimelineEventCard } from '../../components/timeline-event-card';
 import { useEffect, useMemo, useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Input } from '../../components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import { Skeleton } from '../../components/ui/skeleton';
+import { Card, CardContent, CardFooter } from '../../components/ui/card';
 
 
 async function getMyEvents(userId: string): Promise<EventWithAttendees[]> {

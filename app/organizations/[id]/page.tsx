@@ -1,10 +1,10 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../lib/supabase/server';
 import { cookies } from 'next/headers';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
 import { Building2, MapPin, Globe, Users, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';

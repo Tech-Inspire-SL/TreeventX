@@ -1,7 +1,7 @@
 
-import { CreateEventForm } from '@/components/create-event-form';
-import { getEventDetails } from '@/lib/server/queries/events';
-import { createClient } from '@/lib/supabase/server';
+import { CreateEventForm } from '../../../../components/create-event-form';
+import { getEventDetails } from '../../../../lib/server/queries/events';
+import { createClient } from '../../../../lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 

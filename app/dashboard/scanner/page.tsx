@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Camera, CameraOff, ChevronLeft, RefreshCw } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../../hooks/use-toast';
 import jsQR from 'jsqr';
-import { getScannableEvents, scanTicketAction } from '@/lib/actions/tickets';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { EventCard } from '@/components/event-card';
-import type { EventWithAttendees } from '@/lib/types';
+import { getScannableEvents, scanTicketAction } from '../../lib/actions/tickets';
+import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert';
+import { Button } from '../../components/ui/button';
+import { EventCard } from '../../components/event-card';
+import type { EventWithAttendees } from '../../lib/types';
 
 type FlashType = 'success' | 'checkOut' | 'error' | null;
 

@@ -2,7 +2,7 @@
 'use server';
 
 import * as React from 'react';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../supabase/server';
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
 import { cookies } from 'next/headers';

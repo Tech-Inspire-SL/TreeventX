@@ -1,7 +1,7 @@
 
 'use server';
 
-import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
+import { createClient, createServiceRoleClient } from '../supabase/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 

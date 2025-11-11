@@ -4,7 +4,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../../../../../components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,12 +12,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { sendEmailAction } from '@/lib/actions/email';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+} from '../../../../../../../components/ui/form';
+import { Input } from '../../../../../../../components/ui/input';
+import { Textarea } from '../../../../../../../components/ui/textarea';
+import { useToast } from '../../../../../../../hooks/use-toast';
+import { sendEmailAction } from '../../../../../../../lib/actions/email';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../../../../components/ui/select';
 import { useState } from 'react';
 
 const emailFormSchema = z.object({

@@ -1,9 +1,9 @@
 
 'use server';
 
-import { createClient } from '@@/app/lib/supabase/server';
-import type { EventWithAttendees } from '@/lib/types';
-import { LandingPageClient } from '@/components/landing-page-client';
+import { createClient } from '../lib/supabase/server';
+import type { EventWithAttendees } from './lib/types';
+import { LandingPageClient } from './components/landing-page-client';
 import { cookies } from 'next/headers';
 
 async function getRecentEvents() {
@@ -52,15 +52,6 @@ async function getFeaturedEvents() {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
-  const y2kEvent = {
-    id: 'y2k-festival',
-    title: 'Y2K Festival',
-    date: '2025-12-17T19:00:00.000Z',
-    location: 'Vibrancy Hall',
-    price: 25,
-    cover_image: 'https://images.unsplash.com/photo-1585252592196-3e63a2f107f3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-  };
-  
   // Get 5 upcoming public events with cover images for the carousel
   const { data: events, error } = await supabase
     .from('events')
@@ -69,14 +60,14 @@ async function getFeaturedEvents() {
     .gt('date', new Date().toISOString())
     .not('cover_image', 'is', null) // Only events with cover images
     .order('date', { ascending: true })
-    .limit(4); // Limit to 4 to make space for the hardcoded one
+    .limit(5);
 
   if (error) {
     console.error('Error fetching featured events:', error);
-    return [y2kEvent]; // Return only the hardcoded one on error
+    return []; // Return empty array on error
   }
 
-  return [y2kEvent, ...(events || [])];
+  return events || [];
 }
 
 

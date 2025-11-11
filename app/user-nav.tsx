@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar';
+import { Button } from './components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +10,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { logout } from '@/lib/actions/auth';
-import { createClient } from '@/lib/supabase/server';
+} from './components/ui/dropdown-menu';
+import { logout } from './lib/actions/auth';
+import { createClient } from './lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 

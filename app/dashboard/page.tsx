@@ -1,14 +1,14 @@
 'use server';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import { PlusCircle, ArrowRight, Users, CalendarCheck, Activity, Calendar as CalendarIcon, TrendingUp, Clock, MapPin, Ticket, Info } from 'lucide-react';
-import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { createClient, createServiceRoleClient } from '../lib/supabase/server';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '../components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
+import { Badge } from '../components/ui/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../components/ui/tooltip';
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
 import { cookies } from 'next/headers';
 
 interface Event {

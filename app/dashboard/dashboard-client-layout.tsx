@@ -26,11 +26,11 @@ import {
   SidebarProvider,
   SidebarGroup,
   SidebarGroupLabel,
-} from '@/components/ui/sidebar';
-import { logout } from '@/lib/actions/auth';
-import { Button } from '@/components/ui/button';
-import { AppLogo } from '@/components/app-logo';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+} from '../components/ui/sidebar';
+import { logout } from '../lib/actions/auth';
+import { Button } from '../components/ui/button';
+import { AppLogo } from '../components/app-logo';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../components/ui/tooltip';
 
 export function DashboardClientLayout({
   children,

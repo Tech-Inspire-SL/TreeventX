@@ -1,18 +1,18 @@
 
 'use server';
 
-import { getProfile, getProfileStats } from '@/lib/actions/user';
+import { getProfile, getProfileStats } from '../../lib/actions/user';
 import { ProfileForm } from './_components/profile-form';
 import { redirect } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Button } from '../../components/ui/button';
 import Link from 'next/link';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '../../components/ui/progress';
 import { Crown } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { cookies } from 'next/headers';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../lib/supabase/server';
 
 function InfoCard({ title, value }: { title: string, value: string | number }) {
   return (

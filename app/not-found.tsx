@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { AppLogo } from '@/components/app-logo';
+import { Button } from './components/ui/button';
+import { AppLogo } from './components/app-logo';
 import { Rocket } from 'lucide-react';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from './components/ui/card';
 
 export default function NotFound() {
   return (

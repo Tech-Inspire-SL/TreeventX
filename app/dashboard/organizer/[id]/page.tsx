@@ -2,9 +2,9 @@
 
 import { createServiceRoleClient } from '../../../lib/supabase/server';
 import { cookies } from 'next/headers';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '../../../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../../components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import Link from 'next/link';
 import { ArrowLeft, DollarSign, TrendingUp, Ticket } from 'lucide-react';
 

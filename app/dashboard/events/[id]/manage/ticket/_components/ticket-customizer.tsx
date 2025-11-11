@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { updateTicketAppearance } from '@/lib/actions/events';
-import type { Event } from '@/lib/types';
-import { useToast } from '@/hooks/use-toast';
+import { Button } from '../../../../../../../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../../../../../components/ui/card';
+import { Input } from '../../../../../../../components/ui/input';
+import { Label } from '../../../../../../../components/ui/label';
+import { updateTicketAppearance } from '../../../../../../../lib/actions/events';
+import type { Event } from '../../../../../../../lib/types';
+import { useToast } from '../../../../../../../hooks/use-toast';
 import Image from 'next/image';
 import { Calendar, MapPin } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '../../../../../../../components/ui/badge';
 import { format } from 'date-fns'; // Import format from date-fns
 
 interface TicketCustomizerProps {

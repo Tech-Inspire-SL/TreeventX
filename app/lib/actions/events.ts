@@ -3,9 +3,9 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
-import { uploadFile } from '@@/app/lib/supabase/storage';
-import type { EventFormFieldWithOptions } from '@/lib/types';
+import { createClient, createServiceRoleClient } from '../supabase/server';
+import { uploadFile } from '../supabase/storage';
+import type { EventFormFieldWithOptions } from '../types';
 import { cookies } from 'next/headers';
 
 // 1. Create Event Action
@@ -57,7 +57,7 @@ export async function createEventAction(formData: FormData) {
   let monimeAccountId: string | null = null;
   if (rawData.is_paid) {
     try {
-      const { createMonimeAccount } = await import('@@/lib/monime/account');
+      const { createMonimeAccount } = await import('../../../lib/monime/account');
       const account = await createMonimeAccount({
         name: `${rawData.title} Event Account`,
         currency: 'SLE', // or use rawData.currency if available

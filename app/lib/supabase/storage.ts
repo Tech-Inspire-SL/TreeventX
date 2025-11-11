@@ -1,6 +1,6 @@
 
 // lib/supabase/storage.ts
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from './server';
 import { cookies } from 'next/headers';
 
 export async function uploadFile(file: File, bucket: string): Promise<{ publicUrl: string | null, error: { message: string } | null }> {

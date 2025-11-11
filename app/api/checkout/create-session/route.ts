@@ -1,8 +1,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createServiceRoleClient } from '@/lib/supabase/server';
-import { createMonimeCheckout } from '@@/lib/monime';
+import { createServiceRoleClient } from '../../../../lib/supabase/server';
+import { createMonimeCheckout } from '../../../../lib/monime';
 
 
 export async function POST(req: NextRequest) {

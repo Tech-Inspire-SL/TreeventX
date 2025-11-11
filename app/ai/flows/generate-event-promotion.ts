@@ -10,7 +10,7 @@
  * - `GenerateEventPromotionOutput`: The output type for the `generateEventPromotion` function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai} from '../genkit';
 import {z} from 'genkit';
 
 const GenerateEventPromotionInputSchema = z.object({

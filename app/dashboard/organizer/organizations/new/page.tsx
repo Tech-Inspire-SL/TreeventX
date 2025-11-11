@@ -1,8 +1,8 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { OrganizationForm } from '@/components/organization-form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { OrganizationForm } from '../../../../components/organization-form';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
 
 export default async function NewOrganizationPage() {
   const cookieStore = await cookies();

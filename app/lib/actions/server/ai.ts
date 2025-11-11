@@ -1,7 +1,7 @@
 
 'use server';
 
-import { generateEventPromotion, type GenerateEventPromotionInput } from '@/ai/flows/generate-event-promotion';
+import { generateEventPromotion, type GenerateEventPromotionInput } from '../../../ai/flows/generate-event-promotion';
 
 export async function generatePromotionAction(input: GenerateEventPromotionInput) {
   try {

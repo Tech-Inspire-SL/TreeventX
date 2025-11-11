@@ -1,10 +1,10 @@
 
-import { createClient } from '@/lib/supabase/server';
-import { getTicketDetails } from '@/lib/actions/tickets';
-import { TicketView } from '@/components/tickets/ticket-view';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { createClient } from '../../../lib/supabase/server';
+import { getTicketDetails } from '../../lib/actions/tickets';
+import { TicketView } from '../../components/tickets/ticket-view';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '../../components/ui/button';
 import { cookies } from 'next/headers';
 
 interface ViewTicketPageProps {

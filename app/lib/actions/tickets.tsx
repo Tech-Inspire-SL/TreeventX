@@ -1,10 +1,9 @@
-
 'use server';
 
-import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
+import { createClient, createServiceRoleClient } from '../supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { getEventFormFields } from '@/lib/server/queries/events';
+import { getEventFormFields } from '../server/queries/events';
 import { sendTicketEmail } from './email';
 import { cookies } from 'next/headers';
 
@@ -129,7 +128,7 @@ export async function registerAndCreateTicket(
     if (initialStatus === 'approved') {
       const { data: ticketDetails } = await getTicketDetails(ticket.id);
       if (ticketDetails) {
-        const { TicketEmail } = await import('@/components/emails/ticket-email');
+        const { TicketEmail } = await import('../../components/emails/ticket-email');
         await sendTicketEmail(
           user.email!,
           `Your ticket for ${eventData.title}`,
@@ -283,7 +282,7 @@ export async function registerGuestForEvent(
   if (initialStatus === 'approved') {
     const { data: ticketDetails } = await getTicketDetails(ticket.id);
     if (ticketDetails) {
-      const { TicketEmail } = await import('@/components/emails/ticket-email');
+      const { TicketEmail } = await import('../../components/emails/ticket-email');
       await sendTicketEmail(
         email,
         `Your ticket for ${eventData.title}`,
@@ -714,7 +713,7 @@ export async function resendTicketLinkAction(
     const { data: ticketDetails } = await getTicketDetails(ticket.id);
 
     if (ticketDetails) {
-        const { TicketEmail } = await import('@/components/emails/ticket-email');
+        const { TicketEmail } = await import('../../components/emails/ticket-email');
         await sendTicketEmail(
             email,
             `Your ticket for ${ticket.events?.[0]?.title}`,

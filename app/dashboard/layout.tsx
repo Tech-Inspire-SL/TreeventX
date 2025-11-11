@@ -1,10 +1,10 @@
 
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../lib/supabase/server';
 import { cookies } from 'next/headers';
 import { DashboardClientLayout } from './dashboard-client-layout';
-import { DashboardHeader } from '@/components/dashboard-header';
+import { DashboardHeader } from '../components/dashboard-header';
 
 async function getActiveEventCount(userId: string) {
   const cookieStore = await cookies();

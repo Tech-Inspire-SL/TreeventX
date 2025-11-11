@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServiceRoleClient } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '../../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 
 // Monime sends POST to cancelUrl (not GET redirect)

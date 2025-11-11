@@ -2,16 +2,16 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PublicHeader } from '@/components/public-header';
-import { Footer } from '@/components/footer';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { PublicHeader } from './public-header';
+import { Footer } from './footer';
 import { CalendarDays, QrCode, Sparkles, Zap, ArrowRight, Star, Users, TrendingUp } from 'lucide-react';
-import type { EventWithAttendees } from '@/lib/types';
-import { EventCard } from '@/components/event-card';
+import type { EventWithAttendees } from '../lib/types';
+import { EventCard } from './event-card';
 import type { User } from '@supabase/supabase-js';
-import NewPricingSection from '@/components/new-pricing-section';
-import { FeaturedEventsCarousel } from '@/components/featured-events-carousel';
+import NewPricingSection from './new-pricing-section';
+import { FeaturedEventsCarousel } from './featured-events-carousel';
 
 interface FeaturedEvent {
   id: string;

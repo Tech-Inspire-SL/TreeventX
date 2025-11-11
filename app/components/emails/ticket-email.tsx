@@ -1,4 +1,4 @@
-import { TicketView } from '@/components/tickets/ticket-view';
+import { TicketView } from '../tickets/ticket-view';
 
 // This is the React component that will be rendered to HTML for the email
 interface TicketEmailProps {

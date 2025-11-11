@@ -1,10 +1,10 @@
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../../../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { EmailForm } from './_components/email-form';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../../../../components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 export default async function EmailPage({ params }: { params: Promise<{ id: string }> }) {

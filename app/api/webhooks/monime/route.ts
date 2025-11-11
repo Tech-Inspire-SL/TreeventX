@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createServiceRoleClient } from '@/lib/supabase/server';
-import { sendTicketEmail } from '@/lib/actions/email';
-import { getTicketDetails } from '@/lib/actions/tickets';
-import { TicketEmail } from '@/components/emails/ticket-email';
+import { createServiceRoleClient } from '../../../../lib/supabase/server';
+import { sendTicketEmail } from '../../../../lib/actions/email';
+import { getTicketDetails } from '../../../../lib/actions/tickets';
+import { TicketEmail } from '../../../../components/emails/ticket-email';
 import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
 import React from 'react';

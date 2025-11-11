@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { createServiceRoleClient } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '../../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 
 // This is the endpoint that will be called by a cron job scheduler

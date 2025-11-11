@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
+import { Button } from './ui/button';
 import {
   Form,
   FormControl,
@@ -16,19 +16,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+} from './ui/form';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { CalendarIcon, PlusCircle, Sparkles, Upload, X } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { Card, CardContent } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { createEventAction, updateEventAction } from '@/lib/actions/events';
-import type { Event } from '@/lib/types';
-import { generatePromotionAction } from '@/lib/actions/server/ai';
+import { Calendar } from './ui/calendar';
+import { cn } from '../lib/utils';
+import { Card, CardContent } from './ui/card';
+import { useToast } from '../hooks/use-toast';
+import { createEventAction, updateEventAction } from '../lib/actions/events';
+import type { Event } from '../lib/types';
+import { generatePromotionAction } from '../lib/actions/server/ai';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';

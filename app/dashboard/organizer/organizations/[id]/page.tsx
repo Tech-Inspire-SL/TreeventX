@@ -1,13 +1,13 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { OrganizationForm } from '@/components/organization-form';
-import { OrganizationMembers } from '@/components/organization-members';
-import { OrganizationEvents } from '@/components/organization-events';
+import { Button } from '../../../../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
+import { OrganizationForm } from '../../../../components/organization-form';
+import { OrganizationMembers } from '../../../../components/organization-members';
+import { OrganizationEvents } from '../../../../components/organization-events';
 import { ArrowLeft, Globe, MapPin } from 'lucide-react';
 
 interface PageProps {

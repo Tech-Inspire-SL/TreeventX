@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createServiceRoleClient } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '../../../lib/supabase/server';
 import crypto from 'crypto';
 
 // Temporary endpoint to manually approve a ticket for testing

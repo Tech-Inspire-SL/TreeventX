@@ -4,11 +4,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
+import { Button } from './ui/button';
 import { Calendar, MapPin, Users, Ticket as TicketIcon, ScanEye, Eye, Pencil, DollarSign, Timer, User, X, Clock, Building2 } from 'lucide-react';
-import type { EventWithAttendees } from '@/lib/types';
-import { unregisterForEventAction } from '@/lib/actions/tickets';
+import type { EventWithAttendees } from '../lib/types';
+import { unregisterForEventAction } from '../lib/actions/tickets';
 import { Badge } from './ui/badge';
 import { differenceInDays, isPast, isToday } from 'date-fns';
 import {
@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "./ui/alert-dialog";
 
 interface EventCardProps {
   event: EventWithAttendees;

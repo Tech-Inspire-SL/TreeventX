@@ -1,7 +1,7 @@
 'use client';
 
-import { sendTicketEmail } from '@/lib/actions/email';
-import { Button } from '@/components/ui/button';
+import { sendTicketEmail } from '../lib/actions/email';
+import { Button } from '../components/ui/button';
 
 export default function TestEmailPage() {
   const handleSendTestEmail = async () => {
