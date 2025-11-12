@@ -1,5 +1,5 @@
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/app/lib/supabase/server';
 import { getTicketDetails } from '@/lib/server/queries/events';
 import { TicketView } from '@/components/tickets/ticket-view';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -46,7 +46,8 @@ export default async function ViewTicketPage({ searchParams }: ViewTicketPagePro
     }
     
     // For guest users, we validate with email. For logged-in users, we check ownership.
-    const supabase = createClient();
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
 
     const isOwner = user && user.id === ticket.profiles?.id;

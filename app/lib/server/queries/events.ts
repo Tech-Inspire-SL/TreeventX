@@ -1,12 +1,13 @@
 
 'use server';
 
-import { createClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { createClient, createServiceRoleClient } from "@/app/lib/supabase/server";
 import { cookies } from "next/headers";
 
 // Get Event Details
 export async function getEventDetails(eventId: number) {
-    const supabase = createServiceRoleClient();
+    const cookieStore = await cookies();
+    const supabase = createServiceRoleClient(cookieStore);
     const { data, error } = await supabase
         .from('events')
         .select(`
@@ -48,7 +49,8 @@ export async function getEventDetails(eventId: number) {
 
 // Get Event Form Fields
 export async function getEventFormFields(eventId: number) {
-    const supabase = createClient();
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
     const { data, error } = await supabase
         .from('event_form_fields')
         .select('*, options:event_form_field_options(*)')

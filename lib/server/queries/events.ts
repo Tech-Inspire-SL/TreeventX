@@ -1,10 +1,11 @@
 'use server';
 
-import { createServiceRoleClient } from '@/lib/supabase/server';
+import { createServiceRoleClient } from '@/app/lib/supabase/server';
 import { cookies } from 'next/headers';
 
 export async function getTicketDetails(ticketId: number): Promise<{ data: any; error: string | null }> {
-  const supabase = createServiceRoleClient();
+  const cookieStore = await cookies();
+  const supabase = createServiceRoleClient(cookieStore);
 
   const { data, error } = await supabase
     .from('tickets')
@@ -46,7 +47,8 @@ export async function getEventDetails(eventId: number): Promise<{ data: any; err
   // Simulate fetching data
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const supabase = createServiceRoleClient();
+  const cookieStore = await cookies();
+  const supabase = createServiceRoleClient(cookieStore);
 
   const { data, error } = await supabase
     .from('events')

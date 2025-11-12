@@ -117,7 +117,7 @@ export function EventCard({ event, isScannerMode = false, isMyEvent = false }: E
           <div className="flex justify-between items-center text-sm font-medium">
             <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
-                <span>{event.attendees_count?.toLocaleString()}</span>
+                <span>{event.attendees?.toLocaleString()}</span>
                 {event.capacity && <span className="text-muted-foreground">/{event.capacity}</span>}
             </div>
             {event.is_paid ? (

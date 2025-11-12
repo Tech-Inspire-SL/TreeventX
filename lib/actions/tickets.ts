@@ -1,8 +1,9 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/app/lib/supabase/server';
 import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 export async function unregisterAttendeeAction(state: { success: boolean; error?: string } | undefined, formData: FormData): Promise<{ success: boolean; error?: string }> {
   console.log('unregisterAttendeeAction called');
@@ -12,7 +13,8 @@ export async function unregisterAttendeeAction(state: { success: boolean; error?
     return { success: false, error: 'Invalid ticket ID.' };
   }
 
-  const supabase = await createClient();
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
 
   try {
     const { error } = await supabase
@@ -78,7 +80,8 @@ export async function registerAndCreateTicket(state: { success: boolean; error?:
     return { success: false, error: 'Missing required fields for registration.' };
   }
 
-  const supabase = await createClient(); // Assuming createClient is async now
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
 
   try {
     // 1. Create the ticket
@@ -141,7 +144,8 @@ export async function registerGuestForEvent(state: { success: boolean; error?: s
     return { success: false, error: 'Missing required fields for guest registration.' };
   }
 
-  const supabase = await createClient();
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
 
   try {
     // 1. Create guest user in Supabase Auth
@@ -218,7 +222,8 @@ export async function registerGuestForEvent(state: { success: boolean; error?: s
 }
 
 export async function scanTicketAction(qrToken: string, eventId: number): Promise<{ success: boolean; message?: string; error?: string }> {
-  const supabase = await createClient();
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
 
   try {
     // 1. Find the ticket
@@ -276,7 +281,8 @@ export async function scanTicketAction(qrToken: string, eventId: number): Promis
 }
 
 export async function getScannableEvents(): Promise<{ data: any[] | null; error: string | null; isLoggedIn: boolean }> {
-  const supabase = await createClient();
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -310,7 +316,7 @@ export async function getScannableEvents(): Promise<{ data: any[] | null; error:
 
     const allEvents = [
       ...(organizedEvents || []),
-      ...(scannedEvents || []).map(s => s.events),
+      ...(scannedEvents || []).flatMap(s => s.events),
     ];
 
     // Deduplicate events
