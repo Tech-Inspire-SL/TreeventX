@@ -1,10 +1,10 @@
 
-import { createClient } from '../../../lib/supabase/server';
-import { getTicketDetails } from '../../lib/actions/tickets';
-import { TicketView } from '../../components/tickets/ticket-view';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { createClient } from '@/lib/supabase/server';
+import { getTicketDetails } from '@/lib/server/queries/events';
+import { TicketView } from '@/components/tickets/ticket-view';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { Button } from '../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { cookies } from 'next/headers';
 
 interface ViewTicketPageProps {
@@ -46,8 +46,7 @@ export default async function ViewTicketPage({ searchParams }: ViewTicketPagePro
     }
     
     // For guest users, we validate with email. For logged-in users, we check ownership.
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     const isOwner = user && user.id === ticket.profiles?.id;

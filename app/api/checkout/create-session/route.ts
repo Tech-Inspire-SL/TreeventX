@@ -1,14 +1,14 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createServiceRoleClient } from '../../../../lib/supabase/server';
-import { createMonimeCheckout } from '../../../../lib/monime';
+import { createServiceRoleClient } from '@/lib/supabase/server';
+import { createMonimeCheckout } from '@/lib/monime';
 
 
 export async function POST(req: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const supabase = createServiceRoleClient(cookieStore);
+    const supabase = await createServiceRoleClient();
 
     const { eventId, userId, formResponses, firstName, lastName, email } = await req.json();
 

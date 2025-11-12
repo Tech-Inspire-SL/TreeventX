@@ -3,16 +3,15 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient, createServiceRoleClient } from '../supabase/server';
-import { uploadFile } from '../supabase/storage';
-import type { EventFormFieldWithOptions } from '../types';
+import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
+import { uploadFile } from '@/lib/supabase/storage';
+import type { EventFormFieldWithOptions } from '@/lib/types';
 import { cookies } from 'next/headers';
 
 // 1. Create Event Action
 export async function createEventAction(formData: FormData) {
-  const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
-  const { data: { user } } = await createClient(cookieStore).auth.getUser();
+  const supabase = createServiceRoleClient();
+  const { data: { user } } = await createClient().auth.getUser();
 
   if (!user) {
     return { error: 'You must be logged in to create an event.' };
@@ -57,7 +56,7 @@ export async function createEventAction(formData: FormData) {
   let monimeAccountId: string | null = null;
   if (rawData.is_paid) {
     try {
-      const { createMonimeAccount } = await import('../../../lib/monime/account');
+      const { createMonimeAccount } = await import('@/lib/monime/account');
       const account = await createMonimeAccount({
         name: `${rawData.title} Event Account`,
         currency: 'SLE', // or use rawData.currency if available
@@ -149,9 +148,8 @@ export async function createEventAction(formData: FormData) {
 
 // 2. Update Event Action (with redirect)
 export async function updateEventAction(eventId: number, formData: FormData) {
-  const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
-  const { data: { user } } = await createClient(cookieStore).auth.getUser();
+  const supabase = createServiceRoleClient();
+  const { data: { user } } = await createClient().auth.getUser();
 
   if (!user) {
     return { error: 'You must be logged in to update an event.' };
@@ -249,8 +247,7 @@ export async function updateEventAction(eventId: number, formData: FormData) {
 
 // 5. Update Ticket Appearance
 export async function updateTicketAppearance(eventId: number, formData: FormData) {
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'You must be logged in.' };
 
@@ -291,8 +288,7 @@ export async function updateTicketAppearance(eventId: number, formData: FormData
 
 // 6. Get Event Attendees (Secure)
 export async function getEventAttendees(eventId: number) {
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient();
     const { data, error } = await supabase.rpc('get_attendees_for_event', { event_id_param: eventId });
 
     if (error) {
@@ -303,10 +299,9 @@ export async function getEventAttendees(eventId: number) {
 
 // 7. Delete Event Action
 export async function deleteEventAction(formData: FormData) {
-    const cookieStore = await cookies();
-    const supabase = createServiceRoleClient(cookieStore);
+    const supabase = createServiceRoleClient();
     const eventId = formData.get('eventId');
-    const { data: { user } } = await createClient(cookieStore).auth.getUser();
+    const { data: { user } } = await createClient().auth.getUser();
     if (!user) throw new Error('You must be logged in.');
 
     const { error } = await supabase

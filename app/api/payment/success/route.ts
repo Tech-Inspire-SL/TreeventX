@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServiceRoleClient } from '../../../../lib/supabase/server';
+import { createServiceRoleClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import crypto from 'crypto';
 
@@ -7,7 +7,7 @@ import crypto from 'crypto';
 export async function POST(req: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const supabase = createServiceRoleClient(cookieStore);
+    const supabase = await createServiceRoleClient();
     
     // Extract ticket ID from URL params (embedded in successUrl)
     const { searchParams } = new URL(req.url);

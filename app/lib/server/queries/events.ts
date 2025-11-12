@@ -6,8 +6,7 @@ import { cookies } from "next/headers";
 
 // Get Event Details
 export async function getEventDetails(eventId: number) {
-    const cookieStore = await cookies();
-    const supabase = createServiceRoleClient(cookieStore);
+    const supabase = createServiceRoleClient();
     const { data, error } = await supabase
         .from('events')
         .select(`
@@ -49,8 +48,7 @@ export async function getEventDetails(eventId: number) {
 
 // Get Event Form Fields
 export async function getEventFormFields(eventId: number) {
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient();
     const { data, error } = await supabase
         .from('event_form_fields')
         .select('*, options:event_form_field_options(*)')

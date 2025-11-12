@@ -1,4 +1,4 @@
-import { createClient } from '../../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { OrganizationMembersClient } from './organization-members-client';
 
@@ -14,7 +14,7 @@ export async function OrganizationMembers({
   ownerId,
 }: OrganizationMembersProps) {
   const cookieStore = await cookies();
-  const supabase = await createClient(cookieStore);
+  const supabase = await createClient();
 
   const { data: members } = await supabase
     .from('organization_members')

@@ -1,4 +1,4 @@
-import { getTicketDetails } from "@/lib/actions/tickets";
+import { getTicketDetails } from "@/lib/server/queries/events";
 import { TicketView } from "@/components/tickets/ticket-view";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

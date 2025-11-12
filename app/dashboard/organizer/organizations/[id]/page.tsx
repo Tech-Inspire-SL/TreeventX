@@ -1,13 +1,13 @@
-import { createClient } from '../../../../../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
-import { OrganizationForm } from '../../../../components/organization-form';
-import { OrganizationMembers } from '../../../../components/organization-members';
-import { OrganizationEvents } from '../../../../components/organization-events';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { OrganizationForm } from '@/components/organization-form';
+import { OrganizationMembers } from '@/components/organization-members';
+import { OrganizationEvents } from '@/components/organization-events';
 import { ArrowLeft, Globe, MapPin } from 'lucide-react';
 
 interface PageProps {
@@ -17,7 +17,7 @@ interface PageProps {
 export default async function OrganizationDetailPage({ params }: PageProps) {
   const { id } = await params;
   const cookieStore = await cookies();
-  const supabase = await createClient(cookieStore);
+  const supabase = await createClient();
   
   const { data: { user } } = await supabase.auth.getUser();
   
@@ -47,6 +47,33 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
   if (!membership) {
     redirect('/dashboard/organizer/organizations');
   }
+
+  // Fetch organization members
+  const { data: membersData, error: membersError } = await supabase
+    .from('organization_members')
+    .select(`
+      id,
+      user_id,
+      role,
+      profiles (
+        full_name,
+        email
+      )
+    `)
+    .eq('organization_id', id)
+    .order('role', { ascending: true });
+
+  if (membersError) {
+    console.error('Error fetching organization members:', membersError);
+    // Handle error appropriately, maybe return an empty array or throw
+    // For now, let's return an empty array
+    return notFound(); // Or handle gracefully
+  }
+
+  const formattedMembers = membersData?.map(m => ({
+    ...m,
+    profiles: Array.isArray(m.profiles) ? m.profiles[0] : m.profiles,
+  })) || [];
 
   const isOwnerOrAdmin = membership.role === 'owner' || membership.role === 'admin';
 
@@ -106,6 +133,7 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
         <TabsContent value="members">
           <OrganizationMembers
             organizationId={id}
+            members={formattedMembers}
             userRole={membership.role}
             ownerId={org.owner_id}
           />

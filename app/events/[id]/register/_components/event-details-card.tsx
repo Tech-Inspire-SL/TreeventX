@@ -42,7 +42,7 @@ export function EventDetailsCard({ event }: { event: EventWithAttendees}) {
                 </div>
                  <div>
                     <p className="text-sm font-medium text-muted-foreground">Capacity</p>
-                    <p className="font-semibold">{event.attendees} registered / {event.capacity ? event.capacity : 'Unlimited'}</p>
+                    <p className="font-semibold">{event.attendees_count} registered / {event.capacity ? event.capacity : 'Unlimited'}</p>
                 </div>
             </CardContent>
         </Card>

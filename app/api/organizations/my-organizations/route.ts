@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const supabase = await createClient(cookieStore);
+    const supabase = await createClient();
     
     // Get current user
     const { data: { user }, error: userError } = await supabase.auth.getUser();

@@ -1,6 +1,6 @@
 
 
-import { getTicketDetails } from "@/lib/actions/tickets";
+import { getTicketDetails } from "@/lib/server/queries/events";
 import { TicketView } from "@/components/tickets/ticket-view";
 
 export default async function TicketPage({ params }: { params: Promise<{ id: string }> }) {

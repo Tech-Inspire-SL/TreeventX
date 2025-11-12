@@ -1,14 +1,14 @@
 
 'use server';
 
-import { createClient } from '../lib/supabase/server';
-import type { EventWithAttendees } from './lib/types';
-import { LandingPageClient } from './components/landing-page-client';
+import { createClient } from '@/lib/supabase/server';
+import type { EventWithAttendees } from '@/lib/types';
+import { LandingPageClient } from '@/app/components/landing-page-client';
 import { cookies } from 'next/headers';
 
 async function getRecentEvents() {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
+  console.log('Supabase client in getRecentEvents:', supabase);
   
   const { data: events, error } = await supabase
     .from('events')
@@ -25,7 +25,7 @@ async function getRecentEvents() {
 
   const eventsWithAttendees = events.map(event => ({
     ...event,
-    attendees: event.tickets[0]?.count || 0,
+    attendees_count: event.tickets[0]?.count || 0,
   }));
 
   const organizerIds = events.map(event => event.organizer_id).filter(Boolean) as string[];
@@ -49,8 +49,8 @@ async function getRecentEvents() {
 }
 
 async function getFeaturedEvents() {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
+  console.log('Supabase client in getFeaturedEvents:', supabase);
 
   // Get 5 upcoming public events with cover images for the carousel
   const { data: events, error } = await supabase
@@ -72,8 +72,8 @@ async function getFeaturedEvents() {
 
 
 export default async function LandingPage() {
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient();
+    console.log('Supabase client:', supabase);
     const { data: { user } } = await supabase.auth.getUser();
     const recentEvents = await getRecentEvents();
     const featuredEvents = await getFeaturedEvents();

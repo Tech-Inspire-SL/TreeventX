@@ -20,8 +20,7 @@ import { cookies } from 'next/headers';
 
 async function getTicketId(eventId: number, userId?: string) {
     if (!userId) return null;
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient();
     const { data: ticket } = await supabase
         .from('tickets')
         .select('id')
@@ -35,8 +34,7 @@ async function getTicketId(eventId: number, userId?: string) {
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const eventId = parseInt(id, 10);
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     const { data: event, error } = await getEventDetails(eventId);
@@ -55,7 +53,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
     }
     
     // After redirect check, user is null (public view only)
-    const isFull = event.capacity ? event.attendees >= event.capacity : false;
+    const isFull = event.capacity ? event.attendees_count && event.attendees_count >= event.capacity : false;
 
     return (
         <>
@@ -164,7 +162,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
                                      <div className="flex items-center gap-2">
                                         <Users className="h-5 w-5 text-primary" />
                                         <div className="flex-1">
-                                            <p className="font-semibold">{event.attendees} / {event.capacity || 'Unlimited'}</p>
+                                            <p className="font-semibold">{event.attendees_count} / {event.capacity || 'Unlimited'}</p>
                                             <p className="text-xs text-muted-foreground">Attendees</p>
                                         </div>
                                     </div>

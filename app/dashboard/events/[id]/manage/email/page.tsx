@@ -1,5 +1,5 @@
 
-import { createClient } from '../../../../../../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { EmailForm } from './_components/email-form';
@@ -9,7 +9,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 export default async function EmailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const supabase = createClient(await cookies());
+    const supabase = await createClient();
     const { data: userData } = await supabase.auth.getUser();
 
     if (!userData.user) {

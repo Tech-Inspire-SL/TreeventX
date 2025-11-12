@@ -1,11 +1,11 @@
 'use server';
 
-import { getAnalytics } from '../lib/actions/analytics';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
-import { Badge } from '../components/ui/badge';
+import { getAnalytics } from '@/lib/actions/analytics';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import { Calendar, Ticket, CheckCircle, Percent } from 'lucide-react';
-import { ChartContainer } from "../components/ui/chart"
+import { ChartContainer } from "@/components/ui/chart"
 
 import { RegistrationChart } from './_components/registration-chart';
 

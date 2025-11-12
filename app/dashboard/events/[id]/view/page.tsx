@@ -10,14 +10,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from 'date-fns';
 
-import { ShareButton } from "../../../../events/[id]/_components/share-button";
-import { ResendTicketForm } from "../../../../events/[id]/_components/resend-ticket-form";
+import { ShareButton } from "@/app/events/[id]/_components/share-button";
+import { ResendTicketForm } from "@/app/events/[id]/_components/resend-ticket-form";
 import { cookies } from 'next/headers';
 
 
 async function getTicketId(eventId: number, userId: string) {
     const cookieStore = await cookies();
-    const { data: ticket } = await createClient(cookieStore)
+    const { data: ticket } = await (await createClient())
         .from('tickets')
         .select('id')
         .eq('event_id', eventId)
@@ -31,7 +31,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
     const { id } = await params;
     const eventId = parseInt(id, 10);
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -50,7 +50,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
     
     const ticketId = await getTicketId(event.id, user.id);
     const isOwner = user.id === event.organizer_id;
-    const isFull = event.capacity ? event.attendees >= event.capacity : false;
+    const isFull = event.capacity ? event.attendees_count && event.attendees_count >= event.capacity : false;
 
     return (
         <div className="space-y-6">
@@ -115,7 +115,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
                                  <div className="flex items-center gap-2">
                                     <Users className="h-5 w-5 text-primary" />
                                     <div className="flex-1">
-                                        <p className="font-semibold">{event.attendees} / {event.capacity || 'Unlimited'}</p>
+                                        <p className="font-semibold">{event.attendees_count} / {event.capacity || 'Unlimited'}</p>
                                         <p className="text-xs text-muted-foreground">Attendees</p>
                                     </div>
                                 </div>

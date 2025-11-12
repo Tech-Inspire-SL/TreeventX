@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Button } from './ui/button';
 import { Calendar, MapPin, Users, Ticket as TicketIcon, ScanEye, Eye, Pencil, DollarSign, Timer, User, X, Clock, Building2 } from 'lucide-react';
 import type { EventWithAttendees } from '../lib/types';
-import { unregisterForEventAction } from '../lib/actions/tickets';
+import { unregisterAttendeeAction } from '@/lib/actions/tickets';
 import { Badge } from './ui/badge';
 import { differenceInDays, isPast, isToday } from 'date-fns';
 import {
@@ -117,7 +117,7 @@ export function EventCard({ event, isScannerMode = false, isMyEvent = false }: E
           <div className="flex justify-between items-center text-sm font-medium">
             <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
-                <span>{event.attendees.toLocaleString()}</span>
+                <span>{event.attendees_count?.toLocaleString()}</span>
                 {event.capacity && <span className="text-muted-foreground">/{event.capacity}</span>}
             </div>
             {event.is_paid ? (
@@ -179,7 +179,7 @@ export function EventCard({ event, isScannerMode = false, isMyEvent = false }: E
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Keep Ticket</AlertDialogCancel>
-                               <form action={async (formData: FormData) => { await unregisterForEventAction(undefined, formData); }} className="inline-block">
+                               <form action={async (formData: FormData) => { await unregisterAttendeeAction(undefined, formData); }} className="inline-block">
                                 <input type="hidden" name="ticketId" value={event.ticket_id} />
                                 <AlertDialogAction type="submit">Yes, Cancel</AlertDialogAction>
                               </form>

@@ -1,14 +1,14 @@
 
 'use server';
 
-import { createClient } from '../../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import { DashboardClientLayout } from './dashboard-client-layout';
 import { DashboardHeader } from '../components/dashboard-header';
 
 async function getActiveEventCount(userId: string) {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
   const { count, error } = await supabase
     .from('events')
     .select('*', { count: 'exact', head: true })
@@ -28,7 +28,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const activeEventCount = user ? await getActiveEventCount(user.id) : 0;
   

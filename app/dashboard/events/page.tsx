@@ -208,7 +208,7 @@ async function getPastEvents(userId: string): Promise<EventWithAttendees[]> {
     const typedAttendedTickets = (attendedTickets || []) as unknown as TicketWithEvent[];
     const attendedEvents = typedAttendedTickets
       .filter(t => t.events && new Date(t.events.date) < new Date())
-      .map(t => ({...t.events, type: 'attended' as const, attendees: t.events.tickets[0]?.count || 0 }));
+      .map(t => ({...t.events, type: 'attended' as const, attendees_count: t.events.tickets[0]?.count || 0 }));
 
 
     // Fetch events the user organized
@@ -223,7 +223,7 @@ async function getPastEvents(userId: string): Promise<EventWithAttendees[]> {
         console.error('Error fetching past organized events:', organizedError);
     }
 
-    const pastOrganizedEvents = (organizedEvents || []).map(e => ({...e, type: 'organized' as const, attendees: e.tickets[0]?.count || 0 }));
+    const pastOrganizedEvents = (organizedEvents || []).map(e => ({...e, type: 'organized' as const, attendees_count: e.tickets[0]?.count || 0 }));
 
     const allPastEvents = [...attendedEvents, ...pastOrganizedEvents];
     
