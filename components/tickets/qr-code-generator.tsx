@@ -2,23 +2,51 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import QRCode from 'qrcode';
+import QRCode from 'qrcode-with-logos';
 import Image from 'next/image';
 
-export function QrCodeGenerator({ qrToken }: { qrToken: string | null }) {
+interface QrCodeGeneratorProps {
+  qrToken: string | null;
+  logoSrc?: string | null;
+}
+
+export function QrCodeGenerator({ qrToken, logoSrc }: QrCodeGeneratorProps) {
   const [dataUrl, setDataUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (qrToken) {
-      QRCode.toDataURL(qrToken, { width: 300, margin: 2, errorCorrectionLevel: 'L' })
-        .then(url => {
+      const options: any = {
+        content: qrToken,
+        width: 300,
+        // errorCorrectionLevel: 'H', // Use 'H' for better error correction when embedding a logo
+        // Note: qrcode-with-logos defaults to 'H' error correction, so explicit setting might not be needed.
+        // However, if issues arise, consider uncommenting.
+        // The library also handles margin internally, so `margin: 2` might not be directly applicable
+        // in the same way as with the basic `qrcode` library.
+      };
+
+      if (logoSrc) {
+        options.logo = {
+          src: logoSrc,
+          // Adjust logo size and position as needed
+          // For example:
+          // x: undefined,
+          // y: undefined,
+          // logoSize: 0.15, // 15% of QR code size
+          // borderRadius: 6,
+          // bgColor: '#ffffff',
+        };
+      }
+
+      QRCode.toDataURL(options)
+        .then((url: string) => {
           setDataUrl(url);
         })
         .catch((err: unknown) => {
           console.error(err);
         });
     }
-  }, [qrToken]);
+  }, [qrToken, logoSrc]);
 
   if (!qrToken) {
     return (

@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -45,15 +44,14 @@ export function EventCard({ event, isScannerMode = false, isMyEvent = false }: E
         return `${days + 1} Day${days + 1 > 1 ? 's' : ''}`;
     }, [event.date, event.end_date]);
 
-
     const organizerName = useMemo(() => {
-        // Show organization name if this is an organization event
         if (event.organization) {
             return event.organization.name;
         }
-        // Otherwise show individual organizer
-        if (!event.organizer) return 'Anonymous';
-        return `${event.organizer.first_name || ''} ${event.organizer.last_name || ''}`.trim() || 'Anonymous';
+        if (event.organizer) {
+            return `${event.organizer.first_name || ''} ${event.organizer.last_name || ''}`.trim() || 'Anonymous';
+        }
+        return 'Anonymous';
     }, [event.organizer, event.organization]);
     
     const isFull = event.capacity ? event.attendees >= event.capacity : false;
@@ -108,7 +106,7 @@ export function EventCard({ event, isScannerMode = false, isMyEvent = false }: E
            <div className="flex items-center gap-2">
             {event.organization ? <Building2 className="h-4 w-4" /> : <User className="h-4 w-4" />}
             <span className="truncate">
-              {event.organization ? `By ${organizerName}` : `Organized by ${organizerName}`}
+              {organizerName}
             </span>
           </div>
         </div>

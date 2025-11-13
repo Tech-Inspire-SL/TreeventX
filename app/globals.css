@@ -31,14 +31,14 @@
     --chart-5: 27 87% 67%;
     
     /* Sidebar variables for glass effect */
-    --sidebar-background: 224 71.4% 4.1% / 0.8; /* Semi-transparent dark */
+    --sidebar-background: 224 71.4% 10%; /* Dark sidebar */
     --sidebar-foreground: 210 20% 98%;
-    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary: 170 100% 33.1%; /* Keep primary color for active items */
     --sidebar-primary-foreground: 210 20% 98%;
-    --sidebar-accent: 220 14.3% 15% / 0.5; /* More transparent accent */
+    --sidebar-accent: 220 14.3% 20%; /* Slightly lighter dark for hover */
     --sidebar-accent-foreground: 210 20% 98%;
-    --sidebar-border: 220 13% 20% / 0.9;
-    --sidebar-ring: 221 83% 53%;
+    --sidebar-border: 220 13% 25%;
+    --sidebar-ring: 170 100% 33.1%;
   }
 
   .dark {
@@ -48,7 +48,7 @@
     --card-foreground: 210 20% 98%;
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
-    --primary: 221.2 83.2% 53.3%;
+    --primary: 170 100% 33.1%;
     --primary-foreground: 210 40% 98%;
     --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 20% 98%;
@@ -60,17 +60,17 @@
     --destructive-foreground: 210 20% 98%;
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
-    --ring: 262.1 83.3% 57.8%;
+    --ring: 170 100% 33.1%;
     
     /* Sidebar variables for glass effect */
-    --sidebar-background: 224 71.4% 4.1% / 0.8; /* Semi-transparent dark */
+    --sidebar-background: 224 71.4% 10%; /* Dark sidebar */
     --sidebar-foreground: 210 20% 98%;
-    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary: 170 100% 33.1%;
     --sidebar-primary-foreground: 210 20% 98%;
-    --sidebar-accent: 215 27.9% 16.9% / 0.5; /* More transparent accent */
+    --sidebar-accent: 220 14.3% 20%;
     --sidebar-accent-foreground: 210 20% 98%;
-    --sidebar-border: 215 27.9% 16.9%;
-    --sidebar-ring: 221 83% 53%;
+    --sidebar-border: 220 13% 25%;
+    --sidebar-ring: 170 100% 33.1%;
   }
 }
 
