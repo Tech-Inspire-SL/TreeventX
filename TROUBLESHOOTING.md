@@ -81,7 +81,7 @@ This document provides solutions to common issues you might encounter while sett
     4.  Click **Run**.
 
 *   **`Attendee` Type Definition:** Ensure the `Attendee` type in `src/lib/types.ts` correctly includes the `status` field: `status: 'pending' | 'approved' | 'rejected' | 'checked_in' | 'checked_out' | 'unknown';`.
-*   **Client-side Filtering:** Verify that `app/dashboard/events/[id]/manage/_components/manage-event-view.tsx`'s `ApprovalsTab` is correctly filtering attendees where `a.status === 'pending'`.
+*   **Client-side Filtering:** Verify that `app/dashboard/events/[eventId]/manage/_components/manage-event-view.tsx`'s `ApprovalsTab` is correctly filtering attendees where `a.status === 'pending'`.
 
 ## 5. Event Limit Bypass
 

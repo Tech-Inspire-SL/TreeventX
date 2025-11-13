@@ -2,7 +2,7 @@ import { getEventDetails, getEventFormFields } from '@/lib/server/queries/events
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { RegisterForEventForm } from './_components/register-event-form';
-import { EventDetailsCard } from '@/app/events/[id]/register/_components/event-details-card';
+import { EventDetailsCard } from '@/app/events/[eventId]/register/_components/event-details-card';
 import { cookies } from 'next/headers';
 
 interface RegisterForEventPageProps {

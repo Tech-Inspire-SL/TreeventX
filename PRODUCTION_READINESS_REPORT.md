@@ -24,7 +24,7 @@ Your TreeventX application is **MOSTLY READY** for production use, but has sever
 **Impact:** Build failures, potential runtime crashes
 
 #### Errors Found:
-- **app/events/[id]/page.tsx** - Type 'never' errors on user object
+- **app/events/[eventId]/page.tsx** - Type 'never' errors on user object
 - **app/events/page.tsx** - Implicit 'any' type on map parameter
 - **app/dashboard/events/page.tsx** - Multiple type mismatches on event queries
 - **app/components/create-event-form.tsx** - React Hook Form type incompatibilities
@@ -317,7 +317,7 @@ const ratelimit = new Ratelimit({
 ## 🚀 RECOMMENDED IMMEDIATE ACTIONS (Priority Order)
 
 ### TODAY (Before Demo):
-1. **Fix TypeScript errors** in `app/events/[id]/page.tsx` (user.id issue)
+1. **Fix TypeScript errors** in `app/events/[eventId]/page.tsx` (user.id issue)
 2. **Remove console.log** from payment routes (sensitive data exposure)
 3. **Verify .env.local** not committed to Git
 4. **Test complete payment flow** end-to-end

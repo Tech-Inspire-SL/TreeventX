@@ -12,7 +12,7 @@ The `registerAndCreateTicket` server action in `src/lib/actions/tickets.ts` was 
 
 The attendee review modal has been updated to display the stored form responses, allowing organizers to view them.
 
-The `ReviewAttendeeModal` component in `app/dashboard/events/[id]/manage/_components/review-attendee-modal.tsx` now displays the form responses.
+The `ReviewAttendeeModal` component in `app/dashboard/events/[eventId]/manage/_components/review-attendee-modal.tsx` now displays the form responses.
 
 ## 3. Conditional QR Code Generation
 

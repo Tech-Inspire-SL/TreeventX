@@ -10,8 +10,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from 'date-fns';
 
-import { ShareButton } from "@/app/events/[id]/_components/share-button";
-import { ResendTicketForm } from "@/app/events/[id]/_components/resend-ticket-form";
+import { ShareButton } from "@/app/events/[eventId]/_components/share-button";
+import { ResendTicketForm } from "@/app/events/[eventId]/_components/resend-ticket-form";
 import { cookies } from 'next/headers';
 
 

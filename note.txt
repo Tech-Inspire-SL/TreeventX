@@ -47,29 +47,29 @@ Attempted import error: 'createClient' is not exported from '@/lib/supabase/serv
 Import trace for requested module:
 ./app/api/organizations/my-organizations/route.ts
 
-./app/dashboard/events/[id]/edit/page.tsx
+./app/dashboard/events/[eventId]/edit/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/dashboard/events/[id]/edit/page.tsx
+./app/dashboard/events/[eventId]/edit/page.tsx
 
-./app/dashboard/events/[id]/manage/email/page.tsx
+./app/dashboard/events/[eventId]/manage/email/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/dashboard/events/[id]/manage/email/page.tsx
+./app/dashboard/events/[eventId]/manage/email/page.tsx
 
-./app/dashboard/events/[id]/view/page.tsx
+./app/dashboard/events/[eventId]/view/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/dashboard/events/[id]/view/page.tsx
+./app/dashboard/events/[eventId]/view/page.tsx
 
-./app/dashboard/events/[id]/view/page.tsx
+./app/dashboard/events/[eventId]/view/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/dashboard/events/[id]/view/page.tsx
+./app/dashboard/events/[eventId]/view/page.tsx
 
 ./app/dashboard/layout.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
@@ -113,23 +113,23 @@ Attempted import error: 'createClient' is not exported from '@/lib/supabase/serv
 Import trace for requested module:
 ./app/dashboard/organizer/page.tsx
 
-./app/events/[id]/page.tsx
+./app/events/[eventId]/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/events/[id]/page.tsx
+./app/events/[eventId]/page.tsx
 
-./app/events/[id]/page.tsx
+./app/events/[eventId]/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/events/[id]/page.tsx
+./app/events/[eventId]/page.tsx
 
-./app/events/[id]/register/page.tsx
+./app/events/[eventId]/register/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
 
 Import trace for requested module:
-./app/events/[id]/register/page.tsx
+./app/events/[eventId]/register/page.tsx
 
 ./app/organizations/[id]/page.tsx
 Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
@@ -146,7 +146,7 @@ Import trace for requested module:
    Skipping linting
    Checking validity of types  .Failed to compile.
 
-.next/types/app/events/[id]/register/success/page.ts:34:29
+.next/types/app/events/[eventId]/register/success/page.ts:34:29
 Type error: Type '{ searchParams: { ticketId?: string | undefined; }; }' does not 
 satisfy the constraint 'PageProps'.
   Types of property 'searchParams' are incompatible.

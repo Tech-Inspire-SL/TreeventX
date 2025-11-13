@@ -120,7 +120,7 @@ const BrandedTicket = ({ ticket }: { ticket: TicketWithEvent }) => {
                         {/* Only show QR code for approved tickets with QR token */}
                         {ticket.status === 'approved' && ticket.qr_token ? (
                             <>
-                                <QrCodeGenerator qrToken={ticket.qr_token} />
+                                <QrCodeGenerator qrToken={ticket.qr_token} logoSrc={events.ticket_brand_logo} />
                                 <p className="text-xs text-muted-foreground mt-4">Ticket ID: {ticket.id}</p>
                             </>
                         ) : (
@@ -155,7 +155,7 @@ export function TicketView({ ticket }: { ticket: TicketWithEvent }) {
                     <Clock className="h-12 w-12 text-yellow-500 dark:text-yellow-400 mb-4" />
                     <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-200">Registration Pending</h3>
                     <p className="text-yellow-600 dark:text-yellow-300 mt-2">
-                        Your registration is awaiting approval from the event organizer. You will be notified once it&apos;s confirmed.
+                        Your registration is awaiting approval from the event organizer. You will be notified once it's confirmed.
                     </p>
                     <p className="text-sm text-yellow-600 dark:text-yellow-300 mt-4">
                         Your QR code will appear here once approved.
@@ -210,7 +210,7 @@ export function TicketView({ ticket }: { ticket: TicketWithEvent }) {
                     
                     {/* Only show QR code if ticket is approved AND has qr_token */}
                     {ticket.qr_token ? (
-                        <QrCodeGenerator qrToken={ticket.qr_token} />
+                        <QrCodeGenerator qrToken={ticket.qr_token} logoSrc={ticket.events.ticket_brand_logo} />
                     ) : (
                         <div className="text-center text-gray-500 p-8 border-2 border-dashed border-gray-300 rounded-lg">
                             <div className="text-lg font-medium">QR Code Unavailable</div>
@@ -324,5 +324,3 @@ export function TicketView({ ticket }: { ticket: TicketWithEvent }) {
         </div>
     )
 }
-
-    

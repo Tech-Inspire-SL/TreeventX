@@ -133,7 +133,6 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
         <TabsContent value="members">
           <OrganizationMembers
             organizationId={id}
-            members={formattedMembers}
             userRole={membership.role}
             ownerId={org.owner_id}
           />

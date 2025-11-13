@@ -73,7 +73,7 @@ async function getFeaturedEvents() {
 
 export default async function LandingPage() {
     const supabase = await createClient();
-    console.log('Supabase client:', supabase);
+  
     const { data: { user } } = await supabase.auth.getUser();
     const recentEvents = await getRecentEvents();
     const featuredEvents = await getFeaturedEvents();

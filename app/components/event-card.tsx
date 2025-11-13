@@ -148,6 +148,14 @@ export function EventCard({ event, isScannerMode = false, isMyEvent = false }: E
                         Edit
                     </Link>
                 </Button>
+                {event.organization_id && (
+                    <Button asChild size="sm" variant="secondary" className="flex-1">
+                        <Link href={`/events/${event.id}/hub`}>
+                            <Building2 className="mr-2 h-4 w-4" />
+                            Hub Page
+                        </Link>
+                    </Button>
+                )}
             </div>
           ) : (
             <div className="flex gap-2">

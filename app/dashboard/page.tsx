@@ -291,7 +291,8 @@ export default async function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-secondary text-center p-6">
+    // <div className="flex flex-col items-center justify-center min-h-screen bg-secondary text-center p-6">
+    <div className="flex flex-col min-h-screen bg-secondary text-center p-6">
       {/* Enhanced Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in slide-in-from-top-4 duration-700">
         <div className="space-y-1">

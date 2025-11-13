@@ -227,7 +227,9 @@ export function DashboardClientLayout({
         {/* Enhanced Main Content Area */}
         <div className="w-full flex flex-1 flex-col min-w-10 bg-background/90">
           
-          {children}
+          <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+            {children}
+          </main>
 
         </div>
       </div>
