@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { QrCodeGenerator } from "@/components/tickets/qr-code-generator";
 import { Calendar, MapPin, Clock, Ban, UserRoundCheck, UserRoundX } from "lucide-react";
 import Link from "next/link";
-import type { Ticket, Event } from "@/lib/types";
+import type { Ticket, Event } from "@/app/lib/types";
 import Image from 'next/image';
 import { Badge } from "@/components/ui/badge";
 import { format } from 'date-fns';
@@ -210,7 +210,7 @@ export function TicketView({ ticket }: { ticket: TicketWithEvent }) {
                     
                     {/* Only show QR code if ticket is approved AND has qr_token */}
                     {ticket.qr_token ? (
-                        <QrCodeGenerator qrToken={ticket.qr_token} logoSrc={ticket.events.ticket_brand_logo} />
+                        <QrCodeGenerator qrToken={ticket.qr_token} logoSrc={ticket.events?.ticket_brand_logo} />
                     ) : (
                         <div className="text-center text-gray-500 p-8 border-2 border-dashed border-gray-300 rounded-lg">
                             <div className="text-lg font-medium">QR Code Unavailable</div>

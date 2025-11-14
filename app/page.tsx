@@ -2,7 +2,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import type { EventWithAttendees } from '@/lib/types';
+import type { EventWithAttendees } from '@/app/lib/types';
 import { LandingPageClient } from '@/app/components/landing-page-client';
 import { cookies } from 'next/headers';
 

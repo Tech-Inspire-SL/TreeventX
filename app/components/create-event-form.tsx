@@ -26,7 +26,7 @@ import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { createEventAction, updateEventAction } from '@/lib/actions/events';
-import type { Event } from '@/lib/types';
+import type { Event } from '@/app/lib/types';
 import { generatePromotionAction } from '@/lib/actions/server/ai';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';

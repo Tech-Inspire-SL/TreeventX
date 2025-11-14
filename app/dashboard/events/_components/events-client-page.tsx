@@ -1,20 +1,20 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { EventWithAttendees } from '@/lib/types';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import type { EventWithAttendees } from '@/app/lib/types';
+import { Input } from '@/app/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Switch } from '@/app/components/ui/switch';
+import { Label } from '@/app/components/ui/label';
 import { Search } from 'lucide-react';
-import { EventCard } from '@/components/event-card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TimelineEventCard } from '@/components/timeline-event-card';
-import { Button } from '@/components/ui/button';
+import { EventCard } from '@/app/components/event-card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
+import { TimelineEventCard } from '@/app/components/timeline-event-card';
+import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/app/components/ui/card';
+import { Skeleton } from '@/app/components/ui/skeleton';
 
 interface EventsClientPageProps {
   allEvents: EventWithAttendees[];

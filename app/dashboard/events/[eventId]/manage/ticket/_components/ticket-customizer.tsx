@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../../../../../../c
 import { Input } from '../../../../../../../components/ui/input';
 import { Label } from '../../../../../../../components/ui/label';
 import { updateTicketAppearance } from '../../../../../../../lib/actions/events';
-import type { Event } from '../../../../../../../lib/types';
+import type { Event } from '../../../../../../../app/lib/types';
 import { useToast } from '../../../../../../../hooks/use-toast';
 import Image from 'next/image';
 import { Calendar, MapPin } from 'lucide-react';

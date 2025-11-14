@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient, createServiceRoleClient } from '@/app/lib/supabase/server';
 import { uploadFile } from '@/lib/supabase/storage';
-import type { EventFormFieldWithOptions } from '@/lib/types';
+import type { EventFormFieldWithOptions } from '@/app/lib/types';
 import { cookies } from 'next/headers';
 
 // 1. Create Event Action

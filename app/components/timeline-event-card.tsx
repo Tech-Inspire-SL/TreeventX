@@ -1,6 +1,6 @@
 
 
-import type { Event } from "@/lib/types";
+import type { EventWithAttendees } from "@/app/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { format } from "date-fns";
@@ -8,7 +8,11 @@ import { CheckCircle, GitCommitHorizontal, Users, MapPin } from "lucide-react";
 import Link from 'next/link';
 import { Button } from "./ui/button";
 
-export function TimelineEventCard({ event }: { event: Event }) {
+interface TimelineEventCardProps {
+  event: EventWithAttendees;
+}
+
+export function TimelineEventCard({ event }: TimelineEventCardProps) {
 
   return (
     <div className="relative flex items-start gap-6">
@@ -42,7 +46,7 @@ export function TimelineEventCard({ event }: { event: Event }) {
                     </div>
                      <div className="flex items-center gap-2">
                         <Users className="h-4 w-4" />
-                        <span>{event.attendees_count} attendees</span>
+                        <span>{event.attendees} attendees</span>
                     </div>
                 </div>
             </CardContent>
