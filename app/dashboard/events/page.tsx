@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../lib/supabase/server';
 import { EventsClientPage } from './_components/events-client-page';
 import { cookies } from 'next/headers';
+import { PostgrestError } from '@supabase/supabase-js';
+import { Event } from '@/app/lib/types';
 
 async function getEventsData() {
   const cookieStore = await cookies();
@@ -71,8 +73,7 @@ async function getEventsData() {
   // Fetch registered events
   const { data: registeredTickets, error: registeredError } = await supabase
     .from('tickets')
-    .select('id, events!inner(*, organization:organizations(name))')
-    .eq('user_id', user.id);
+    .select('id, events!inner(*, organization:organizations(name))') as { data: ({ id: number, events: Event }[] | null), error: PostgrestError | null };
 
   if (registeredError) console.error('Error fetching registered events:', registeredError);
 

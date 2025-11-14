@@ -52,6 +52,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: [
+    "https://3000-firebase-studio-1756472499692.cluster-fbfjltn375c6wqxlhoehbz44sk.cloudworkstations.dev",
+  ],
   // Fix the serverActions configuration
   experimental: {
     serverActions: {

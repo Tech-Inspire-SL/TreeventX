@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import type { EventWithAttendees } from "@/lib/types";
+import type { EventWithAttendees } from "@/app/lib/types";
 import { Share2 } from "lucide-react";
 
 export function ShareButton({ event }: { event: EventWithAttendees }) {
