@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
-import QRCode from 'qrcode-with-logos';
+import { useEffect, useRef } from 'react';
+import QrCodeWithLogo from 'qrcode-with-logos';
 import Image from 'next/image';
 
 interface QrCodeGeneratorProps {
@@ -11,37 +11,25 @@ interface QrCodeGeneratorProps {
 }
 
 export function QrCodeGenerator({ qrToken, logoSrc }: QrCodeGeneratorProps) {
-  const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (qrToken) {
+    if (qrToken && canvasRef.current) {
       const options: any = {
+        canvas: canvasRef.current,
         content: qrToken,
         width: 300,
-        // errorCorrectionLevel: 'H', // Use 'H' for better error correction when embedding a logo
-        // Note: qrcode-with-logos defaults to 'H' error correction, so explicit setting might not be needed.
-        // However, if issues arise, consider uncommenting.
-        // The library also handles margin internally, so `margin: 2` might not be directly applicable
-        // in the same way as with the basic `qrcode` library.
       };
 
       if (logoSrc) {
         options.logo = {
           src: logoSrc,
-          // Adjust logo size and position as needed
-          // For example:
-          // x: undefined,
-          // y: undefined,
-          // logoSize: 0.15, // 15% of QR code size
-          // borderRadius: 6,
-          // bgColor: '#ffffff',
         };
       }
 
-      QRCode.toDataURL(options)
-        .then((url: string) => {
-          setDataUrl(url);
-        })
+      const qrCode = new QrCodeWithLogo(options);
+
+      qrCode.getCanvas()
         .catch((err: unknown) => {
           console.error(err);
         });
@@ -57,11 +45,5 @@ export function QrCodeGenerator({ qrToken, logoSrc }: QrCodeGeneratorProps) {
     );
   }
 
-  if (!dataUrl) {
-    return (
-        <div className="w-[300px] h-[300px] bg-muted animate-pulse rounded-md"></div>
-    );
-  }
-
-  return <Image src={dataUrl} alt="QR Code" width={300} height={300} />;
+  return <canvas ref={canvasRef} />;
 }
