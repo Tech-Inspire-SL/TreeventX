@@ -11,7 +11,7 @@ import { Calendar, MapPin, Users, Ticket, ArrowLeft, Eye, DollarSign, Share2, Gl
 import Image from "next/image";
 import Link from "next/link";
 import { format } from 'date-fns';
-import { EventWithAttendees } from "@/lib/types";
+import { EventWithAttendees } from "@/app/lib/types";
 import { ShareButton } from "./_components/share-button";
 import { ResendTicketForm } from "./_components/resend-ticket-form";
 import { PublicHeader } from "@/components/public-header";
@@ -53,7 +53,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
     }
     
     // After redirect check, user is null (public view only)
-    const isFull = event.capacity ? event.attendees_count && event.attendees_count >= event.capacity : false;
+    const isFull = event.capacity ? event.attendees && event.attendees >= event.capacity : false;
 
     return (
         <>
@@ -162,7 +162,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
                                      <div className="flex items-center gap-2">
                                         <Users className="h-5 w-5 text-primary" />
                                         <div className="flex-1">
-                                            <p className="font-semibold">{event.attendees_count} / {event.capacity || 'Unlimited'}</p>
+                                            <p className="font-semibold">{event.attendees} / {event.capacity || 'Unlimited'}</p>
                                             <p className="text-xs text-muted-foreground">Attendees</p>
                                         </div>
                                     </div>
