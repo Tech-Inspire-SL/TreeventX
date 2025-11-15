@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signup } from '@/lib/actions/auth';
 import { useFormStatus } from 'react-dom';
-import { AppLogo } from '@/components/app-logo';
+import { AppLogo } from '../components/app-logo';
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
     return (

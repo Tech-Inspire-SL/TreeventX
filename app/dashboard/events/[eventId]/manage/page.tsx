@@ -7,12 +7,12 @@ import { ManageEventView } from "./_components/manage-event-view";
 
 
 interface ManageEventPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ eventId: string }>;
 }
 
 export default async function ManageEventPage({ params }: ManageEventPageProps) {
   const resolvedParams = await params;
-  const eventId = parseInt(resolvedParams.id, 10);
+  const eventId = parseInt(resolvedParams.eventId, 10);
   
   // Fetch data in parallel
   const [

@@ -6,7 +6,7 @@ import { EventDetailsCard } from '@/app/events/[eventId]/register/_components/ev
 import { cookies } from 'next/headers';
 
 interface RegisterForEventPageProps {
-    params: Promise<{ id: string }>;
+    params: Promise<{ eventId: string }>;
     searchParams?: Promise<{ payment_cancelled?: string }>;
 }
 
@@ -14,7 +14,7 @@ export default async function RegisterForEventPage({ params, searchParams }: Reg
     // Await both params and searchParams for Next.js 15 compatibility
     const resolvedParams = await params;
     const resolvedSearchParams = await searchParams;
-    const eventId = parseInt(resolvedParams.id, 10);
+    const eventId = parseInt(resolvedParams.eventId, 10);
     const { data: event, error } = await getEventDetails(eventId);
     const { data: formFields } = await getEventFormFields(eventId);
     

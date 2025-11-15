@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 interface ManageTicketPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ eventId: string }>;
 }
 
 export default async function ManageTicketPage({ params }: ManageTicketPageProps) {
     const resolvedParams = await params;
     let eventId: number;
     try {
-        eventId = parseInt(resolvedParams.id, 10);
+        eventId = parseInt(resolvedParams.eventId, 10);
     } catch (e) {
         console.error("Invalid event ID in params:", e);
         return (

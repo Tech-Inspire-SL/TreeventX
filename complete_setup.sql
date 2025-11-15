@@ -1,23 +1,19 @@
 -- =====================================================
--- TREEVENTX - MASTER DATABASE SCHEMA
--- Version: 1.1
--- Description: This script sets up the entire database,
--- including tables, types, functions, and RLS policies.
+-- TREEVENTX - COMPLETE DATABASE SETUP
+-- Version: 1.2 - Single File Setup
+-- Description: Complete database setup in one file
 -- Run this on a fresh, empty Supabase project.
 -- =====================================================
 
--- 1. EXTENSIONS
--- =====================================================
--- (No extensions needed for this setup)
-
--- 2. CREATE CUSTOM TYPES
+-- 1. CREATE CUSTOM TYPES
 -- =====================================================
 CREATE TYPE public.ticket_status AS ENUM (
     'pending',
     'approved',
     'rejected',
     'expired',
-    'unpaid'
+    'unpaid',
+    'cancelled'
 );
 
 CREATE TYPE public.field_type AS ENUM (
@@ -31,7 +27,7 @@ CREATE TYPE public.field_type AS ENUM (
 );
 
 -- =====================================================
--- 3. CREATE CORE TABLES
+-- 2. CREATE CORE TABLES
 -- =====================================================
 
 -- Profiles Table (linked to auth.users)
@@ -45,6 +41,31 @@ CREATE TABLE public.profiles (
     is_guest boolean DEFAULT false,
     email text UNIQUE,
     phone text
+);
+
+-- Organizations Table
+CREATE TABLE public.organizations (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    name text NOT NULL,
+    description text,
+    logo_url text,
+    cover_image_url text,
+    website text,
+    location text,
+    owner_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    is_verified boolean DEFAULT false,
+    UNIQUE(name)
+);
+
+-- Organization Members Table
+CREATE TABLE public.organization_members (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    organization_id uuid REFERENCES public.organizations(id) ON DELETE CASCADE NOT NULL,
+    user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    role text CHECK (role IN ('owner', 'admin', 'member')) DEFAULT 'member',
+    UNIQUE(organization_id, user_id)
 );
 
 -- Events Table
@@ -70,7 +91,25 @@ CREATE TABLE public.events (
     fee_bearer text DEFAULT 'buyer'::text,
     status text DEFAULT 'draft'::text,
     payout_completed boolean DEFAULT false NOT NULL,
-    category text DEFAULT 'other' CHECK (category IN ('conference', 'workshop', 'festival', 'concert', 'seminar', 'networking', 'sports', 'community', 'other'))
+    category text DEFAULT 'other' CHECK (category IN ('conference', 'workshop', 'festival', 'concert', 'seminar', 'networking', 'sports', 'community', 'other')),
+    monime_account_id VARCHAR(255),
+    organization_id uuid REFERENCES public.organizations(id) ON DELETE SET NULL,
+    event_type text CHECK (event_type IN ('individual', 'organization')) DEFAULT 'individual'
+);
+
+-- Followers Table
+CREATE TABLE public.followers (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    follower_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    following_user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE,
+    following_organization_id uuid REFERENCES public.organizations(id) ON DELETE CASCADE,
+    CHECK (
+        (following_user_id IS NOT NULL AND following_organization_id IS NULL) OR
+        (following_user_id IS NULL AND following_organization_id IS NOT NULL)
+    ),
+    UNIQUE(follower_id, following_user_id),
+    UNIQUE(follower_id, following_organization_id)
 );
 
 -- Tickets Table
@@ -141,13 +180,15 @@ CREATE TABLE public.payouts (
     monime_payout_status text
 );
 
-
 -- =====================================================
--- 4. ENABLE ROW LEVEL SECURITY
+-- 3. ENABLE ROW LEVEL SECURITY
 -- =====================================================
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.organizations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.organization_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.followers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.event_scanners ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.event_form_fields ENABLE ROW LEVEL SECURITY;
@@ -155,9 +196,8 @@ ALTER TABLE public.event_form_field_options ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.attendee_form_responses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payouts ENABLE ROW LEVEL SECURITY;
 
-
 -- =====================================================
--- 5. CREATE SECURITY POLICIES
+-- 4. CREATE SECURITY POLICIES
 -- =====================================================
 
 -- Profiles Policies
@@ -165,11 +205,34 @@ CREATE POLICY "Public profiles are viewable by everyone." ON public.profiles FOR
 CREATE POLICY "Users can insert their own profile." ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
 CREATE POLICY "Users can update their own profile." ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
+-- Organizations Policies
+CREATE POLICY "Organizations are viewable by everyone" ON public.organizations FOR SELECT USING (true);
+CREATE POLICY "Users can create their own organizations" ON public.organizations FOR INSERT WITH CHECK (auth.uid() = owner_id);
+CREATE POLICY "Organization owners can update their organizations" ON public.organizations FOR UPDATE USING (auth.uid() = owner_id);
+CREATE POLICY "Organization owners can delete their organizations" ON public.organizations FOR DELETE USING (auth.uid() = owner_id);
+
+-- Organization Members Policies
+CREATE POLICY "Organization members are viewable by everyone" ON public.organization_members FOR SELECT USING (true);
+CREATE POLICY "Organization owners can add members" ON public.organization_members FOR INSERT WITH CHECK (
+    EXISTS (SELECT 1 FROM public.organizations WHERE id = organization_id AND owner_id = auth.uid())
+);
+CREATE POLICY "Organization owners can update members" ON public.organization_members FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM public.organizations WHERE id = organization_id AND owner_id = auth.uid())
+);
+CREATE POLICY "Organization owners and members themselves can delete membership" ON public.organization_members FOR DELETE USING (
+    user_id = auth.uid() OR EXISTS (SELECT 1 FROM public.organizations WHERE id = organization_id AND owner_id = auth.uid())
+);
+
 -- Events Policies
 CREATE POLICY "Events are viewable by everyone." ON public.events FOR SELECT USING (true);
 CREATE POLICY "Organizers can create events." ON public.events FOR INSERT WITH CHECK (auth.uid() = organizer_id);
 CREATE POLICY "Organizers can update their own events." ON public.events FOR UPDATE USING (auth.uid() = organizer_id);
 CREATE POLICY "Organizers can delete their own events." ON public.events FOR DELETE USING (auth.uid() = organizer_id);
+
+-- Followers Policies
+CREATE POLICY "Followers are viewable by everyone" ON public.followers FOR SELECT USING (true);
+CREATE POLICY "Users can follow others" ON public.followers FOR INSERT WITH CHECK (auth.uid() = follower_id);
+CREATE POLICY "Users can unfollow" ON public.followers FOR DELETE USING (auth.uid() = follower_id);
 
 -- Tickets Policies
 CREATE POLICY "Users can view their own tickets." ON public.tickets FOR SELECT USING (auth.uid() = user_id);
@@ -196,12 +259,11 @@ CREATE POLICY "Organizers can view form responses for their events." ON public.a
 -- Payouts Policies
 CREATE POLICY "Organizers can view their own payouts" ON public.payouts FOR SELECT USING (auth.uid() = organizer_id);
 
-
 -- =====================================================
--- 6. CREATE FUNCTIONS AND TRIGGERS
+-- 5. CREATE FUNCTIONS AND TRIGGERS
 -- =====================================================
 
--- Function to create a profile for a new user.
+-- Function to create a profile for a new user
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -264,16 +326,16 @@ BEGIN
 END;
 $$;
 
--- Function to get attendee counts for multiple events
+-- Function to get attendee counts for multiple events (FIXED VERSION)
 CREATE OR REPLACE FUNCTION public.get_event_attendee_counts(event_ids integer[])
-RETURNS TABLE(event_id_out integer, attendee_count integer)
+RETURNS TABLE(event_id_out integer, attendee_count bigint)
 LANGUAGE plpgsql
 AS $$
 BEGIN
   RETURN QUERY
   SELECT
     e.id::integer,
-    count(t.id)::integer
+    COUNT(t.id)
   FROM
     public.events e
   LEFT JOIN
@@ -285,17 +347,18 @@ BEGIN
 END;
 $$;
 
-
 -- =====================================================
--- 7. CREATE STORAGE BUCKETS AND POLICIES
+-- 6. CREATE STORAGE BUCKETS AND POLICIES
 -- =====================================================
 
 -- Create storage buckets
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('event-covers', 'event-covers', true, 5242880, ARRAY['image/jpeg', 'image/png', 'image/webp']);
+VALUES ('event-covers', 'event-covers', true, 5242880, ARRAY['image/jpeg', 'image/png', 'image/webp'])
+ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('event-images', 'event-images', true, 5242880, ARRAY['image/jpeg', 'image/png', 'image/webp']);
+VALUES ('event-images', 'event-images', true, 5242880, ARRAY['image/jpeg', 'image/png', 'image/webp'])
+ON CONFLICT (id) DO NOTHING;
 
 -- Storage Policies for 'event-covers'
 CREATE POLICY "Event cover images are publicly accessible." ON storage.objects FOR SELECT USING (bucket_id = 'event-covers');
@@ -303,22 +366,27 @@ CREATE POLICY "Authenticated users can upload event covers." ON storage.objects 
 CREATE POLICY "Organizers can delete their own event covers." ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'event-covers' AND owner = auth.uid());
 CREATE POLICY "Organizers can update their own event covers." ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'event-covers' AND owner = auth.uid());
 
-
 -- Storage Policies for 'event-images'
 CREATE POLICY "Event images are publicly accessible." ON storage.objects FOR SELECT USING (bucket_id = 'event-images');
 CREATE POLICY "Authenticated users can upload event images." ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'event-images');
 CREATE POLICY "Organizers can update their own event images." ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'event-images' AND owner = auth.uid());
 CREATE POLICY "Organizers can delete their own event images." ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'event-images' AND owner = auth.uid());
 
-
 -- =====================================================
--- 8. CREATE PERFORMANCE INDEXES
+-- 7. CREATE PERFORMANCE INDEXES
 -- =====================================================
 
 CREATE INDEX IF NOT EXISTS idx_events_organizer_id ON public.events(organizer_id);
+CREATE INDEX IF NOT EXISTS idx_events_organization_id ON public.events(organization_id);
 CREATE INDEX IF NOT EXISTS idx_tickets_event_id ON public.tickets(event_id);
 CREATE INDEX IF NOT EXISTS idx_tickets_user_id ON public.tickets(user_id);
+CREATE INDEX IF NOT EXISTS idx_organizations_owner_id ON public.organizations(owner_id);
+CREATE INDEX IF NOT EXISTS idx_organization_members_org_id ON public.organization_members(organization_id);
+CREATE INDEX IF NOT EXISTS idx_organization_members_user_id ON public.organization_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_followers_follower_id ON public.followers(follower_id);
+CREATE INDEX IF NOT EXISTS idx_followers_following_user_id ON public.followers(following_user_id);
+CREATE INDEX IF NOT EXISTS idx_followers_following_org_id ON public.followers(following_organization_id);
 
 -- =====================================================
--- SETUP COMPLETE
+-- SETUP COMPLETE - TreeventX Database Ready! 🎉
 -- =====================================================
