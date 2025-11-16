@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react-dom';
 import { setEventPinAction, removeEventPinAction } from '@/lib/actions/event-security';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -22,8 +22,8 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
 export function PinSettings({ eventId, hasPin }: { eventId: number; hasPin: boolean }) {
   const { toast } = useToast();
 
-  const [setState, setAction] = useFormState(setEventPinAction, null);
-  const [removeState, removeAction] = useFormState(removeEventPinAction, null);
+  const [setState, setAction] = useActionState(setEventPinAction, null);
+  const [removeState, removeAction] = useActionState(removeEventPinAction, null);
 
   useEffect(() => {
     if (setState?.error) {

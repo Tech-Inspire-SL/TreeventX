@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShareButton } from '@/app/components/share-button';
 import type { PremiumEventData } from '@/app/lib/types/premium';
-import { createClient } from '../../../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import { CountdownTimer } from '@/app/components/countdown-timer';
 
 // (Data fetching function remains the same)

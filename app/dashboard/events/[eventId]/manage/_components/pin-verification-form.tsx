@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react-dom';
 import { createPinSessionAction } from '@/lib/actions/event-security';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,7 @@ function SubmitButton() {
 
 export function PinVerificationForm({ eventId, eventTitle }: { eventId: number, eventTitle: string }) {
   const actionWithId = createPinSessionAction.bind(null, eventId);
-  const [state, dispatch] = useFormState(actionWithId, null);
+  const [state, dispatch] = useActionState(actionWithId, null);
 
   useEffect(() => {
     if (state?.success) {
