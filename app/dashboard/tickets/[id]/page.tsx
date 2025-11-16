@@ -15,8 +15,8 @@ export default async function TicketPage({ params }: { params: Promise<{ id: str
     // Add form_responses to match expected type (they'll be fetched separately if needed)
     const ticketWithFormResponses = {
         ...ticket,
-        form_responses: []
-    } as any; // Type assertion needed as TicketWithRelations has a subset of Event fields
+        form_responses: [] as { field_value: string, event_form_fields: { field_name: string } }[]
+    };
 
-    return <TicketView ticket={ticketWithFormResponses} />
+    return <TicketView ticket={ticketWithFormResponses as any} />
 }
