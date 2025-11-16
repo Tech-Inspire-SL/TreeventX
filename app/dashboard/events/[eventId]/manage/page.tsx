@@ -43,18 +43,19 @@ export default async function ManageEventPage({ params }: ManageEventPageProps) 
     );
   }
 
-  // PIN Verification Gate
-  if (event.pin_hash) {
+  // PIN Verification Gate - Type assertion needed for pin_hash property
+  const eventWithPinHash = event as typeof event & { pin_hash?: string | null };
+  if (eventWithPinHash.pin_hash) {
     const cookieStore = await cookies();
     const pinSession = cookieStore.get(`event-pin-session-${eventId}`)?.value;
     if (pinSession !== 'true') {
-      return <PinVerificationForm eventId={eventId} eventTitle={event.title} />;
+      return <PinVerificationForm eventId={eventId} eventTitle={eventWithPinHash.title} />;
     }
   }
 
   // Add attendees count to event
   const eventWithAttendees = {
-    ...event,
+    ...eventWithPinHash,
     attendees: attendees?.length || 0
   };
 
