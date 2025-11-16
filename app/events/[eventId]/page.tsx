@@ -18,7 +18,8 @@ import { cookies } from 'next/headers';
 
 async function getAttendeeCount(eventId: number) {
     const cookieStore = await cookies();
-    const { count } = await (await createClient(cookieStore))
+    const supabase = createClient(cookieStore);
+    const { count } = await supabase
         .from('tickets')
         .select('*', { count: 'exact', head: true })
         .eq('event_id', eventId)
@@ -202,7 +203,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                             </div>
                                         </div>
                                         <p className="text-sm text-white/80">
-                                            Explore exclusive content, community spaces, schedules, and resources curated for this displayEvent.
+                                            Explore exclusive content, community spaces, schedules, and resources curated for this event.
                                         </p>
                                         <Button
                                             asChild

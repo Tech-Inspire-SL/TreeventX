@@ -82,7 +82,7 @@ export async function getEventFormFields(eventId: number): Promise<{ data: any[]
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     const cookieStore = await cookies();
-    const supabase = await createServiceRoleClient(cookieStore);
+    const supabase = createServiceRoleClient(cookieStore);
 
     const { data, error } = await supabase
         .from('event_form_fields')
