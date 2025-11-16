@@ -31,12 +31,51 @@ import { generatePromotionAction } from '@/lib/actions/server/ai';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format } from 'date-fns';
 
 // import { calculateEarlyBirdPricing, PricingResult } from '@/lib/pricing';
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const COMMUNITY_FEATURE_TYPES = ['gallery', 'timeline', 'comments', 'feedback', 'resources', 'newsletter'] as const;
+type CommunityFeatureType = (typeof COMMUNITY_FEATURE_TYPES)[number];
+
+const communityFeatureSchema = z.enum(COMMUNITY_FEATURE_TYPES);
+
+const COMMUNITY_FEATURE_OPTIONS: Array<{ value: CommunityFeatureType; label: string; description: string }> = [
+  {
+    value: 'gallery',
+    label: 'Media Gallery',
+    description: 'Showcase event photos and videos in a curated gallery.',
+  },
+  {
+    value: 'timeline',
+    label: 'Schedule Timeline',
+    description: 'Highlight sessions, speakers, and key agenda moments.',
+  },
+  {
+    value: 'comments',
+    label: 'Community Comments',
+    description: 'Enable discussions and updates for attendees.',
+  },
+  {
+    value: 'feedback',
+    label: 'Feedback & Ratings',
+    description: 'Collect post-event feedback and satisfaction scores.',
+  },
+  {
+    value: 'resources',
+    label: 'Resource Library',
+    description: 'Share decks, documents, and helpful links.',
+  },
+  {
+    value: 'newsletter',
+    label: 'Event Newsletter',
+    description: 'Capture email subscribers for ongoing updates.',
+  },
+];
 
 const eventFormSchema = z.object({
   title: z.string().min(2, {
@@ -70,6 +109,9 @@ const eventFormSchema = z.object({
   fee_bearer: z.enum(['organizer', 'buyer']).default('buyer'),
   is_public: z.boolean().default(true),
   requires_approval: z.boolean().default(false),
+  premium_features_enabled: z.boolean().default(false),
+  community_enabled: z.boolean().default(false),
+  communityFeatures: z.array(communityFeatureSchema).default([]),
   customFields: z.array(z.object({
     field_name: z.string().min(1, { message: "Field name is required." }),
     field_type: z.enum(['text', 'number', 'date', 'boolean', 'multiple-choice', 'checkboxes', 'dropdown']),
@@ -108,7 +150,7 @@ function CustomFieldOptions({ nestIndex, form }: { nestIndex: number, form: UseF
 
   return (
     <div className="space-y-2">
-      <FormLabel>Options</FormLabel>
+      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Options</label>
       {fields.map((item, k) => (
         <div key={item.id} className="flex items-center gap-2">
           <FormField
@@ -169,6 +211,9 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
       is_public: defaultValues?.is_public ?? true,
       requires_approval: defaultValues?.requires_approval || false,
       current_cover_image: event?.cover_image ?? undefined,
+      premium_features_enabled: defaultValues?.premium_features_enabled ?? false,
+      community_enabled: defaultValues?.community_enabled ?? false,
+      communityFeatures: defaultValues?.communityFeatures ?? [],
     },
   });
 
@@ -183,12 +228,33 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
   });
 
   const isPaid = form.watch('is_paid');
+  const premiumEnabled = form.watch('premium_features_enabled');
+  const communityEnabled = form.watch('community_enabled');
 
   useEffect(() => {
     if (isPaid) {
       form.setValue('requires_approval', false);
     }
   }, [isPaid, form]);
+
+  useEffect(() => {
+    if (!premiumEnabled) {
+      if (form.getValues('community_enabled')) {
+        form.setValue('community_enabled', false, { shouldDirty: true, shouldTouch: true });
+      }
+      if ((form.getValues('communityFeatures') ?? []).length > 0) {
+        form.setValue('communityFeatures', [], { shouldDirty: true, shouldTouch: true });
+      }
+    }
+  }, [premiumEnabled, form]);
+
+  useEffect(() => {
+    if (!communityEnabled) {
+      if ((form.getValues('communityFeatures') ?? []).length > 0) {
+        form.setValue('communityFeatures', [], { shouldDirty: true, shouldTouch: true });
+      }
+    }
+  }, [communityEnabled, form]);
 
   async function handleGenerateContent() {
     setIsGenerating(true);
@@ -245,7 +311,15 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
         formData.append(key, JSON.stringify(filtered));
       } else if (key === 'customFields' && Array.isArray(value)) {
         formData.append(key, JSON.stringify(value));
-      } else if (key === 'is_paid' || key === 'is_public' || key === 'requires_approval') {
+      } else if (key === 'communityFeatures' && Array.isArray(value)) {
+        formData.append(key, JSON.stringify(value));
+      } else if (
+        key === 'is_paid' ||
+        key === 'is_public' ||
+        key === 'requires_approval' ||
+        key === 'premium_features_enabled' ||
+        key === 'community_enabled'
+      ) {
         formData.append(key, value ? 'true' : 'false');
       } else if (value instanceof Date && !isNaN(value.getTime())) {
         formData.append(key, value.toISOString());
@@ -693,9 +767,103 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
               )}
             </div>
 
+            <div className="space-y-6 rounded-lg border p-6">
+              <div className="space-y-1">
+                <h3 className="text-lg font-semibold">Premium Experience</h3>
+                <p className="text-sm text-muted-foreground">
+                  Unlock the premium hub layout and community modules for your attendees.
+                </p>
+              </div>
+              <FormField
+                control={form.control}
+                name="premium_features_enabled"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Enable Premium Hub</FormLabel>
+                      <FormDescription>Activate the immersive premium landing experience.</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="community_enabled"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Enable Community Modules</FormLabel>
+                      <FormDescription>Let attendees explore interactive community sections.</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={!premiumEnabled}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="communityFeatures"
+                render={({ field }) => {
+                  const disabled = !premiumEnabled || !communityEnabled;
+                  const currentValue = field.value ?? [];
+                  return (
+                    <FormItem className="space-y-4">
+                      <div className="flex flex-col gap-1">
+                        <FormLabel>Community Modules</FormLabel>
+                        <FormDescription>
+                          Choose the sections that should appear on your premium hub.
+                        </FormDescription>
+                      </div>
+                      <div className="grid gap-3 md:grid-cols-2">
+                        {COMMUNITY_FEATURE_OPTIONS.map((feature) => {
+                          const isSelected = currentValue.includes(feature.value);
+                          return (
+                            <div
+                              key={feature.value}
+                              className={cn(
+                                'flex items-start gap-3 rounded-lg border p-4 transition-opacity',
+                                disabled ? 'cursor-not-allowed opacity-50' : ''
+                              )}
+                            >
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={(checked) => {
+                                  if (checked) {
+                                    const next = new Set(currentValue);
+                                    next.add(feature.value);
+                                    field.onChange(Array.from(next));
+                                  } else {
+                                    field.onChange(currentValue.filter((value) => value !== feature.value));
+                                  }
+                                }}
+                                disabled={disabled}
+                              />
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium">{feature.label}</p>
+                                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+            </div>
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <FormLabel>Event Scanners (Optional)</FormLabel>
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Event Scanners (Optional)</label>
                 <Button
                   type="button"
                   variant="outline"
@@ -706,9 +874,9 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
                   Add Scanner
                 </Button>
               </div>
-              <FormDescription>
+              <p className="text-sm text-muted-foreground">
                 Add email addresses of people who can scan tickets at your event
-              </FormDescription>
+              </p>
               {scannerFields.map((item, index) => (
                 <div key={item.id} className="flex items-center gap-2">
                   <FormField
@@ -737,7 +905,7 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <FormLabel>Custom Registration Fields (Optional)</FormLabel>
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Custom Registration Fields (Optional)</label>
                 <Button
                   type="button"
                   variant="outline"
@@ -748,9 +916,9 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
                   Add Field
                 </Button>
               </div>
-              <FormDescription>
+              <p className="text-sm text-muted-foreground">
                 Collect additional information from attendees during registration
-              </FormDescription>
+              </p>
               {customFields.map((item, index) => (
                 <Card key={item.id}>
                   <CardContent className="pt-6 space-y-4">

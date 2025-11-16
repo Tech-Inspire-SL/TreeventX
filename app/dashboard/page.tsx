@@ -43,7 +43,7 @@ async function getDashboardStats(user: { id: string } | null) {
 
   try {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient(cookieStore);
 
     const { count: totalEvents, error: totalEventsError } = await supabase
       .from('events')
@@ -72,7 +72,7 @@ async function getDashboardStats(user: { id: string } | null) {
 
     if (events && events.length > 0) {
         const eventIds = events.map(e => e.id);
-        const supabaseAdmin = createServiceRoleClient(cookieStore);
+        const supabaseAdmin = await createServiceRoleClient(cookieStore);
         const { data: countsRaw, error: ticketsCountError } = await supabaseAdmin
             .rpc('get_event_attendee_counts', { event_ids: eventIds });
 
@@ -137,7 +137,7 @@ type TicketWithEventAndAttendees = {
 
 async function getAttendeeDashboardStats(user: { id: string }) {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
   const { data: tickets, error } = await supabase
     .from('tickets')
     .select('events!inner(*), id')
@@ -157,7 +157,7 @@ async function getAttendeeDashboardStats(user: { id: string }) {
   let countsByEvent: Record<number, number> = {};
 
   if (eventIds.length > 0) {
-    const supabaseAdmin = createServiceRoleClient(cookieStore);
+    const supabaseAdmin = await createServiceRoleClient(cookieStore);
     const { data: counts, error: countError } = await supabaseAdmin
         .rpc('get_event_attendee_counts', { event_ids: eventIds });
 
@@ -211,7 +211,7 @@ async function getAttendeeDashboardStats(user: { id: string }) {
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
     const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -291,11 +291,10 @@ export default async function DashboardPage() {
   };
 
   return (
-    // <div className="flex flex-col items-center justify-center min-h-screen bg-secondary text-center p-6">
-    <div className="flex flex-col min-h-screen bg-secondary text-center p-6">
+    <div className="space-y-8">
       {/* Enhanced Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in slide-in-from-top-4 duration-700">
-        <div className="space-y-1">
+        <div className="space-y-1 text-left">
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
             Dashboard
           </h1>

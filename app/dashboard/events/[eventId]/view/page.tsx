@@ -26,10 +26,20 @@ async function getTicketId(eventId: number, userId: string) {
     return ticket?.id;
 }
 
+async function getAttendeeCount(eventId: number) {
+    const cookieStore = await cookies();
+    const { count } = await (await createClient())
+        .from('tickets')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_id', eventId)
+        .eq('status', 'approved');
+    return count || 0;
+}
 
-export default async function DashboardEventViewPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
-    const eventId = parseInt(id, 10);
+
+export default async function DashboardEventViewPage({ params }: { params: Promise<{ eventId: string }> }) {
+    const { eventId } = await params;
+    const eventId_num = parseInt(eventId, 10);
     const cookieStore = await cookies();
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -38,7 +48,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
         return <div className="flex items-center justify-center min-h-screen text-center text-red-500 p-8">Please log in to view this page.</div>;
     }
 
-    const { data: event, error } = await getEventDetails(eventId);
+    const { data: event, error } = await getEventDetails(eventId_num);
 
     if (error || !event) {
         return <div className="flex items-center justify-center min-h-screen text-center text-red-500 p-8">Error: {error || 'This event could not be found.'}</div>
@@ -49,8 +59,9 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
     }
     
     const ticketId = await getTicketId(event.id, user.id);
+    const attendeeCount = await getAttendeeCount(event.id);
     const isOwner = user.id === event.organizer_id;
-    const isFull = event.capacity ? event.attendees_count && event.attendees_count >= event.capacity : false;
+    const isFull = event.capacity ? attendeeCount >= event.capacity : false;
 
     return (
         <div className="space-y-6">
@@ -115,7 +126,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
                                  <div className="flex items-center gap-2">
                                     <Users className="h-5 w-5 text-primary" />
                                     <div className="flex-1">
-                                        <p className="font-semibold">{event.attendees_count} / {event.capacity || 'Unlimited'}</p>
+                                        <p className="font-semibold">{attendeeCount} / {event.capacity || 'Unlimited'}</p>
                                         <p className="text-xs text-muted-foreground">Attendees</p>
                                     </div>
                                 </div>

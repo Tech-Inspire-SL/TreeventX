@@ -274,8 +274,9 @@ function AttendeesTab({ event, attendees }: { event: Event, attendees: Attendee[
 
 
 import { Pencil, Mail } from "lucide-react";
+import { PinSettings } from './pin-settings';
 
-function SettingsTab({ event }: { event: { id: number }}) {
+function SettingsTab({ event }: { event: Event & { pin_hash?: string | null } }) {
     return (
         <div className="space-y-6">
             <Card>
@@ -298,8 +299,19 @@ function SettingsTab({ event }: { event: { id: number }}) {
                             Customize Ticket
                         </Button>
                     </Link>
+                    {(event.premium_features_enabled || event.community_enabled) && (
+                        <Link href={`/events/${event.id}/hub`} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline">
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Premium Hub
+                            </Button>
+                        </Link>
+                    )}
                 </CardContent>
             </Card>
+            
+            <PinSettings eventId={event.id} hasPin={!!event.pin_hash} />
+
             <Card className="border-destructive">
                 <CardHeader>
                     <CardTitle>Danger Zone</CardTitle>
@@ -347,7 +359,7 @@ function EmailTab({ event }: { event: { id: number }}) {
 }
 
 interface ManageEventViewProps {
-  event: Event & { attendees: number };
+  event: Event & { attendees: number; pin_hash?: string | null };
   initialAttendees: Attendee[];
 }
 

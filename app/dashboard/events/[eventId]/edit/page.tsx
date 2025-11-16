@@ -5,12 +5,12 @@ import { createClient } from '../../../../lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
-export default async function EditEventPage(props: { params: Promise<{ id: string }> }) {
+export default async function EditEventPage(props: { params: Promise<{ eventId: string }> }) {
   const params = await props.params;
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
   const { data: { user } } = await supabase.auth.getUser();
-  const eventId = parseInt(params.id, 10);
+  const eventId = parseInt(params.eventId, 10);
   const { data: event, error } = await getEventDetails(eventId);
 
   if (error || !event || !user || user.id !== event.organizer_id) {
@@ -26,6 +26,11 @@ export default async function EditEventPage(props: { params: Promise<{ id: strin
     current_cover_image: event.cover_image || undefined,
     scanners: (event.scanners || []).map((s: { profiles: { email: string } }) => ({ email: s.profiles.email })),
     customFields: event.event_form_fields,
+    premium_features_enabled: event.premium_features_enabled ?? false,
+    community_enabled: event.community_enabled ?? false,
+    communityFeatures: (event.community_features || [])
+      .filter((feature: { is_enabled: boolean }) => feature.is_enabled)
+      .map((feature: { feature_type: string }) => feature.feature_type),
   }
 
   return (

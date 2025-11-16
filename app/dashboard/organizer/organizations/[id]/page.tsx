@@ -56,7 +56,8 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
       user_id,
       role,
       profiles (
-        full_name,
+        first_name,
+        last_name,
         email
       )
     `)
@@ -70,10 +71,16 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
     return notFound(); // Or handle gracefully
   }
 
-  const formattedMembers = membersData?.map(m => ({
-    ...m,
-    profiles: Array.isArray(m.profiles) ? m.profiles[0] : m.profiles,
-  })) || [];
+  const formattedMembers = membersData?.map(m => {
+    const profile = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles;
+    return {
+      ...m,
+      profiles: profile ? {
+        ...profile,
+        full_name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Unknown User'
+      } : null,
+    };
+  }) || [];
 
   const isOwnerOrAdmin = membership.role === 'owner' || membership.role === 'admin';
 

@@ -7,8 +7,8 @@ import { EmailForm } from './_components/email-form';
 import { Button } from '../../../../../../components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-export default async function EmailPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export default async function EmailPage({ params }: { params: Promise<{ eventId: string }> }) {
+    const { eventId } = await params;
     const supabase = await createClient();
     const { data: userData } = await supabase.auth.getUser();
 
@@ -19,7 +19,7 @@ export default async function EmailPage({ params }: { params: Promise<{ id: stri
     const { data: event, error } = await supabase
         .from('events')
         .select('id, title')
-        .eq('id', id)
+        .eq('id', eventId)
         .single();
 
     if (error || !event) {
@@ -29,7 +29,7 @@ export default async function EmailPage({ params }: { params: Promise<{ id: stri
     return (
         <div className="container mx-auto py-8">
             <div className="flex items-center mb-6">
-                <Link href={`/dashboard/events/${id}/manage`}>
+                <Link href={`/dashboard/events/${eventId}/manage`}>
                     <Button variant="outline" size="icon">
                         <ArrowLeft className="h-4 w-4" />
                     </Button>

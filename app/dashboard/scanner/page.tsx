@@ -104,7 +104,10 @@ function ScannerView({ event, onBack }: { event: EventWithAttendees, onBack: () 
       const result = await scanTicketAction(qrToken, event.id);
       
       if (!result.success) {
-        throw new Error(result.error);
+        // Show user info even on error if available
+        const userInfo = result.user ? `${result.user.first_name} ${result.user.last_name}`.trim() : '';
+        const errorMessage = userInfo ? `${userInfo}: ${result.error}` : result.error;
+        throw new Error(errorMessage);
       }
 
       // Determine flash type based on result
@@ -115,9 +118,20 @@ function ScannerView({ event, onBack }: { event: EventWithAttendees, onBack: () 
       
       setFlash(flashType);
 
+      // Create detailed message with user info and status
+      let detailMessage = result.message || 'Scan completed';
+      if (result.user && result.status) {
+        const statusText = result.status.checked_in && result.status.checked_out 
+          ? 'Checked in and out' 
+          : result.status.checked_in 
+          ? 'Checked in' 
+          : 'Not checked in';
+        detailMessage += `\nStatus: ${statusText}`;
+      }
+
       toast({
         title: 'Ticket Verified',
-        description: result.message,
+        description: detailMessage,
         className: flashType === 'success' 
           ? 'bg-green-500 text-white border-green-600' 
           : 'bg-blue-500 text-white border-blue-600',

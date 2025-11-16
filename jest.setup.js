@@ -1,1 +1,2 @@
-// Optional: any global setup for tests can go here
+// Extend Jest expect with DOM matchers
+require('@testing-library/jest-dom');

@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 // Get Event Details
 export async function getEventDetails(eventId: number) {
     const cookieStore = await cookies();
-    const supabase = createServiceRoleClient(cookieStore);
+    const supabase = await createServiceRoleClient(cookieStore);
     const { data, error } = await supabase
         .from('events')
         .select(`
@@ -15,6 +15,7 @@ export async function getEventDetails(eventId: number) {
             requires_approval,
             scanners:event_scanners(*, profiles(email)),
             event_form_fields(*, options:event_form_field_options(*)),
+            community_features:event_community_features(feature_type, is_enabled),
             organizer:profiles!events_organizer_id_fkey(id, first_name, last_name, email),
             organization:organizations(id, name, description, website, location)
         `)
@@ -38,7 +39,8 @@ export async function getEventDetails(eventId: number) {
         ...data,
         organizer: Array.isArray(data.organizer) ? data.organizer[0] : data.organizer,
         organization: Array.isArray(data.organization) ? data.organization[0] : data.organization,
-        attendees: attendees || 0
+        attendees: attendees || 0,
+        community_features: data.community_features || [],
     };
 
     return { 
@@ -50,7 +52,7 @@ export async function getEventDetails(eventId: number) {
 // Get Event Form Fields
 export async function getEventFormFields(eventId: number) {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient(cookieStore);
     const { data, error } = await supabase
         .from('event_form_fields')
         .select('*, options:event_form_field_options(*)')

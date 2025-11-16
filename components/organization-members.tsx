@@ -23,17 +23,24 @@ export async function OrganizationMembers({
       user_id,
       role,
       profiles (
-        full_name,
+        first_name,
+        last_name,
         email
       )
     `)
     .eq('organization_id', organizationId)
     .order('role', { ascending: true });
 
-  const formattedMembers = members?.map(m => ({
-    ...m,
-    profiles: Array.isArray(m.profiles) ? m.profiles[0] : m.profiles,
-  })) || [];
+  const formattedMembers = members?.map(m => {
+    const profile = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles;
+    return {
+      ...m,
+      profiles: profile ? {
+        ...profile,
+        full_name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Unknown User'
+      } : null,
+    };
+  }) || [];
 
   return (
     <OrganizationMembersClient

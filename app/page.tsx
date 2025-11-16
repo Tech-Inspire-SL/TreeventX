@@ -25,7 +25,7 @@ async function getRecentEvents() {
 
   const eventsWithAttendees = events.map(event => ({
     ...event,
-    attendees_count: event.tickets[0]?.count || 0,
+    attendees: event.tickets[0]?.count || 0,
   }));
 
   const organizerIds = events.map(event => event.organizer_id).filter(Boolean) as string[];

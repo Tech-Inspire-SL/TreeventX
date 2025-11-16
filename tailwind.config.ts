@@ -8,6 +8,20 @@ export default {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'bg-gradient-to-br',
+    'from-primary/80',
+    'via-purple-600',
+    'to-indigo-600',
+    'bg-white/10',
+    'bg-white/20',
+    'text-white',
+    'text-white/70',
+    'text-white/80',
+    'from-white',
+    'via-primary/10',
+    'to-purple-50',
+  ],
   theme: {
     extend: {
       fontFamily: {

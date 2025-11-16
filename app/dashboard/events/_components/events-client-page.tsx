@@ -8,6 +8,7 @@ import { Switch } from '@/app/components/ui/switch';
 import { Label } from '@/app/components/ui/label';
 import { Search } from 'lucide-react';
 import { EventCard } from '@/app/components/event-card';
+import { OrganizerEventCard } from './organizer-event-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { TimelineEventCard } from '@/app/components/timeline-event-card';
 import { Button } from '@/app/components/ui/button';
@@ -149,7 +150,7 @@ export function EventsClientPage({
           {myEvents.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
               {myEvents.map(event => (
-                <EventCard key={event.id} event={event} isMyEvent={true} />
+                <OrganizerEventCard key={event.id} event={event} />
               ))}
             </div>
           ) : (

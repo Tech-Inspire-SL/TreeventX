@@ -1,164 +1,23 @@
-student@git-journey:~/Desktop/treeventx$ npm run build
+## Error Type
+Build Error
 
-> nextn@0.1.0 build
-> next build
+## Error Message
+Module not found: Can't resolve '@/lib/actions/event-security'
 
-   ▲ Next.js 15.5.6
-   - Environments: .env.local, .env
-   - Experiments (use with caution):
-     · serverActions
+## Build Output
+./app/dashboard/events/[eventId]/manage/_components/pin-settings.tsx:4:1
+Module not found: Can't resolve '@/lib/actions/event-security'
+  2 |
+  3 | import { useFormState, useFormStatus } from 'react-dom';
+> 4 | import { setEventPin, removeEventPin } from '@/lib/actions/event-security';
+    | ^
+  5 | import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+  6 | import { Input } from '@/components/ui/input';
+  7 | import { Label } from '@/components/ui/label';
 
-   Creating an optimized production build ...
- ✓ (pwa) Compiling for server...
- ✓ (pwa) Compiling for server...
- ✓ (pwa) Compiling for client (static)...
- ○ (pwa) Service worker: C:\Users\Kadijatu T Bangura\Desktop\treeventx\public\sw.js
- ○ (pwa)   URL: /sw.js
- ○ (pwa)   Scope: /
-
-warn - The class `duration-[3000ms]` is ambiguous and matches multiple utilities.
-warn - If this is content and not a class, replace it with `duration-&lsqb;3000ms&rsqb;` to silence this warning.
-
-warn - The class `duration-[4000ms]` is ambiguous and matches multiple utilities. 
-warn - If this is content and not a class, replace it with `duration-&lsqb;4000ms&rsqb;` to silence this warning.
- ⚠ Compiled with warnings in 3.9min
-
-./app/api/organizations/[id]/followers/route.ts
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
+https://nextjs.org/docs/messages/module-not-found
 
 Import trace for requested module:
-./app/api/organizations/[id]/followers/route.ts
+./app/dashboard/events/[eventId]/manage/_components/manage-event-view.tsx
 
-./app/api/organizations/[id]/followers/route.ts
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/api/organizations/[id]/followers/route.ts
-
-./app/api/organizations/follow/route.ts
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/api/organizations/follow/route.ts
-
-./app/api/organizations/my-organizations/route.ts
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/api/organizations/my-organizations/route.ts
-
-./app/dashboard/events/[eventId]/edit/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/events/[eventId]/edit/page.tsx
-
-./app/dashboard/events/[eventId]/manage/email/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/events/[eventId]/manage/email/page.tsx
-
-./app/dashboard/events/[eventId]/view/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/events/[eventId]/view/page.tsx
-
-./app/dashboard/events/[eventId]/view/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/events/[eventId]/view/page.tsx
-
-./app/dashboard/layout.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/layout.tsx
-
-./app/dashboard/layout.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/layout.tsx
-
-./app/dashboard/organizer/[id]/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/organizer/[id]/page.tsx
-
-./app/dashboard/organizer/organizations/[id]/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/organizer/organizations/[id]/page.tsx
-
-./app/dashboard/organizer/organizations/new/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/organizer/organizations/new/page.tsx
-
-./app/dashboard/organizer/organizations/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/organizer/organizations/page.tsx
-
-./app/dashboard/organizer/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/dashboard/organizer/page.tsx
-
-./app/events/[eventId]/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/events/[eventId]/page.tsx
-
-./app/events/[eventId]/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/events/[eventId]/page.tsx
-
-./app/events/[eventId]/register/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/events/[eventId]/register/page.tsx
-
-./app/organizations/[id]/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/organizations/[id]/page.tsx
-
-./app/tickets/view/page.tsx
-Attempted import error: 'createClient' is not exported from '@/lib/supabase/server' (imported as 'createClient').
-
-Import trace for requested module:
-./app/tickets/view/page.tsx
-
-   Skipping linting
-   Checking validity of types  .Failed to compile.
-
-.next/types/app/events/[eventId]/register/success/page.ts:34:29
-Type error: Type '{ searchParams: { ticketId?: string | undefined; }; }' does not 
-satisfy the constraint 'PageProps'.
-  Types of property 'searchParams' are incompatible.
-    Type '{ ticketId?: string | undefined; }' is missing the following properties 
-from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
-
-  32 |
-  33 |
-> 34 | checkFields<Diff<PageProps, FirstArg<TEntry['default']>, 'default'>>()     
-     |                             ^
-  35 |
-  36 |
-  37 | // Check the arguments and return type of the generateMetadata function    
-  38 | if ('generateMetadata' in entry) {
-Next.js build worker exited with code: 1 and signal: null
+Next.js version: 15.5.6 (Webpack)

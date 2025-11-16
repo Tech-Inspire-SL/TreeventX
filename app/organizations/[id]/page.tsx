@@ -21,7 +21,7 @@ type OrgEvent = {
 
 async function getOrganizationProfile(orgId: string) {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
   
   // Get organization details with owner info
   const { data: org, error: orgError } = await supabase

@@ -1,8 +1,18 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-export async function createClient() {
-  const cookieStore = await cookies()
+type CookieStore = Awaited<ReturnType<typeof cookies>>
+
+async function resolveCookieStore(providedStore?: CookieStore): Promise<CookieStore> {
+  if (providedStore) {
+    return providedStore
+  }
+
+  return await cookies()
+}
+
+export async function createClient(providedStore?: CookieStore) {
+  const cookieStore = await resolveCookieStore(providedStore)
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,9 +45,9 @@ export async function createClient() {
   )
 }
 
-export async function createServiceRoleClient() {
-    const cookieStore = await cookies()
-    return createServerClient(
+export async function createServiceRoleClient(providedStore?: CookieStore) {
+  const cookieStore = await resolveCookieStore(providedStore)
+  return createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!,
         {

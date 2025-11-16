@@ -1,0 +1,1 @@
+export { PremiumEventHub } from './premium-hub';

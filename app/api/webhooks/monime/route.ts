@@ -229,12 +229,16 @@ export async function POST(req: NextRequest) {
 
       // 4. Send confirmation email with QR code
       const { data: ticketDetails } = await getTicketDetails(ticket.id);
-      if (ticketDetails) {
+      if (ticketDetails?.profiles?.email) {
         await sendTicketEmail(
-          ticketDetails.profiles.email!,
+          ticketDetails.profiles.email,
           `Your ticket for ${ticketDetails.events.title}`,
           React.createElement(TicketEmail, { ticket: ticketDetails })
         );
+      } else {
+        console.warn('Webhook Warning: Ticket email skipped due to missing profile email', {
+          ticketId: ticket.id,
+        });
       }
       
       // 5. Revalidate paths

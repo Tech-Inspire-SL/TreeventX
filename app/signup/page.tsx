@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { signup } from '@/lib/actions/auth';
+import { signup } from '@/app/lib/actions/auth';
 import { useFormStatus } from 'react-dom';
 import { AppLogo } from '../components/app-logo';
 

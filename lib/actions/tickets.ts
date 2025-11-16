@@ -5,6 +5,8 @@ import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 
+const getErrorMessage = (error: unknown) => (error instanceof Error ? error.message : 'An unexpected error occurred.');
+
 export async function unregisterAttendeeAction(state: { success: boolean; error?: string } | undefined, formData: FormData): Promise<{ success: boolean; error?: string }> {
   console.log('unregisterAttendeeAction called');
   const ticketId = parseInt(formData.get('ticketId') as string, 10);
@@ -14,7 +16,7 @@ export async function unregisterAttendeeAction(state: { success: boolean; error?
   }
 
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
   try {
     const { error } = await supabase
@@ -31,9 +33,9 @@ export async function unregisterAttendeeAction(state: { success: boolean; error?
     revalidatePath('/events');
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Unhandled error in unregisterAttendeeAction:', error);
-    return { success: false, error: error.message || 'An unexpected error occurred.' };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
@@ -67,7 +69,7 @@ export async function resendTicketLinkAction(state: { success: boolean; error?: 
   return { success: true };
 }
 
-export async function registerAndCreateTicket(state: { success: boolean; error?: string } | undefined, formData: FormData): Promise<{ success: boolean; error?: string }> {
+export async function registerAndCreateTicket(state: { success: boolean; error?: string; ticketId?: number } | undefined, formData: FormData): Promise<{ success: boolean; error?: string; ticketId?: number }> {
   console.log('registerAndCreateTicket called');
   const eventId = parseInt(formData.get('eventId') as string, 10);
   const userId = formData.get('userId') as string;
@@ -81,7 +83,7 @@ export async function registerAndCreateTicket(state: { success: boolean; error?:
   }
 
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
   try {
     // 1. Create the ticket
@@ -125,14 +127,14 @@ export async function registerAndCreateTicket(state: { success: boolean; error?:
     revalidatePath(`/events/${eventId}`);
     revalidatePath(`/dashboard/tickets/${newTicket.id}`);
 
-    return { success: true };
-  } catch (error: any) {
+    return { success: true, ticketId: newTicket.id };
+  } catch (error) {
     console.error('Unhandled error in registerAndCreateTicket:', error);
-    return { success: false, error: error.message || 'An unexpected error occurred.' };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
-export async function registerGuestForEvent(state: { success: boolean; error?: string } | undefined, formData: FormData): Promise<{ success: boolean; error?: string }> {
+export async function registerGuestForEvent(state: { success: boolean; error?: string; ticketId?: number } | undefined, formData: FormData): Promise<{ success: boolean; error?: string; ticketId?: number }> {
   console.log('registerGuestForEvent called');
   const eventId = parseInt(formData.get('eventId') as string, 10);
   const formResponses = JSON.parse(formData.get('formResponses') as string || '[]');
@@ -145,7 +147,7 @@ export async function registerGuestForEvent(state: { success: boolean; error?: s
   }
 
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
   try {
     // 1. Create guest user in Supabase Auth
@@ -214,22 +216,32 @@ export async function registerGuestForEvent(state: { success: boolean; error?: s
     revalidatePath(`/events/${eventId}`);
     revalidatePath(`/dashboard/tickets/${newTicket.id}`); // Guests might not have a dashboard, but good for consistency
 
-    return { success: true };
-  } catch (error: any) {
+    return { success: true, ticketId: newTicket.id };
+  } catch (error) {
     console.error('Unhandled error in registerGuestForEvent:', error);
-    return { success: false, error: error.message || 'An unexpected error occurred.' };
+    return { success: false, error: getErrorMessage(error) };
   }
 }
 
-export async function scanTicketAction(qrToken: string, eventId: number): Promise<{ success: boolean; message?: string; error?: string }> {
+export async function scanTicketAction(qrToken: string, eventId: number): Promise<{ success: boolean; message?: string; error?: string; user?: { first_name: string; last_name: string; email: string }; status?: { checked_in: boolean; checked_out: boolean } }> {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
   try {
-    // 1. Find the ticket
+    // 1. Find the ticket with user information
     const { data: ticket, error: ticketError } = await supabase
       .from('tickets')
-      .select('id, status, checked_in, checked_out')
+      .select(`
+        id, 
+        status, 
+        checked_in, 
+        checked_out,
+        profiles (
+          first_name,
+          last_name,
+          email
+        )
+      `)
       .eq('qr_token', qrToken)
       .eq('event_id', eventId)
       .single();
@@ -240,11 +252,23 @@ export async function scanTicketAction(qrToken: string, eventId: number): Promis
     }
 
     if (ticket.status !== 'approved') {
-      return { success: false, error: `Ticket status is '${ticket.status}'. Only approved tickets can be scanned.` };
+      const profile = Array.isArray(ticket.profiles) ? ticket.profiles[0] : ticket.profiles;
+      return { 
+        success: false, 
+        error: `Ticket status is '${ticket.status}'. Only approved tickets can be scanned.`,
+        user: profile ? {
+          first_name: profile.first_name || '',
+          last_name: profile.last_name || '',
+          email: profile.email || ''
+        } : undefined,
+        status: { checked_in: ticket.checked_in, checked_out: ticket.checked_out }
+      };
     }
 
     let message = '';
     let updateError = null;
+    const profile = Array.isArray(ticket.profiles) ? ticket.profiles[0] : ticket.profiles;
+    const userName = profile ? `${profile.first_name} ${profile.last_name}`.trim() : 'Unknown User';
 
     if (!ticket.checked_in) {
       // Check in
@@ -253,7 +277,7 @@ export async function scanTicketAction(qrToken: string, eventId: number): Promis
         .update({ checked_in: true, checked_in_at: new Date().toISOString() })
         .eq('id', ticket.id);
       updateError = error;
-      message = 'Attendee checked in successfully!';
+      message = `${userName} checked in successfully!`;
     } else if (!ticket.checked_out) {
       // Check out
       const { error } = await supabase
@@ -261,10 +285,10 @@ export async function scanTicketAction(qrToken: string, eventId: number): Promis
         .update({ checked_out: true, checked_out_at: new Date().toISOString() })
         .eq('id', ticket.id);
       updateError = error;
-      message = 'Attendee checked out successfully!';
+      message = `${userName} checked out successfully!`;
     } else {
       // Already checked in and out
-      message = 'Attendee already checked in and out.';
+      message = `${userName} already checked in and out.`;
     }
 
     if (updateError) {
@@ -273,7 +297,19 @@ export async function scanTicketAction(qrToken: string, eventId: number): Promis
     }
 
     revalidatePath(`/dashboard/events/${eventId}/manage/attendees`);
-    return { success: true, message };
+    return { 
+      success: true, 
+      message,
+      user: profile ? {
+        first_name: profile.first_name || '',
+        last_name: profile.last_name || '',
+        email: profile.email || ''
+      } : undefined,
+      status: { 
+        checked_in: !ticket.checked_in ? true : ticket.checked_in, 
+        checked_out: (!ticket.checked_in && !ticket.checked_out) ? false : (!ticket.checked_out ? true : ticket.checked_out)
+      }
+    };
   } catch (error: any) {
     console.error('Unhandled error in scanTicketAction:', error);
     return { success: false, error: error.message || 'An unexpected error occurred.' };
@@ -282,7 +318,7 @@ export async function scanTicketAction(qrToken: string, eventId: number): Promis
 
 export async function getScannableEvents(): Promise<{ data: any[] | null; error: string | null; isLoggedIn: boolean }> {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -293,7 +329,7 @@ export async function getScannableEvents(): Promise<{ data: any[] | null; error:
     // Fetch events where user is the organizer
     const { data: organizedEvents, error: organizedError } = await supabase
       .from('events')
-      .select('id, title, date, cover_image, attendees_count, capacity')
+      .select('id, title, date, cover_image, capacity')
       .eq('organizer_id', user.id)
       .gt('date', new Date().toISOString()); // Only upcoming events
 
@@ -305,7 +341,7 @@ export async function getScannableEvents(): Promise<{ data: any[] | null; error:
     // Fetch events where user is an assigned scanner
     const { data: scannedEvents, error: scannedError } = await supabase
       .from('event_scanners')
-      .select('events(id, title, date, cover_image, attendees_count, capacity)')
+      .select('events(id, title, date, cover_image, capacity)')
       .eq('user_id', user.id)
       .gt('events.date', new Date().toISOString()); // Only upcoming events
 
@@ -316,11 +352,14 @@ export async function getScannableEvents(): Promise<{ data: any[] | null; error:
 
     const allEvents = [
       ...(organizedEvents || []),
-      ...(scannedEvents || []).flatMap(s => s.events),
+      ...(scannedEvents || []).filter(s => s.events).map(s => s.events),
     ];
 
+    // Flatten in case any entries are arrays
+    const flatEvents = allEvents.flat();
+
     // Deduplicate events
-    const uniqueEvents = Array.from(new Map(allEvents.map(event => [event.id, event])).values());
+    const uniqueEvents = Array.from(new Map(flatEvents.map(event => [event.id, event])).values());
 
     return { data: uniqueEvents, error: null, isLoggedIn: true };
   } catch (error: any) {

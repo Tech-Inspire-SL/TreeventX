@@ -297,6 +297,10 @@ export type Database = {
           category: string | null
           organization_id: string | null
           event_type: string | null
+          template_id: number | null
+          template_settings: Json | null
+          community_enabled: boolean | null
+          premium_features_enabled: boolean | null
         }
         Insert: {
           id?: number
@@ -323,6 +327,10 @@ export type Database = {
           category?: string | null
           organization_id?: string | null
           event_type?: string | null
+          template_id?: number | null
+          template_settings?: Json | null
+          community_enabled?: boolean | null
+          premium_features_enabled?: boolean | null
         }
         Update: {
           id?: number
@@ -349,6 +357,10 @@ export type Database = {
           category?: string | null
           organization_id?: string | null
           event_type?: string | null
+          template_id?: number | null
+          template_settings?: Json | null
+          community_enabled?: boolean | null
+          premium_features_enabled?: boolean | null
         }
         Relationships: [
           {
@@ -361,6 +373,12 @@ export type Database = {
             foreignKeyName: "events_organization_id_fkey"
             columns: ["organization_id"]
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_template_id_fkey"
+            columns: ["template_id"]
+            referencedRelation: "event_templates"
             referencedColumns: ["id"]
           },
         ]

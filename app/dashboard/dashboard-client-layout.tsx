@@ -74,9 +74,9 @@ export function DashboardClientLayout({
 
   return (
     <SidebarProvider>
-      <div className="full flex min-h-screen bg-background">
-        {/* Enhanced Sidebar with better styling */}
-        <Sidebar className="hidden md:flex md:flex-col border-r border-border/40 bg-card/50 backdrop-blur-sm">
+      <div className="flex min-h-screen w-full bg-background">
+        {/* Enhanced Sidebar with better styling - OPTIMIZED WIDTH */}
+        <Sidebar className="hidden md:flex md:flex-col border-r border-border/40 bg-card/50 backdrop-blur-sm md:w-64 lg:w-72">
           <SidebarHeader className="border-b border-border/40 px-6 py-4">
             <Link href="/dashboard" className="flex items-center gap-3 transition-opacity hover:opacity-80">
               <div className="p-2 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10">
@@ -224,10 +224,10 @@ export function DashboardClientLayout({
           </SidebarFooter>
         </Sidebar>
         
-        {/* Enhanced Main Content Area */}
-        <div className="w-full flex flex-1 flex-col min-w-10 bg-background/90">
+        {/* Enhanced Main Content Area - FULL WIDTH FOR LARGE SCREENS */}
+        <div className="w-full flex flex-1 flex-col min-w-0 bg-background/90">
           
-          <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+          <main className="flex-1 p-4 md:p-6 w-full">
             {children}
           </main>
 

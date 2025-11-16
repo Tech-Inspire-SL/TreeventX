@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 
 export async function getProfile() {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
   const {
     data: { user },
@@ -35,7 +35,7 @@ export async function getProfile() {
 
 export async function updateProfile(prevState: any, formData: FormData) {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -62,7 +62,7 @@ export async function updateProfile(prevState: any, formData: FormData) {
 
 export async function getProfileStats() {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -99,7 +99,7 @@ export async function getProfileStats() {
 
 export async function getScanners() {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
     const { data, error } = await supabase
       .from('profiles')
       .select("id, first_name, last_name, email:raw_user_meta_data->>'email'")
@@ -115,7 +115,7 @@ export async function getScanners() {
     
 export async function upgradeGuestAccount(userId: string, password: string): Promise<{ error?: string; success?: boolean; }> {
   const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
+  const supabase = await createServiceRoleClient(cookieStore);
 
   const { error: authError } = await supabase.auth.admin.updateUserById(
     userId,

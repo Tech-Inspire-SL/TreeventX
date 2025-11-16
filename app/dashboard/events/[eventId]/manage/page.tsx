@@ -4,6 +4,8 @@
 import { getEventAttendees } from "@/lib/actions/events";
 import { getEventDetails } from "@/lib/server/queries/events";
 import { ManageEventView } from "./_components/manage-event-view";
+import { cookies } from "next/headers";
+import { PinVerificationForm } from "./_components/pin-verification-form";
 
 
 interface ManageEventPageProps {
@@ -39,6 +41,15 @@ export default async function ManageEventPage({ params }: ManageEventPageProps) 
         <p>Error fetching attendees: {attendeesError}</p>
       </div>
     );
+  }
+
+  // PIN Verification Gate
+  if (event.pin_hash) {
+    const cookieStore = cookies();
+    const pinSession = cookieStore.get(`event-pin-session-${eventId}`)?.value;
+    if (pinSession !== 'true') {
+      return <PinVerificationForm eventId={eventId} eventTitle={event.title} />;
+    }
   }
 
   return <ManageEventView event={event} initialAttendees={attendees || []} />;

@@ -8,15 +8,44 @@ import { uploadFile } from '@/lib/supabase/storage';
 import type { EventFormFieldWithOptions } from '@/app/lib/types';
 import { cookies } from 'next/headers';
 
+type CommunityFeatureType = 'gallery' | 'timeline' | 'comments' | 'feedback' | 'resources' | 'newsletter';
+
+const sanitizeOrganizationId = (value: FormDataEntryValue | null): string | null => {
+  if (!value || typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined') {
+    return null;
+  }
+
+  return trimmed;
+};
+
+const revalidateOrganizationViews = (organizationId: string | null) => {
+  if (!organizationId) {
+    return;
+  }
+
+  revalidatePath(`/organizations/${organizationId}`);
+  revalidatePath('/organizations');
+  revalidatePath(`/dashboard/organizer/organizations/${organizationId}`);
+  revalidatePath('/dashboard/organizer/organizations');
+};
+
 // 1. Create Event Action
 export async function createEventAction(formData: FormData) {
   const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
-  const { data: { user } } = await createClient(cookieStore).auth.getUser();
+  const supabase = await createServiceRoleClient(cookieStore);
+  const client = await createClient(cookieStore);
+  const { data: { user } } = await client.auth.getUser();
 
   if (!user) {
     return { error: 'You must be logged in to create an event.' };
   }
+
+  const organizationId = sanitizeOrganizationId(formData.get('organization_id'));
 
   // Server-side event limit check
   const { count, error: countError } = await supabase
@@ -48,9 +77,12 @@ export async function createEventAction(formData: FormData) {
     is_public: formData.get('is_public') === 'true',
     requires_approval: formData.get('requires_approval') === 'true',
     event_type: (formData.get('event_type') as string) || 'individual',
-    organization_id: formData.get('organization_id') as string | null,
+    organization_id: organizationId,
     customFields: JSON.parse(formData.get('customFields') as string || '[]') as EventFormFieldWithOptions[],
     cover_image_file: formData.get('cover_image_file') as File,
+    premium_features_enabled: formData.get('premium_features_enabled') === 'true',
+    community_enabled: formData.get('community_enabled') === 'true',
+    communityFeatures: JSON.parse(formData.get('communityFeatures') as string || '[]') as CommunityFeatureType[],
   };
 
   // Monime financial account integration for paid events
@@ -101,6 +133,8 @@ export async function createEventAction(formData: FormData) {
       organizer_id: user.id,
       cover_image: coverImageUrl,
       monime_account_id: monimeAccountId, // Store Monime account ID
+      premium_features_enabled: rawData.premium_features_enabled,
+      community_enabled: rawData.community_enabled,
     })
     .select('id')
     .single();
@@ -143,19 +177,55 @@ export async function createEventAction(formData: FormData) {
     }
   }
 
+  if (rawData.premium_features_enabled && rawData.community_enabled && rawData.communityFeatures.length > 0) {
+    const communityFeaturesPayload = rawData.communityFeatures.map((feature) => ({
+      event_id: event.id,
+      feature_type: feature,
+      is_enabled: true,
+    }));
+
+    const { error: communityFeatureError } = await supabase
+      .from('event_community_features')
+      .insert(communityFeaturesPayload);
+
+    if (communityFeatureError) {
+      console.error('Community feature creation error:', communityFeatureError);
+      return { error: `Failed to enable community features: ${communityFeatureError.message}` };
+    }
+  }
+
   revalidatePath('/dashboard/events');
+  revalidatePath(`/events/${event.id}/hub`);
+  revalidateOrganizationViews(rawData.organization_id);
   redirect(`/dashboard/events/${event.id}/manage`);
 }
 
 // 2. Update Event Action (with redirect)
 export async function updateEventAction(eventId: number, formData: FormData) {
   const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
-  const { data: { user } } = await createClient(cookieStore).auth.getUser();
+  const supabase = await createServiceRoleClient(cookieStore);
+  const client = await createClient(cookieStore);
+  const { data: { user } } = await client.auth.getUser();
 
   if (!user) {
     return { error: 'You must be logged in to update an event.' };
   }
+
+  const organizationId = sanitizeOrganizationId(formData.get('organization_id'));
+
+  const { data: existingEvent, error: existingEventError } = await supabase
+    .from('events')
+    .select('organization_id')
+    .eq('id', eventId)
+    .single();
+
+  if (existingEventError) {
+    console.error('Error fetching existing event organization:', existingEventError);
+  }
+
+  const previousOrganizationId = existingEvent?.organization_id
+    ? String(existingEvent.organization_id)
+    : null;
 
   const rawData = {
     title: formData.get('title') as string,
@@ -171,10 +241,13 @@ export async function updateEventAction(eventId: number, formData: FormData) {
     is_public: formData.get('is_public') === 'true',
     requires_approval: formData.get('requires_approval') === 'true',
     event_type: (formData.get('event_type') as string) || 'individual',
-    organization_id: formData.get('organization_id') as string | null,
+    organization_id: organizationId,
     customFields: JSON.parse(formData.get('customFields') as string || '[]') as EventFormFieldWithOptions[],
     cover_image_file: formData.get('cover_image_file') as File,
     scanners: JSON.parse(formData.get('scanners') as string || '[]') as string[],
+    premium_features_enabled: formData.get('premium_features_enabled') === 'true',
+    community_enabled: formData.get('community_enabled') === 'true',
+    communityFeatures: JSON.parse(formData.get('communityFeatures') as string || '[]') as CommunityFeatureType[],
   };
 
   let coverImageUrl: string | undefined;
@@ -202,6 +275,8 @@ export async function updateEventAction(eventId: number, formData: FormData) {
       event_type: rawData.event_type,
       organization_id: rawData.organization_id || null,
       cover_image: coverImageUrl,
+      premium_features_enabled: rawData.premium_features_enabled,
+      community_enabled: rawData.community_enabled,
     })
     .eq('id', eventId)
     .eq('organizer_id', user.id);
@@ -242,15 +317,39 @@ export async function updateEventAction(eventId: number, formData: FormData) {
     if (insertScannersError) return { error: `Failed to update scanners (step 2): ${insertScannersError.message}` };
   }
 
+  const { error: deleteCommunityFeaturesError } = await supabase
+    .from('event_community_features')
+    .delete()
+    .eq('event_id', eventId);
+  if (deleteCommunityFeaturesError) return { error: `Failed to update community features (step 1): ${deleteCommunityFeaturesError.message}` };
+
+  if (rawData.premium_features_enabled && rawData.community_enabled && rawData.communityFeatures.length > 0) {
+    const communityFeaturesPayload = rawData.communityFeatures.map((feature) => ({
+      event_id: eventId,
+      feature_type: feature,
+      is_enabled: true,
+    }));
+
+    const { error: insertCommunityFeaturesError } = await supabase
+      .from('event_community_features')
+      .insert(communityFeaturesPayload);
+    if (insertCommunityFeaturesError) return { error: `Failed to update community features (step 2): ${insertCommunityFeaturesError.message}` };
+  }
+
   revalidatePath(`/dashboard/events/${eventId}/edit`);
   revalidatePath(`/dashboard/events/${eventId}/manage`);
+  revalidatePath(`/events/${eventId}/hub`);
+  if (previousOrganizationId && previousOrganizationId !== rawData.organization_id) {
+    revalidateOrganizationViews(previousOrganizationId);
+  }
+  revalidateOrganizationViews(rawData.organization_id);
   redirect(`/dashboard/events/${eventId}/manage`);
 }
 
 // 5. Update Ticket Appearance
 export async function updateTicketAppearance(eventId: number, formData: FormData) {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'You must be logged in.' };
 
@@ -292,7 +391,7 @@ export async function updateTicketAppearance(eventId: number, formData: FormData
 // 6. Get Event Attendees (Secure)
 export async function getEventAttendees(eventId: number) {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = await createClient(cookieStore);
     const { data, error } = await supabase.rpc('get_attendees_for_event', { event_id_param: eventId });
 
     if (error) {
@@ -304,9 +403,10 @@ export async function getEventAttendees(eventId: number) {
 // 7. Delete Event Action
 export async function deleteEventAction(formData: FormData) {
     const cookieStore = await cookies();
-    const supabase = createServiceRoleClient(cookieStore);
+  const supabase = await createServiceRoleClient(cookieStore);
     const eventId = formData.get('eventId');
-    const { data: { user } } = await createClient(cookieStore).auth.getUser();
+  const supabaseClient = await createClient(cookieStore);
+  const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error('You must be logged in.');
 
     const { error } = await supabase

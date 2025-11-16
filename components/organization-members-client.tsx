@@ -39,9 +39,11 @@ interface Member {
   user_id: string;
   role: 'owner' | 'admin' | 'member';
   profiles: {
+    first_name: string | null;
+    last_name: string | null;
     full_name: string;
     email: string;
-  };
+  } | null;
 }
 
 interface OrganizationMembersClientProps {
@@ -194,9 +196,9 @@ export function OrganizationMembersClient({
             {members.map((member) => (
               <TableRow key={member.id}>
                 <TableCell className="font-medium">
-                  {member.profiles.full_name || 'Unknown'}
+                  {member.profiles?.full_name || 'Unknown'}
                 </TableCell>
-                <TableCell>{member.profiles.email}</TableCell>
+                <TableCell>{member.profiles?.email || 'No email'}</TableCell>
                 <TableCell>
                   <span className="capitalize">{member.role}</span>
                 </TableCell>
@@ -206,7 +208,7 @@ export function OrganizationMembersClient({
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleRemoveMember(member.user_id, member.profiles.full_name || 'this member')}
+                        onClick={() => handleRemoveMember(member.user_id, member.profiles?.full_name || 'this member')}
                       >
                         <Trash2 className="h-4 w-4 text-destructive" />
                       </Button>

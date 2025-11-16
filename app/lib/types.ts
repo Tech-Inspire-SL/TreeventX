@@ -1,6 +1,17 @@
 import type { Database } from './database.types';
 
-export type Event = Database['public']['Tables']['events']['Row'];
+export type Event = Database['public']['Tables']['events']['Row'] & {
+  template_id?: number | null;
+  template_settings?: Record<string, unknown> | null;
+  premium_features_enabled?: boolean | null;
+  community_enabled?: boolean | null;
+  community_features?: Array<{
+    id?: number;
+    feature_type: string;
+    is_enabled: boolean;
+    settings?: Record<string, unknown> | null;
+  }>;
+};
 export type Profile = Database['public']['Tables']['profiles']['Row'] & { email?: string };
 export type Ticket = Database['public']['Tables']['tickets']['Row'];
 export type Organization = Database['public']['Tables']['organizations']['Row'];
@@ -57,5 +68,27 @@ export type EventFormField = Database['public']['Tables']['event_form_fields']['
 
 export type EventFormFieldWithOptions = Omit<EventFormField, 'id' | 'event_id' | 'order' | 'options'> & {
   options?: { value: string }[];
+};
+
+export type TicketWithRelations = Ticket & {
+  events: Pick<
+    Event,
+    |
+      'id'
+      | 'title'
+      | 'description'
+      | 'date'
+      | 'location'
+      | 'cover_image'
+      | 'is_paid'
+      | 'price'
+      | 'organization_id'
+      | 'ticket_brand_logo'
+      | 'ticket_brand_color'
+      | 'ticket_background_image'
+  > & {
+    organization?: Pick<Organization, 'name'> | null;
+  };
+  profiles: (Profile & { email?: string | null }) | null;
 };
     

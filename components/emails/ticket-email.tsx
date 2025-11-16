@@ -1,6 +1,7 @@
 import React from 'react';
+import type { TicketWithRelations } from '@/app/lib/types';
 
-export function TicketEmail({ ticket }: { ticket: any }) {
+export function TicketEmail({ ticket }: { ticket: TicketWithRelations }) {
   return (
     <div>
       <h1>Your ticket for {ticket.events.title}</h1>

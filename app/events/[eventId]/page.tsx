@@ -6,38 +6,27 @@ import { getEventDetails } from "@/lib/server/queries/events";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from 'next/navigation';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Users, Ticket, ArrowLeft, Eye, DollarSign, Share2, Globe, Lock, Building2, ExternalLink } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, MapPin, Users, Ticket, ArrowLeft, DollarSign, Globe, Lock, Building2, ExternalLink, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from 'date-fns';
-import { EventWithAttendees } from "@/app/lib/types";
 import { ShareButton } from "./_components/share-button";
 import { ResendTicketForm } from "./_components/resend-ticket-form";
 import { PublicHeader } from "@/components/public-header";
 import { cookies } from 'next/headers';
 
 
-async function getTicketId(eventId: number, userId?: string) {
-    if (!userId) return null;
-    const supabase = await createClient();
-    const { data: ticket } = await supabase
-        .from('tickets')
-        .select('id')
-        .eq('event_id', eventId)
-        .eq('user_id', userId)
-        .single();
-    return ticket?.id;
-}
-
-
-export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
-    const eventId = parseInt(id, 10);
-    const supabase = await createClient();
+export default async function EventDetailsPage({ params }: { params: Promise<{ eventId: string }> }) {
+    const { eventId } = await params;
+    const eventId_num = parseInt(eventId, 10);
+    const cookieStore = await cookies();
+    const supabase = await createClient(cookieStore);
     const { data: { user } } = await supabase.auth.getUser();
 
-    const { data: event, error } = await getEventDetails(eventId);
+    const { data: event, error } = await getEventDetails(eventId_num);
+
+    const showPremiumHub = Boolean(event?.premium_features_enabled || event?.community_enabled);
 
     if (error || !event) {
         return <div className="flex items-center justify-center min-h-screen text-center text-red-500 p-8">Error: {error || 'This event could not be found.'}</div>
@@ -49,7 +38,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
     // If a user is logged in, prefer the dashboard-style view which includes the sidebar.
     if (user) {
         // Redirect to the dashboard view for this event (preview under dashboard layout)
-        redirect(`/dashboard/events/${eventId}/view`);
+        redirect(`/dashboard/events/${eventId_num}/view`);
     }
     
     // After redirect check, user is null (public view only)
@@ -182,6 +171,33 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
                                     )}
                                  </CardContent>
                              </Card>
+                            {showPremiumHub && (
+                                <Card className="border-0 bg-gradient-to-br from-primary via-primary/90 to-indigo-500 text-white shadow-lg">
+                                    <CardContent className="p-5 space-y-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15">
+                                                <Sparkles className="h-6 w-6" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm uppercase tracking-[0.3em] text-white/70">Premium Experience</p>
+                                                <h3 className="text-xl font-semibold">Immerse yourself in the event hub</h3>
+                                            </div>
+                                        </div>
+                                        <p className="text-sm text-white/80">
+                                            Explore exclusive content, community spaces, schedules, and resources curated for this event.
+                                        </p>
+                                        <Button
+                                            asChild
+                                            size="lg"
+                                            className="h-11 w-full rounded-xl bg-white text-primary hover:bg-white/90"
+                                        >
+                                            <Link href={`/events/${event.id}/hub`}>
+                                                Enter Premium Hub
+                                            </Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            )}
                         </div>
                     </CardContent>
                 </Card>

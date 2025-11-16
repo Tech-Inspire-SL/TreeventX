@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 export async function uploadFile(file: File, bucket: string): Promise<{ publicUrl: string | null, error: { message: string } | null }> {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
   
   if (!file) {
     return { publicUrl: null, error: { message: 'No file provided' } };
@@ -50,7 +50,7 @@ export async function uploadFile(file: File, bucket: string): Promise<{ publicUr
 
 export async function deleteFile(bucket: string, filePath: string): Promise<void> {
     const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
     const { error } = await supabase.storage
       .from(bucket)
       .remove([filePath]);

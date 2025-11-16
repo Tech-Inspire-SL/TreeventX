@@ -42,7 +42,7 @@ type FinancialStats = {
 
 async function getEventFinancialDetails(eventId: number): Promise<FinancialStats | { error: string }> {
   const cookieStore = await cookies();
-  const supabase = createServiceRoleClient(cookieStore);
+  const supabase = await createServiceRoleClient(cookieStore);
   const {
     data: { user },
   } = await supabase.auth.getUser();
