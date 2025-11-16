@@ -183,13 +183,13 @@ export async function createPinSession(eventId: number, pin: string) {
 }
 
 export async function createPinSessionAction(
-  eventId: number,
   _prevState: PinActionState,
-  formData: FormData
+  formData: FormData,
 ) {
+  const eventId = parseEventId(formData.get('eventId'));
   const pin = formData.get('pin');
 
-  if (typeof pin !== 'string') {
+  if (!eventId || typeof pin !== 'string') {
     return { error: 'Invalid PIN provided.' };
   }
 

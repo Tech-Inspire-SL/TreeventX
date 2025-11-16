@@ -18,9 +18,8 @@ function SubmitButton() {
   );
 }
 
-export function PinVerificationForm({ eventId, eventTitle }: { eventId: number, eventTitle: string }) {
-  const actionWithId = createPinSessionAction.bind(null, eventId);
-  const [state, dispatch] = useFormState(actionWithId, undefined);
+export function PinVerificationForm({ eventId, eventTitle }: { eventId: number; eventTitle: string }) {
+  const [state, dispatch] = useFormState(createPinSessionAction, null);
 
   useEffect(() => {
     if (state?.success) {
@@ -43,6 +42,7 @@ export function PinVerificationForm({ eventId, eventTitle }: { eventId: number, 
         </CardHeader>
         <CardContent>
           <form action={dispatch} className="space-y-4">
+            <input type="hidden" name="eventId" value={eventId} />
             <div>
               <Label htmlFor="pin" className="sr-only">PIN</Label>
               <Input

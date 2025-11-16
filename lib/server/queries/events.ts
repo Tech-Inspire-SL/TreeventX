@@ -1,7 +1,7 @@
 'use server';
 
 import { createServiceRoleClient } from '@/app/lib/supabase/server';
-import type { TicketWithRelations } from '@/app/lib/types';
+import type { Event, TicketWithRelations } from '@/app/lib/types';
 import { cookies } from 'next/headers';
 
 export async function getTicketDetails(ticketId: number): Promise<{
@@ -49,7 +49,10 @@ export async function getTicketDetails(ticketId: number): Promise<{
   return { data: data as TicketWithRelations, error: null };
 }
 
-export async function getEventDetails(eventId: number): Promise<{ data: unknown; error: string | null }> {
+export async function getEventDetails(eventId: number): Promise<{
+  data: (Event & { pin_hash?: string | null }) | null;
+  error: string | null;
+}> {
   console.log(`Fetching details for event ${eventId}...`);
 
   // Simulate fetching data
@@ -68,7 +71,7 @@ export async function getEventDetails(eventId: number): Promise<{ data: unknown;
     return { data: null, error: error.message };
   }
 
-  return { data, error: null };
+  return { data: data as Event & { pin_hash?: string | null }, error: null };
 }
 
 export async function getEventFormFields(eventId: number): Promise<{ data: unknown[]; error: string | null }> {
