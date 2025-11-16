@@ -20,7 +20,7 @@ function SubmitButton() {
 
 export function PinVerificationForm({ eventId, eventTitle }: { eventId: number, eventTitle: string }) {
   const actionWithId = createPinSessionAction.bind(null, eventId);
-  const [state, dispatch] = useFormState(actionWithId, undefined);
+  const [state, dispatch] = useFormState(actionWithId, null);
 
   useEffect(() => {
     if (state?.success) {

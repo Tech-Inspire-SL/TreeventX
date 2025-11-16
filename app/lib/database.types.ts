@@ -301,6 +301,7 @@ export type Database = {
           template_settings: Json | null
           community_enabled: boolean | null
           premium_features_enabled: boolean | null
+          pin_hash: string | null
         }
         Insert: {
           id?: number
@@ -331,6 +332,7 @@ export type Database = {
           template_settings?: Json | null
           community_enabled?: boolean | null
           premium_features_enabled?: boolean | null
+          pin_hash?: string | null
         }
         Update: {
           id?: number
@@ -361,6 +363,7 @@ export type Database = {
           template_settings?: Json | null
           community_enabled?: boolean | null
           premium_features_enabled?: boolean | null
+          pin_hash?: string | null
         }
         Relationships: [
           {

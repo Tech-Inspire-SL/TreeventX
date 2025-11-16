@@ -12,5 +12,11 @@ export default async function TicketPage({ params }: { params: Promise<{ id: str
         return <div className="text-center text-red-500 p-8">Error: {error || 'Ticket not found or you do not have permission to view it.'}</div>
     }
 
-    return <TicketView ticket={ticket} />
+    // Add form_responses to match expected type (they'll be fetched separately if needed)
+    const ticketWithFormResponses = {
+        ...ticket,
+        form_responses: []
+    } as any; // Type assertion needed as TicketWithRelations has a subset of Event fields
+
+    return <TicketView ticket={ticketWithFormResponses} />
 }

@@ -16,6 +16,15 @@ import { ResendTicketForm } from "./_components/resend-ticket-form";
 import { PublicHeader } from "@/components/public-header";
 import { cookies } from 'next/headers';
 
+async function getAttendeeCount(eventId: number) {
+    const cookieStore = await cookies();
+    const { count } = await (await createClient(cookieStore))
+        .from('tickets')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_id', eventId)
+        .eq('status', 'approved');
+    return count || 0;
+}
 
 export default async function EventDetailsPage({ params }: { params: Promise<{ eventId: string }> }) {
     const { eventId } = await params;
@@ -42,7 +51,16 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
     }
     
     // After redirect check, user is null (public view only)
-    const isFull = event.capacity ? event.attendees && event.attendees >= event.capacity : false;
+    const attendeeCount = await getAttendeeCount(eventId_num);
+    // Add attendees count to event
+    const eventWithAttendees = {
+        ...event,
+        attendees: attendeeCount
+    };
+    const isFull = event.capacity ? attendeeCount >= event.capacity : false;
+
+    // Use eventWithAttendees for the rest of the component
+    const displayEvent = eventWithAttendees;
 
     return (
         <>
@@ -56,37 +74,37 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                 Back to Events
                             </Link>
                         </Button>
-                        <ShareButton event={event} />
+                        <ShareButton event={displayEvent} />
                     </div>
                 <Card className="overflow-hidden">
                     <div className="relative h-64 md:h-96 w-full">
                         <Image
-                            src={event.cover_image || 'https://picsum.photos/1200/400'}
-                            alt={event.title}
+                            src={displayEvent.cover_image || 'https://picsum.photos/1200/400'}
+                            alt={displayEvent.title}
                             fill
                             data-ai-hint="event concert"
                             className="object-cover"
-                            unoptimized={!!event.cover_image?.includes('supabase.co')}
+                            unoptimized={!!displayEvent.cover_image?.includes('supabase.co')}
                         />
                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                     </div>
                     <CardHeader className="relative -mt-16 md:-mt-20 z-10 p-4 md:p-6">
-                        <CardTitle className="text-3xl md:text-4xl font-headline text-white">{event.title}</CardTitle>
+                        <CardTitle className="text-3xl md:text-4xl font-headline text-white">{displayEvent.title}</CardTitle>
                     </CardHeader>
                      <CardContent className="p-4 md:p-6 grid md:grid-cols-3 gap-6">
                         <div className="md:col-span-2 space-y-6">
                             
                             <div>
                                 <h3 className="text-xl font-semibold mb-2">About this event</h3>
-                                <p className="text-muted-foreground whitespace-pre-wrap">{event.description}</p>
+                                <p className="text-muted-foreground whitespace-pre-wrap">{displayEvent.description}</p>
                             </div>
                              <div>
                                 <h3 className="text-xl font-semibold mb-2">Date and time</h3>
                                 <div className="flex items-center gap-2 text-muted-foreground">
                                     <Calendar className="h-5 w-5" />
                                     <span>
-                                        {format(new Date(event.date), 'PPPP p')}
-                                        {event.end_date && ` - ${format(new Date(event.end_date), 'p')}`}
+                                        {format(new Date(displayEvent.date), 'PPPP p')}
+                                        {displayEvent.end_date && ` - ${format(new Date(displayEvent.end_date), 'p')}`}
                                     </span>
                                 </div>
                             </div>
@@ -94,11 +112,11 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                 <h3 className="text-xl font-semibold mb-2">Location</h3>
                                 <div className="flex items-center gap-2 text-muted-foreground">
                                     <MapPin className="h-5 w-5" />
-                                    <span>{event.location}</span>
+                                    <span>{displayEvent.location}</span>
                                 </div>
                             </div>
 
-                            {event.organization && (
+                            {displayEvent.organization && (
                                 <div>
                                     <h3 className="text-xl font-semibold mb-2">Hosted by</h3>
                                     <Card className="bg-muted/50">
@@ -106,16 +124,16 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                             <div className="flex items-start gap-3">
                                                 <Building2 className="h-6 w-6 text-primary mt-1" />
                                                 <div className="flex-1">
-                                                    <h4 className="font-semibold text-lg">{event.organization.name}</h4>
-                                                    {event.organization.description && (
+                                                    <h4 className="font-semibold text-lg">{displayEvent.organization.name}</h4>
+                                                    {displayEvent.organization.description && (
                                                         <p className="text-sm text-muted-foreground mt-1">
-                                                            {event.organization.description}
+                                                            {displayEvent.organization.description}
                                                         </p>
                                                     )}
                                                     <div className="mt-2 flex flex-wrap gap-3 text-sm">
-                                                        {event.organization.website && (
+                                                        {displayEvent.organization.website && (
                                                             <a
-                                                                href={event.organization.website}
+                                                                href={displayEvent.organization.website}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 className="flex items-center gap-1 text-primary hover:underline"
@@ -124,10 +142,10 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                                                 Website
                                                             </a>
                                                         )}
-                                                        {event.organization.location && (
+                                                        {displayEvent.organization.location && (
                                                             <span className="flex items-center gap-1 text-muted-foreground">
                                                                 <MapPin className="h-3 w-3" />
-                                                                {event.organization.location}
+                                                                {displayEvent.organization.location}
                                                             </span>
                                                         )}
                                                     </div>
@@ -142,23 +160,23 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                              <Card className="bg-secondary">
                                  <CardContent className="p-4 space-y-4">
                                      <div className="flex items-center gap-2">
-                                        {event.is_public ? <Globe className="h-5 w-5 text-primary" /> : <Lock className="h-5 w-5 text-primary" />}
+                                        {displayEvent.is_public ? <Globe className="h-5 w-5 text-primary" /> : <Lock className="h-5 w-5 text-primary" />}
                                         <div className="flex-1">
-                                            <p className="font-semibold">{event.is_public ? 'Public Event' : 'Private Event'}</p>
+                                            <p className="font-semibold">{displayEvent.is_public ? 'Public Event' : 'Private Event'}</p>
                                             <p className="text-xs text-muted-foreground">Visibility</p>
                                         </div>
                                     </div>
                                      <div className="flex items-center gap-2">
                                         <Users className="h-5 w-5 text-primary" />
                                         <div className="flex-1">
-                                            <p className="font-semibold">{event.attendees} / {event.capacity || 'Unlimited'}</p>
+                                            <p className="font-semibold">{displayEvent.attendees} / {displayEvent.capacity || 'Unlimited'}</p>
                                             <p className="text-xs text-muted-foreground">Attendees</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        {event.is_paid ? <DollarSign className="h-5 w-5 text-primary" /> : <Ticket className="h-5 w-5 text-primary" />}
+                                        {displayEvent.is_paid ? <DollarSign className="h-5 w-5 text-primary" /> : <Ticket className="h-5 w-5 text-primary" />}
                                         <div className="flex-1">
-                                            <p className="font-semibold">{event.is_paid && event.price ? `SLE ${Number(event.price).toLocaleString()}` : 'Free'}</p>
+                                            <p className="font-semibold">{displayEvent.is_paid && displayEvent.price ? `SLE ${Number(displayEvent.price).toLocaleString()}` : 'Free'}</p>
                                             <p className="text-xs text-muted-foreground">Price</p>
                                         </div>
                                     </div>
@@ -166,7 +184,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                         <Button className="w-full" disabled>Event Full</Button>
                                     ) : (
                                         <Button asChild className="w-full">
-                                            <Link href={`/events/${event.id}/register`}>Register Now</Link>
+                                            <Link href={`/events/${displayEvent.id}/register`}>Register Now</Link>
                                         </Button>
                                     )}
                                  </CardContent>
@@ -184,14 +202,14 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                                             </div>
                                         </div>
                                         <p className="text-sm text-white/80">
-                                            Explore exclusive content, community spaces, schedules, and resources curated for this event.
+                                            Explore exclusive content, community spaces, schedules, and resources curated for this displayEvent.
                                         </p>
                                         <Button
                                             asChild
                                             size="lg"
                                             className="h-11 w-full rounded-xl bg-white text-primary hover:bg-white/90"
                                         >
-                                            <Link href={`/events/${event.id}/hub`}>
+                                            <Link href={`/events/${displayEvent.id}/hub`}>
                                                 Enter Premium Hub
                                             </Link>
                                         </Button>
@@ -202,7 +220,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ e
                     </CardContent>
                 </Card>
                 <div className="mt-8">
-                    <ResendTicketForm eventId={event.id} />
+                    <ResendTicketForm eventId={displayEvent.id} />
                 </div>
                 </div>
             </div>

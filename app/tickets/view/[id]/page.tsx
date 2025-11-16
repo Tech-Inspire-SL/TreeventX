@@ -42,10 +42,16 @@ export default async function ViewTicketPage({
         );
     }
 
+    // Add form_responses to match expected type
+    const ticketWithFormResponses = {
+        ...ticket,
+        form_responses: []
+    } as any;
+
     return (
         <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4 sm:p-6 md:p-8">
             <div className="w-full max-w-4xl">
-                <TicketView ticket={ticket} />
+                <TicketView ticket={ticketWithFormResponses} />
             </div>
         </div>
     );

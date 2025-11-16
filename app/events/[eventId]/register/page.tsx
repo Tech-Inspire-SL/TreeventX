@@ -5,6 +5,16 @@ import { RegisterForEventForm } from './_components/register-event-form';
 import { EventDetailsCard } from '@/app/events/[eventId]/register/_components/event-details-card';
 import { cookies } from 'next/headers';
 
+async function getAttendeeCount(eventId: number) {
+    const cookieStore = await cookies();
+    const { count } = await (await createClient(cookieStore))
+        .from('tickets')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_id', eventId)
+        .eq('status', 'approved');
+    return count || 0;
+}
+
 interface RegisterForEventPageProps {
     params: Promise<{ eventId: string }>;
     searchParams?: Promise<{ payment_cancelled?: string }>;
@@ -39,11 +49,17 @@ export default async function RegisterForEventPage({ params, searchParams }: Reg
         );
     }
 
+    const attendeeCount = await getAttendeeCount(eventId);
+    const eventWithAttendees = {
+        ...event,
+        attendees: attendeeCount
+    };
+
     return (
         <div className="container mx-auto py-8">
             <div className="grid gap-8 md:grid-cols-2">
-                <EventDetailsCard event={event} />
-                <RegisterForEventForm event={event} formFields={formFields || []} user={user} />
+                <EventDetailsCard event={eventWithAttendees} />
+                <RegisterForEventForm event={eventWithAttendees} formFields={formFields || []} user={user} />
             </div>
         </div>
     );

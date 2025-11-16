@@ -89,7 +89,7 @@ export default async function ViewTicketPage({ searchParams }: ViewTicketPagePro
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <TicketView ticket={ticket} />
+                        <TicketView ticket={{ ...ticket, form_responses: [] } as any} />
                     </CardContent>
                 </Card>
             </div>

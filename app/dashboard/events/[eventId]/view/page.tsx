@@ -63,6 +63,12 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
     const isOwner = user.id === event.organizer_id;
     const isFull = event.capacity ? attendeeCount >= event.capacity : false;
 
+    // Add attendees count to event for ShareButton
+    const eventWithAttendees = {
+        ...event,
+        attendees: attendeeCount
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -70,7 +76,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
                     <h1 className="text-3xl font-bold">Event Details</h1>
                     <p className="text-muted-foreground">View event information and register</p>
                 </div>
-                <ShareButton event={event} />
+                <ShareButton event={eventWithAttendees} />
             </div>
 
             <Card className="overflow-hidden">

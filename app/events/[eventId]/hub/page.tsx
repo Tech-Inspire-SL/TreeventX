@@ -18,6 +18,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShareButton } from '@/app/components/share-button';
+import type { PremiumEventData } from '@/app/lib/types/premium';
+import { createClient } from '@/lib/supabase/server';
+import { CountdownTimer } from '@/app/components/countdown-timer';
 
 // (Data fetching function remains the same)
 async function getPremiumEventData(eventId: number): Promise<PremiumEventData | null> {
@@ -69,8 +72,22 @@ async function getPremiumEventData(eventId: number): Promise<PremiumEventData | 
 
 const TimelineView = ({ event }: { event: PremiumEventData }) => (
   <div className="space-y-6">
-    {event.timeline?.length > 0 ? (
-      event.timeline.map((item) => <TimelineEventCard key={item.id} item={item} />)
+    {event.timeline && event.timeline.length > 0 ? (
+      event.timeline.map((item: any) => (
+        <Card key={item.id} className="p-4">
+          <div className="flex items-start gap-4">
+            <div className="flex-1">
+              <h3 className="font-semibold">{item.title}</h3>
+              {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
+              {item.start_time && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  {format(new Date(item.start_time), 'PPp')}
+                </p>
+              )}
+            </div>
+          </div>
+        </Card>
+      ))
     ) : (
       <p className="text-muted-foreground">The event schedule will be posted here soon.</p>
     )}
@@ -79,7 +96,7 @@ const TimelineView = ({ event }: { event: PremiumEventData }) => (
 
 const GalleryView = ({ event }: { event: PremiumEventData }) => (
   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-    {event.gallery?.length > 0 ? (
+    {event.gallery && event.gallery.length > 0 ? (
       event.gallery.map((item) => (
         <Link key={item.id} href={item.image_url} target="_blank">
           <img src={item.image_url} alt={item.caption || 'Event gallery image'} className="aspect-square w-full rounded-lg object-cover transition-transform hover:scale-105" />
@@ -93,8 +110,8 @@ const GalleryView = ({ event }: { event: PremiumEventData }) => (
 
 const CommunityView = ({ event }: { event: PremiumEventData }) => (
   <div className="space-y-6">
-    {event.comments?.length > 0 ? (
-      event.comments.map((comment) => (
+    {event.comments && event.comments.length > 0 ? (
+      event.comments.map((comment: any) => (
         <div key={comment.id} className="flex items-start gap-4">
           <Avatar>
             <AvatarImage src={comment.user?.avatar_url ?? undefined} />
@@ -117,7 +134,7 @@ const CommunityView = ({ event }: { event: PremiumEventData }) => (
 
 const ResourcesView = ({ event }: { event: PremiumEventData }) => (
   <div className="space-y-4">
-    {event.resources?.length > 0 ? (
+    {event.resources && event.resources.length > 0 ? (
       event.resources.map((resource) => (
         <Card key={resource.id}>
           <CardHeader className="flex flex-row items-center justify-between p-4">
@@ -126,7 +143,7 @@ const ResourcesView = ({ event }: { event: PremiumEventData }) => (
               {resource.description && <CardDescription className="text-sm">{resource.description}</CardDescription>}
             </div>
             <Button asChild size="sm">
-              <a href={resource.file_url} target="_blank" rel="noopener noreferrer">
+              <a href={resource.resource_url} target="_blank" rel="noopener noreferrer">
                 <Download className="mr-2 h-4 w-4" /> Download
               </a>
             </Button>
@@ -166,7 +183,7 @@ export default async function EventHubPage({ params }: { params: Promise<{ event
       <section className="border-b bg-slate-100 dark:bg-slate-800/20">
         <div className="container mx-auto px-4 py-12 text-center lg:px-8">
           <Avatar className="mx-auto h-24 w-24 border-4 border-background shadow-lg">
-            <AvatarImage src={event.organizer?.avatar_url ?? undefined} />
+            <AvatarImage src={(event.organizer as any)?.avatar_url ?? undefined} />
             <AvatarFallback className="text-3xl">{organizerName.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="mt-4 flex items-center justify-center gap-4">

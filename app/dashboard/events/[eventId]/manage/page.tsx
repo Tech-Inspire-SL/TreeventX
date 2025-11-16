@@ -45,12 +45,18 @@ export default async function ManageEventPage({ params }: ManageEventPageProps) 
 
   // PIN Verification Gate
   if (event.pin_hash) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const pinSession = cookieStore.get(`event-pin-session-${eventId}`)?.value;
     if (pinSession !== 'true') {
       return <PinVerificationForm eventId={eventId} eventTitle={event.title} />;
     }
   }
 
-  return <ManageEventView event={event} initialAttendees={attendees || []} />;
+  // Add attendees count to event
+  const eventWithAttendees = {
+    ...event,
+    attendees: attendees?.length || 0
+  };
+
+  return <ManageEventView event={eventWithAttendees} initialAttendees={attendees || []} />;
 }
