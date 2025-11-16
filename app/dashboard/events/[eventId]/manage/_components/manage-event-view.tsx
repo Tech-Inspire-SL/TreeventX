@@ -16,7 +16,7 @@ import { ReviewAttendeeModal } from "./review-attendee-modal";
 import { RefreshButton } from "./refresh-button";
 import { useToast } from "@/hooks/use-toast";
 
-function EventInfo({ event }: { event: Event & { attendees: number } }) {
+function EventInfo({ event }: { event: Event }) {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
@@ -359,7 +359,7 @@ function EmailTab({ event }: { event: { id: number }}) {
 }
 
 interface ManageEventViewProps {
-  event: Event & { attendees: number; pin_hash?: string | null };
+    event: Event & { pin_hash?: string | null };
   initialAttendees: Attendee[];
 }
 

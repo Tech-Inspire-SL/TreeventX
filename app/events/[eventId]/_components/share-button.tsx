@@ -3,10 +3,14 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import type { EventWithAttendees } from "@/app/lib/types";
 import { Share2 } from "lucide-react";
 
-export function ShareButton({ event }: { event: EventWithAttendees }) {
+interface ShareableEvent {
+    title: string;
+    description?: string | null;
+}
+
+export function ShareButton({ event }: { event: ShareableEvent }) {
     const { toast } = useToast();
 
     const handleShare = async () => {

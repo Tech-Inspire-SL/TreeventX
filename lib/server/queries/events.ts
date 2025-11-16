@@ -1,7 +1,7 @@
 'use server';
 
-import { createServiceRoleClient } from '@/app/lib/supabase/server';
-import type { Event, TicketWithRelations } from '@/app/lib/types';
+import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
+import type { EventWithAttendees, TicketWithRelations } from '@/app/lib/types';
 import { cookies } from 'next/headers';
 
 export async function getTicketDetails(ticketId: number): Promise<{
@@ -50,38 +50,63 @@ export async function getTicketDetails(ticketId: number): Promise<{
 }
 
 export async function getEventDetails(eventId: number): Promise<{
-  data: (Event & { pin_hash?: string | null }) | null;
+  data: (EventWithAttendees & { pin_hash?: string | null }) | null;
   error: string | null;
 }> {
-  console.log(`Fetching details for event ${eventId}...`);
-
-  // Simulate fetching data
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
   const cookieStore = await cookies();
   const supabase = await createServiceRoleClient(cookieStore);
 
   const { data, error } = await supabase
     .from('events')
-    .select('*, pin_hash, organization:organizations(*)')
+    .select(`
+      *,
+      requires_approval,
+      scanners:event_scanners(*, profiles(email)),
+      event_form_fields(*, options:event_form_field_options(*)),
+      community_features:event_community_features(feature_type, is_enabled),
+      organizer:profiles!events_organizer_id_fkey(id, first_name, last_name, email),
+      organization:organizations(id, name, description, website, location)
+    `)
     .eq('id', eventId)
     .single();
 
-  if (error) {
-    return { data: null, error: error.message };
+  if (error || !data) {
+    return { data: null, error: error?.message || 'Event not found' };
   }
 
-  return { data: data as Event & { pin_hash?: string | null }, error: null };
+  const { count: attendeeCount, error: attendeeError } = await supabase
+    .from('tickets')
+    .select('*', { count: 'exact', head: true })
+    .eq('event_id', eventId);
+
+  if (attendeeError) {
+    return { data: null, error: attendeeError.message };
+  }
+
+  const processedData = {
+    ...data,
+    organizer: Array.isArray(data.organizer) ? data.organizer[0] : data.organizer,
+    organization: Array.isArray(data.organization) ? data.organization[0] : data.organization,
+    attendees: attendeeCount ?? 0,
+    community_features: data.community_features || [],
+  } as EventWithAttendees & { pin_hash?: string | null };
+
+  return { data: processedData, error: null };
 }
 
 export async function getEventFormFields(eventId: number): Promise<{ data: unknown[]; error: string | null }> {
-    console.log(`Fetching form fields for event ${eventId}...`);
+  const cookieStore = await cookies();
+  const supabase = await createClient(cookieStore);
 
-    // Simulate fetching data
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const { data, error } = await supabase
+    .from('event_form_fields')
+    .select('*, options:event_form_field_options(*)')
+    .eq('event_id', eventId)
+    .order('order', { ascending: true });
 
-    return {
-        data: [],
-        error: null,
-    };
+  if (error) {
+    return { data: [], error: error.message };
+  }
+
+  return { data: data || [], error: null };
 }
