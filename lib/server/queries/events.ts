@@ -36,6 +36,12 @@ export async function getTicketDetails(ticketId: number): Promise<{
         last_name,
         email,
         is_guest
+      ),
+      form_responses:attendee_form_responses (
+        field_value,
+        event_form_fields (
+          field_name
+        )
       )
     `)
     .eq('id', ticketId)
@@ -46,7 +52,11 @@ export async function getTicketDetails(ticketId: number): Promise<{
     return { data: null, error: error.message };
   }
 
-  return { data: data as TicketWithRelations, error: null };
+  const normalizedTicket = data as TicketWithRelations;
+  if (!normalizedTicket.form_responses) {
+    normalizedTicket.form_responses = [];
+  }
+  return { data: normalizedTicket, error: null };
 }
 
 export async function getEventDetails(eventId: number): Promise<{

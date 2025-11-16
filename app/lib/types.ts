@@ -90,5 +90,9 @@ export type TicketWithRelations = Ticket & {
     organization?: Pick<Organization, 'name'> | null;
   };
   profiles: (Profile & { email?: string | null }) | null;
+  form_responses: {
+    field_value: string;
+    event_form_fields: { field_name: string };
+  }[] | null;
 };
     
