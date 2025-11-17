@@ -46,20 +46,29 @@ export default async function EditEventPage(props: { params: Promise<{ eventId: 
 
   // Map event data to form values
   const defaultValues = {
-    ...event,
+    title: event.title ?? '',
+    description: event.description ?? '',
+    category: (event.category as string) ?? 'other',
     date: new Date(event.date),
     end_date: event.end_date ? new Date(event.end_date) : undefined,
+    location: event.location ?? '',
+    capacity: event.capacity ?? undefined,
     targetAudience: 'Users', // This field is not in the db, providing a default
     current_cover_image: event.cover_image || undefined,
     scanners: (event.scanners || []).map((s: { profiles: { email: string } }) => ({ email: s.profiles.email })),
     customFields: event.event_form_fields,
+    is_paid: event.is_paid ?? false,
+    price: event.price ?? undefined,
+    fee_bearer: event.fee_bearer === 'organizer' ? 'organizer' : 'buyer',
+    is_public: event.is_public ?? true,
+    requires_approval: event.requires_approval ?? false,
     premium_features_enabled: event.premium_features_enabled ?? false,
     community_enabled: event.community_enabled ?? false,
     communityFeatures: (event.community_features || [])
       .filter((feature: { is_enabled: boolean }) => feature.is_enabled)
       .map((feature: { feature_type: string }) => feature.feature_type),
     organization_id: event.organization_id ?? '',
-  }
+  };
 
   return (
     <div>
