@@ -1,7 +1,7 @@
 
-import { CreateEventForm } from '../../../../components/create-event-form';
-import { getEventDetails } from '../../../../lib/server/queries/events';
-import { createClient } from '../../../../lib/supabase/server';
+import { CreateEventForm } from '@/app/components/create-event-form';
+import { getEventDetails } from '@/lib/server/queries/events';
+import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
@@ -17,6 +17,33 @@ export default async function EditEventPage(props: { params: Promise<{ eventId: 
     redirect('/dashboard/events');
   }
 
+  const { data: memberships } = await supabase
+    .from('organization_members')
+    .select('organizations ( id, name )')
+    .eq('user_id', user.id);
+
+  const organizationMap = new Map<string, { id: string; name: string }>();
+
+  (memberships ?? []).forEach((membership) => {
+    const orgRecord = Array.isArray(membership.organizations)
+      ? membership.organizations[0]
+      : membership.organizations;
+    if (orgRecord?.id) {
+      organizationMap.set(orgRecord.id, { id: orgRecord.id, name: orgRecord.name });
+    }
+  });
+
+  if (event.organization?.id && !organizationMap.has(event.organization.id)) {
+    organizationMap.set(event.organization.id, {
+      id: event.organization.id,
+      name: event.organization.name,
+    });
+  }
+
+  const organizations = Array.from(organizationMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
   // Map event data to form values
   const defaultValues = {
     ...event,
@@ -31,6 +58,7 @@ export default async function EditEventPage(props: { params: Promise<{ eventId: 
     communityFeatures: (event.community_features || [])
       .filter((feature: { is_enabled: boolean }) => feature.is_enabled)
       .map((feature: { feature_type: string }) => feature.feature_type),
+    organization_id: event.organization_id ?? '',
   }
 
   return (
@@ -43,7 +71,7 @@ export default async function EditEventPage(props: { params: Promise<{ eventId: 
           Update the details for your event.
         </p>
       </div>
-      <CreateEventForm event={event} defaultValues={defaultValues} />
+      <CreateEventForm event={event} defaultValues={defaultValues} organizations={organizations} />
     </div>
   );
 }

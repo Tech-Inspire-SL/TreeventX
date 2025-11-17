@@ -75,7 +75,7 @@ export async function getEventDetails(eventId: number): Promise<{
       event_form_fields(*, options:event_form_field_options(*)),
       community_features:event_community_features(feature_type, is_enabled),
       organizer:profiles!events_organizer_id_fkey(id, first_name, last_name, email),
-      organization:organizations(id, name, description, website, location)
+      organization:organizations(id, name, description, website, location, logo_url)
     `)
     .eq('id', eventId)
     .single();

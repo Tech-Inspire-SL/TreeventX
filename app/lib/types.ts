@@ -30,6 +30,8 @@ export type EventWithAttendees = Event & {
   type?: 'attended' | 'organized';
   organizer?: Profile | null;
   organization?: Organization | null;
+  scanners?: Array<{ profiles: { email: string } }>;
+  event_form_fields?: EventFormField[];
 };
 
 export type OrganizationWithOwner = Organization & {

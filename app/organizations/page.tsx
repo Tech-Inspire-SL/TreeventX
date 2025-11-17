@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Input } from '../components/ui/input';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Building2, Search, MapPin, Users, Calendar } from 'lucide-react';
 import Link from 'next/link';
@@ -16,10 +15,21 @@ type Organization = {
   logo_url: string | null;
   location: string | null;
   is_verified: boolean;
-  _count: {
-    followers: number;
-    events: number;
-  };
+  follower_count: number;
+  event_count: number;
+};
+
+type RelationCount = Array<{ count: number | null }> | null | undefined;
+
+const getRelationCount = (relation: RelationCount) => {
+  if (!relation) return 0;
+  if (Array.isArray(relation)) {
+    return relation[0]?.count ?? 0;
+  }
+  if (typeof relation === 'object' && 'count' in relation) {
+    return relation.count ?? 0;
+  }
+  return 0;
 };
 
 export default function OrganizationsPage() {
@@ -44,10 +54,22 @@ export default function OrganizationsPage() {
 
       if (error) {
         console.error('Error fetching organizations:', error);
+        setLoading(false);
         return;
       }
 
-      setOrganizations(data || []);
+      const normalized: Organization[] = (data || []).map((org) => ({
+        id: org.id,
+        name: org.name,
+        description: org.description,
+        logo_url: org.logo_url,
+        location: org.location,
+        is_verified: org.is_verified,
+        follower_count: getRelationCount(org.followers as RelationCount),
+        event_count: getRelationCount(org.events as RelationCount),
+      }));
+
+      setOrganizations(normalized);
       setLoading(false);
     };
 
@@ -132,11 +154,11 @@ export default function OrganizationsPage() {
                         )}
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4" />
-                          <span>{org?._count?.followers} followers</span>
+                          <span>{org.follower_count} followers</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
-                          <span>{org?._count?.events} events</span>
+                          <span>{org.event_count} events</span>
                         </div>
                       </div>
                     </div>

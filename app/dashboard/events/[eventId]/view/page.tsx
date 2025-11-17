@@ -62,6 +62,7 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
     const attendeeCount = await getAttendeeCount(event.id);
     const isOwner = user.id === event.organizer_id;
     const isFull = event.capacity ? attendeeCount >= event.capacity : false;
+    const hubEnabled = Boolean(event.premium_features_enabled && event.community_enabled);
 
     return (
         <div className="space-y-6">
@@ -137,6 +138,11 @@ export default async function DashboardEventViewPage({ params }: { params: Promi
                                         <p className="text-xs text-muted-foreground">Price</p>
                                     </div>
                                 </div>
+                                {hubEnabled && (
+                                    <Button asChild variant="outline" className="w-full">
+                                        <Link href={`/events/${event.id}/hub`}>Visit Event Hub</Link>
+                                    </Button>
+                                )}
                                 {isOwner && (
                                     <Button asChild className="w-full">
                                         <Link href={`/dashboard/events/${event.id}/manage`}>Manage Event</Link>

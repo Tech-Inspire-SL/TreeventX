@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +21,8 @@ import { Textarea } from './ui/textarea';
 import { useToast } from '../hooks/use-toast';
 import { createOrganizationAction, updateOrganizationAction } from '../app/lib/actions/organizations';
 import type { Organization } from '../app/lib/types';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Building2, UploadCloud } from 'lucide-react';
 
 const organizationSchema = z.object({
   name: z.string().min(1, 'Organization name is required').max(100),
@@ -36,6 +39,8 @@ interface OrganizationFormProps {
 
 export function OrganizationForm({ organization }: OrganizationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [logoPreview, setLogoPreview] = useState<string | null>(organization?.logo_url ?? null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -57,6 +62,9 @@ export function OrganizationForm({ organization }: OrganizationFormProps) {
     formData.append('description', data.description || '');
     formData.append('website', data.website || '');
     formData.append('location', data.location || '');
+    if (logoFile) {
+      formData.append('logo', logoFile);
+    }
 
     try {
       const result = organization
@@ -87,6 +95,29 @@ export function OrganizationForm({ organization }: OrganizationFormProps) {
       });
       setIsSubmitting(false);
     }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (logoPreview && logoPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(logoPreview);
+      }
+    };
+  }, [logoPreview]);
+
+  function handleLogoChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    setLogoFile(file);
+    const previewUrl = URL.createObjectURL(file);
+    setLogoPreview((current) => {
+      if (current && current.startsWith('blob:')) {
+        URL.revokeObjectURL(current);
+      }
+      return previewUrl;
+    });
   }
 
   return (
@@ -164,6 +195,40 @@ export function OrganizationForm({ organization }: OrganizationFormProps) {
             </FormItem>
           )}
         />
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium leading-none">Organization Logo (Optional)</label>
+          <div className="flex flex-col gap-4">
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleLogoChange}
+              disabled={isSubmitting}
+            />
+            {(logoPreview || organization?.logo_url) && (
+              <div className="flex items-center gap-3">
+                <Avatar className="h-16 w-16">
+                  {logoPreview ? (
+                    <AvatarImage src={logoPreview} alt="Organization logo preview" />
+                  ) : organization?.logo_url ? (
+                    <AvatarImage src={organization.logo_url} alt={organization.name} />
+                  ) : (
+                    <AvatarFallback>
+                      <Building2 className="h-6 w-6" />
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+                <p className="text-sm text-muted-foreground">
+                  Uploaded logos will appear on your organization profile and event hub.
+                </p>
+              </div>
+            )}
+          </div>
+          <p className="flex items-center gap-2 text-xs text-muted-foreground">
+            <UploadCloud className="h-4 w-4" />
+            PNG, JPG, or WEBP files up to 2MB.
+          </p>
+        </div>
 
         <div className="flex gap-4">
           <Button type="submit" disabled={isSubmitting}>

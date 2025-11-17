@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '../supabase/server';
+import { uploadFile } from '../supabase/storage';
 import { cookies } from 'next/headers';
 
 export async function createOrganizationAction(formData: FormData) {
@@ -18,6 +19,7 @@ export async function createOrganizationAction(formData: FormData) {
   const description = formData.get('description') as string;
   const website = formData.get('website') as string;
   const location = formData.get('location') as string;
+  const logoFile = formData.get('logo') as File | null;
 
   if (!name || name.trim().length === 0) {
     return { error: 'Organization name is required.' };
@@ -34,6 +36,15 @@ export async function createOrganizationAction(formData: FormData) {
     return { error: 'An organization with this name already exists.' };
   }
 
+  let logoUrl: string | null = null;
+  if (logoFile && logoFile.size > 0) {
+    const { publicUrl, error: uploadError } = await uploadFile(logoFile, 'organization-logos');
+    if (uploadError) {
+      return { error: `Failed to upload logo: ${uploadError.message}` };
+    }
+    logoUrl = publicUrl;
+  }
+
   // Create organization
   const { data: org, error: orgError } = await supabase
     .from('organizations')
@@ -43,6 +54,7 @@ export async function createOrganizationAction(formData: FormData) {
       website: website?.trim() || null,
       location: location?.trim() || null,
       owner_id: user.id,
+      logo_url: logoUrl,
     })
     .select('id')
     .single();
@@ -85,6 +97,7 @@ export async function updateOrganizationAction(orgId: string, formData: FormData
   const description = formData.get('description') as string;
   const website = formData.get('website') as string;
   const location = formData.get('location') as string;
+  const logoFile = formData.get('logo') as File | null;
 
   if (!name || name.trim().length === 0) {
     return { error: 'Organization name is required.' };
@@ -114,14 +127,29 @@ export async function updateOrganizationAction(orgId: string, formData: FormData
     return { error: 'An organization with this name already exists.' };
   }
 
+  let logoUrl: string | undefined;
+  if (logoFile && logoFile.size > 0) {
+    const { publicUrl, error: uploadError } = await uploadFile(logoFile, 'organization-logos');
+    if (uploadError) {
+      return { error: `Failed to upload logo: ${uploadError.message}` };
+    }
+    logoUrl = publicUrl ?? undefined;
+  }
+
+  const updates: Record<string, string | null | undefined> = {
+    name: name.trim(),
+    description: description?.trim() || null,
+    website: website?.trim() || null,
+    location: location?.trim() || null,
+  };
+
+  if (logoUrl) {
+    updates.logo_url = logoUrl;
+  }
+
   const { error: updateError } = await supabase
     .from('organizations')
-    .update({
-      name: name.trim(),
-      description: description?.trim() || null,
-      website: website?.trim() || null,
-      location: location?.trim() || null,
-    })
+    .update(updates)
     .eq('id', orgId);
 
   if (updateError) {

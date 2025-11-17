@@ -19,6 +19,19 @@ type OrgEvent = {
   tickets: { count: number }[];
 };
 
+type RelationCount = Array<{ count: number | null }> | null | undefined;
+
+const getRelationCount = (relation: RelationCount) => {
+  if (!relation) return 0;
+  if (Array.isArray(relation)) {
+    return relation[0]?.count ?? 0;
+  }
+  if (typeof relation === 'object' && 'count' in relation) {
+    return relation.count ?? 0;
+  }
+  return 0;
+};
+
 async function getOrganizationProfile(orgId: string) {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
@@ -115,6 +128,9 @@ export default async function OrganizationProfilePage({ params }: OrganizationPr
     );
   }
 
+  const followerCount = getRelationCount(org.followers as RelationCount);
+  const eventCount = getRelationCount(org.events as RelationCount);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Header Section */}
@@ -174,11 +190,11 @@ export default async function OrganizationProfilePage({ params }: OrganizationPr
               )}
               <div className="flex items-center gap-1">
                 <Users className="w-4 h-4" />
-                <span>{org?._count?.followers || 0} followers</span>
+                <span>{followerCount} followers</span>
               </div>
                <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                <span>{org?._count?.events || 0} events</span>
+                <span>{eventCount} events</span>
               </div>
             </div>
             {org.description && (

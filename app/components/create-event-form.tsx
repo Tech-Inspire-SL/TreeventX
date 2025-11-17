@@ -92,6 +92,7 @@ const eventFormSchema = z.object({
   location: z.string().min(2, {
     message: 'Location must be at least 2 characters.',
   }),
+  organization_id: z.string().optional(),
   capacity: z.coerce.number().int().positive().optional(),
   scanners: z.array(z.object({ email: z.string().email({ message: "Please enter a valid email." }) })).optional(),
   targetAudience: z.string().min(2, {
@@ -130,9 +131,15 @@ const eventFormSchema = z.object({
 
 type EventFormValues = z.infer<typeof eventFormSchema>;
 
+type OrganizationOption = {
+  id: string;
+  name: string;
+};
+
 interface CreateEventFormProps {
     event?: Event;
     defaultValues?: Partial<EventFormValues>;
+    organizations?: OrganizationOption[];
 }
 
 function CustomFieldOptions({ nestIndex, form }: { nestIndex: number, form: UseFormReturn<EventFormValues> }) {
@@ -188,7 +195,7 @@ function CustomFieldOptions({ nestIndex, form }: { nestIndex: number, form: UseF
   );
 }
 
-export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) {
+export function CreateEventForm({ event, defaultValues, organizations = [] }: CreateEventFormProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [preview, setPreview] = useState<{[key: string]: string | null}>({
     cover_image: event?.cover_image || null,
@@ -202,6 +209,7 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
       title: defaultValues?.title || '',
       description: defaultValues?.description || '',
       location: defaultValues?.location || '',
+      organization_id: defaultValues?.organization_id ?? event?.organization_id ?? '',
       targetAudience: defaultValues?.targetAudience || 'General Audience',
       scanners: defaultValues?.scanners || [],
       capacity: defaultValues?.capacity || undefined,
@@ -230,6 +238,7 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
   const isPaid = form.watch('is_paid');
   const premiumEnabled = form.watch('premium_features_enabled');
   const communityEnabled = form.watch('community_enabled');
+  const noOrganizationValue = '__no_organization__';
 
   useEffect(() => {
     if (isPaid) {
@@ -599,6 +608,41 @@ export function CreateEventForm({ event, defaultValues }: CreateEventFormProps) 
                   </FormItem>
                 )}
               />
+              {organizations.length > 0 && (
+                <FormField
+                  control={form.control}
+                  name="organization_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organization (Optional)</FormLabel>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value === noOrganizationValue ? '' : value)
+                        }
+                        value={field.value && field.value.length > 0 ? field.value : noOrganizationValue}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select an organization" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={noOrganizationValue}>No organization</SelectItem>
+                          {organizations.map((org) => (
+                            <SelectItem key={org.id} value={org.id}>
+                              {org.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Linked events appear on the organization profile and hub.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
                <FormField
                 control={form.control}
                 name="capacity"
