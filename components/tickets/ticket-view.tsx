@@ -5,19 +5,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { QrCodeGenerator } from "@/components/tickets/qr-code-generator";
 import { Calendar, MapPin, Clock, Ban, UserRoundCheck, UserRoundX } from "lucide-react";
 import Link from "next/link";
-import type { Ticket, Event } from "@/app/lib/types";
+import type { Ticket, TicketWithRelations } from "@/app/lib/types";
 import Image from 'next/image';
 import { Badge } from "@/components/ui/badge";
 import { format } from 'date-fns';
 
 import { UpgradeAccountPrompt } from "./upgrade-account-prompt";
 
-interface TicketWithEvent extends Omit<Ticket, 'status'> {
+interface TicketWithEvent extends Omit<TicketWithRelations, 'status'> {
     // Extend the base Ticket status union locally to include UI-only statuses used in this component
     status: Ticket['status'] | 'pending' | 'rejected';
-    events: Event & { organizer?: { first_name: string | null, last_name: string | null } | null } | null;
-    profiles: { first_name?: string, last_name?: string, is_guest?: boolean, id?: string, email?: string } | null;
-    form_responses: { field_value: string, event_form_fields: { field_name: string } }[];
+    profiles: (TicketWithRelations['profiles'] & { email?: string }) | null;
+    form_responses: NonNullable<TicketWithRelations['form_responses']>;
 }
 
 const BrandedTicket = ({ ticket }: { ticket: TicketWithEvent }) => {

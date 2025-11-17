@@ -229,15 +229,17 @@ export async function POST(req: NextRequest) {
 
       // 4. Send confirmation email with QR code
       const { data: ticketDetails } = await getTicketDetails(ticket.id);
-      if (ticketDetails?.profiles?.email) {
+      if (ticketDetails?.profiles?.email && ticketDetails.events) {
         await sendTicketEmail(
           ticketDetails.profiles.email,
           `Your ticket for ${ticketDetails.events.title}`,
           React.createElement(TicketEmail, { ticket: ticketDetails })
         );
       } else {
-        console.warn('Webhook Warning: Ticket email skipped due to missing profile email', {
+        console.warn('Webhook Warning: Ticket email skipped due to missing profile email or event data', {
           ticketId: ticket.id,
+          hasEmail: Boolean(ticketDetails?.profiles?.email),
+          hasEvent: Boolean(ticketDetails?.events),
         });
       }
       

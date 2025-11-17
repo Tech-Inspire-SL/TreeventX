@@ -71,28 +71,30 @@ export type EventFormFieldWithOptions = Omit<EventFormField, 'id' | 'event_id' |
 };
 
 export type TicketWithRelations = Ticket & {
-  events: Pick<
-    Event,
-    |
-      'id'
-      | 'title'
-      | 'description'
-      | 'date'
-      | 'location'
-      | 'cover_image'
-      | 'is_paid'
-      | 'price'
-      | 'organization_id'
-      | 'ticket_brand_logo'
-      | 'ticket_brand_color'
-      | 'ticket_background_image'
-  > & {
-    organization?: Pick<Organization, 'name'> | null;
-  };
+  events: (
+    Pick<
+      Event,
+      |
+        'id'
+        | 'title'
+        | 'description'
+        | 'date'
+        | 'location'
+        | 'cover_image'
+        | 'is_paid'
+        | 'price'
+        | 'organization_id'
+        | 'ticket_brand_logo'
+        | 'ticket_brand_color'
+        | 'ticket_background_image'
+    > & {
+      organization?: Pick<Organization, 'name'> | null;
+    }
+  ) | null;
   profiles: (Profile & { email?: string | null }) | null;
   form_responses: {
     field_value: string;
     event_form_fields: { field_name: string };
-  }[] | null;
+  }[];
 };
     
