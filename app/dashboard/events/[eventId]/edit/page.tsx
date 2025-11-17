@@ -45,10 +45,47 @@ export default async function EditEventPage(props: { params: Promise<{ eventId: 
   );
 
   // Map event data to form values
+  const normalizedFeeBearer: 'organizer' | 'buyer' =
+    event.fee_bearer === 'organizer'
+      ? 'organizer'
+      : 'buyer';
+
+  const allowedCategories = [
+    'conference',
+    'workshop',
+    'festival',
+    'concert',
+    'seminar',
+    'networking',
+    'sports',
+    'community',
+    'other',
+  ] as const;
+
+  const eventCategory = allowedCategories.includes(event.category as typeof allowedCategories[number])
+    ? (event.category as typeof allowedCategories[number])
+    : 'other';
+
+  const allowedCommunityFeatures = [
+    'gallery',
+    'timeline',
+    'comments',
+    'feedback',
+    'resources',
+    'newsletter',
+  ] as const;
+
+  const communityFeatures = (event.community_features || [])
+    .filter((feature: { is_enabled: boolean }) => feature.is_enabled)
+    .map((feature: { feature_type: string }) => feature.feature_type)
+    .filter((feature): feature is typeof allowedCommunityFeatures[number] =>
+      allowedCommunityFeatures.includes(feature as typeof allowedCommunityFeatures[number])
+    );
+
   const defaultValues = {
     title: event.title ?? '',
     description: event.description ?? '',
-    category: (event.category as string) ?? 'other',
+    category: eventCategory,
     date: new Date(event.date),
     end_date: event.end_date ? new Date(event.end_date) : undefined,
     location: event.location ?? '',
@@ -56,17 +93,15 @@ export default async function EditEventPage(props: { params: Promise<{ eventId: 
     targetAudience: 'Users', // This field is not in the db, providing a default
     current_cover_image: event.cover_image || undefined,
     scanners: (event.scanners || []).map((s: { profiles: { email: string } }) => ({ email: s.profiles.email })),
-    customFields: event.event_form_fields,
+    customFields: event.event_form_fields?.map(f => ({ field_name: f.field_name, field_type: f.field_type as any, is_required: f.is_required, options: f.options ? f.options.map(o => ({ value: o.value })) : undefined })),
     is_paid: event.is_paid ?? false,
     price: event.price ?? undefined,
-    fee_bearer: event.fee_bearer === 'organizer' ? 'organizer' : 'buyer',
+    fee_bearer: normalizedFeeBearer,
     is_public: event.is_public ?? true,
     requires_approval: event.requires_approval ?? false,
     premium_features_enabled: event.premium_features_enabled ?? false,
     community_enabled: event.community_enabled ?? false,
-    communityFeatures: (event.community_features || [])
-      .filter((feature: { is_enabled: boolean }) => feature.is_enabled)
-      .map((feature: { feature_type: string }) => feature.feature_type),
+    communityFeatures,
     organization_id: event.organization_id ?? '',
   };
 

@@ -32,7 +32,7 @@ async function getPremiumEventData(eventId: number): Promise<PremiumEventData | 
       *,
       template:event_templates(id, name),
       organizer:profiles!events_organizer_id_fkey(id, first_name, last_name, email, avatar_url),
-      organization:organizations(id, name, description, website, location)
+      organization:organizations(id, name, description, website, location, logo_url)
     `)
     .eq('id', eventId)
     .single();
@@ -208,6 +208,9 @@ export default async function EventHubPage({ params }: { params: Promise<{ event
   const hasFeature = (type: string) => features.some(f => f.feature_type === type);
 
   const organizerName = event.organizer ? `${event.organizer.first_name} ${event.organizer.last_name}`.trim() : 'TBA';
+  const hostName = event.organization?.name ?? organizerName;
+  const brandLogoUrl = event.organization?.logo_url ?? event.organizer?.avatar_url ?? undefined;
+  const brandInitial = (hostName?.trim().charAt(0) || 'E').toUpperCase();
   const ticketLabel = event.is_paid ? 'Get Tickets' : 'Register Free';
   
   // Construct the event URL for sharing.
@@ -227,11 +230,11 @@ export default async function EventHubPage({ params }: { params: Promise<{ event
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.2),_transparent_60%)]" />
         <div className="container relative mx-auto px-4 py-12 text-center text-white lg:px-8">
           <Avatar className="mx-auto h-24 w-24 border-4 border-background shadow-lg">
-            <AvatarImage src={event.organizer?.avatar_url ?? undefined} />
-            <AvatarFallback className="text-3xl">{organizerName.charAt(0)}</AvatarFallback>
+            <AvatarImage src={brandLogoUrl} />
+            <AvatarFallback className="text-3xl">{brandInitial}</AvatarFallback>
           </Avatar>
           <div className="mt-4 flex items-center justify-center gap-4">
-            <h2 className="text-xl font-semibold text-white/80">{organizerName} invites you to</h2>
+            <h2 className="text-xl font-semibold text-white/80">{hostName} invites you to</h2>
           </div>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-white md:text-6xl">{event.title}</h1>
           {event.template?.name && <Badge variant="secondary" className="mt-4 border border-white/10 bg-white/10 text-white">{event.template.name}</Badge>}

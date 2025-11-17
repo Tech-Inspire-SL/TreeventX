@@ -161,6 +161,7 @@ export interface PremiumEventData extends Event {
     description?: string;
     website?: string;
     location?: string;
+    logo_url?: string;
   };
 }
 

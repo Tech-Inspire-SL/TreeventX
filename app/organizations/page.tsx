@@ -19,14 +19,17 @@ type Organization = {
   event_count: number;
 };
 
-type RelationCount = Array<{ count: number | null }> | null | undefined;
+type RelationCount = Array<{ count: number | null }> | { count: number | null } | null | undefined;
+
+const hasCountProperty = (value: unknown): value is { count: number | null } =>
+  typeof value === 'object' && value !== null && 'count' in value;
 
 const getRelationCount = (relation: RelationCount) => {
   if (!relation) return 0;
   if (Array.isArray(relation)) {
     return relation[0]?.count ?? 0;
   }
-  if (typeof relation === 'object' && 'count' in relation) {
+  if (hasCountProperty(relation)) {
     return relation.count ?? 0;
   }
   return 0;
