@@ -66,7 +66,7 @@ export default async function ViewTicketPage({ searchParams }: ViewTicketPagePro
             <div className="w-full max-w-4xl">
                  <div className="mb-8 text-center">
                     <h1 className="text-3xl font-bold">Your Ticket is Confirmed!</h1>
-                    <p className="text-lg text-muted-foreground mt-2">Event: {ticket.events.title}</p>
+                    <p className="text-lg text-muted-foreground mt-2">Event: {ticket.events?.title ?? 'Event'}</p>
                     {!user && (
                         <Card className="mt-6 text-left">
                             <CardHeader>

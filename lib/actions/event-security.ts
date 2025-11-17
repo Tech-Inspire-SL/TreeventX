@@ -11,7 +11,7 @@ const PinSchema = z.string().min(4, "PIN must be at least 4 digits").max(8, "PIN
 // Helper function to get the event and check ownership
 async function getEventAndVerifyOwnership(eventId: number) {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient(cookieStore);
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
@@ -140,7 +140,7 @@ export async function removeEventPinAction(
 export async function verifyEventPin(eventId: number, pin: string): Promise<boolean> {
     try {
     const cookieStore = await cookies();
-        const supabase = createClient(cookieStore);
+    const supabase = await createClient(cookieStore);
 
         const { data: event, error } = await supabase
             .from('events')

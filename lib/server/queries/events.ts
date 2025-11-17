@@ -1,7 +1,7 @@
 'use server';
 
 import { createClient, createServiceRoleClient } from '@/lib/supabase/server';
-import type { EventWithAttendees, TicketWithRelations } from '@/app/lib/types';
+import type { EventFormField, EventWithAttendees, TicketWithRelations } from '@/app/lib/types';
 import { cookies } from 'next/headers';
 
 export async function getTicketDetails(ticketId: number): Promise<{
@@ -104,7 +104,7 @@ export async function getEventDetails(eventId: number): Promise<{
   return { data: processedData, error: null };
 }
 
-export async function getEventFormFields(eventId: number): Promise<{ data: unknown[]; error: string | null }> {
+export async function getEventFormFields(eventId: number): Promise<{ data: EventFormField[]; error: string | null }> {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -118,5 +118,5 @@ export async function getEventFormFields(eventId: number): Promise<{ data: unkno
     return { data: [], error: error.message };
   }
 
-  return { data: data || [], error: null };
+  return { data: (data as EventFormField[]) || [], error: null };
 }

@@ -79,6 +79,7 @@ export interface EventComment {
   event_id: number;
   user_id: string;
   comment_text: string;
+  content?: string;
   parent_comment_id?: number;
   likes_count: number;
   is_approved: boolean;
@@ -89,6 +90,7 @@ export interface EventComment {
     first_name?: string;
     last_name?: string;
     email?: string;
+    avatar_url?: string;
   };
 }
 
@@ -110,6 +112,7 @@ export interface EventResource {
   description?: string;
   resource_type: 'document' | 'link' | 'video' | 'presentation';
   resource_url: string;
+  file_url?: string;
   file_size?: number;
   is_public: boolean;
   download_count: number;
@@ -135,7 +138,7 @@ export interface PremiumEventData extends Event {
   community_features: EventCommunityFeature[];
   gallery?: EventGalleryItem[];
   timeline?: EventTimelineItem[];
-  comments?: (EventComment & { user?: { first_name?: string; last_name?: string; email?: string } })[];
+  comments?: (EventComment & { user?: { first_name?: string; last_name?: string; email?: string; avatar_url?: string } })[];
   feedback?: EventFeedback[];
   resources?: EventResource[];
   newsletter_subscribers?: EventNewsletterSubscriber[];
@@ -150,6 +153,7 @@ export interface PremiumEventData extends Event {
     first_name?: string;
     last_name?: string;
     email?: string;
+    avatar_url?: string;
   };
   organization?: {
     id: number;
